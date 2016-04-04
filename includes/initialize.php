@@ -20,6 +20,7 @@ require_once(LIB_PATH.DS."PHPMailer".DS."class.smtp.php");
 require_once(LIB_PATH.DS."PHPMailer".DS."language".DS."phpmailer.lang-es.php");
 
 require_once(LIB_PATH.DS."user.php");
+require_once(LIB_PATH.DS."group.php");
 //require_once(LIB_PATH.DS."photograph.php");
 //require_once(LIB_PATH.DS."comment.php");
 //require_once(LIB_PATH.DS."glaze.php");
