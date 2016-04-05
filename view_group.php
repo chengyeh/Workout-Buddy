@@ -26,7 +26,7 @@ if(!$group){
 	
 </head>
 	<body>
-	<h1>Profile Page</h1>
+	<h1>View Group Page</h1>
 	<p><a href="profile.php">Profile</a>|<a href="logout.php">logout</a></p>
 	<h2>User Info</h2>
 	<?php 
@@ -67,6 +67,6 @@ if(!$group){
 
 	
 	
-	<p><a href="add_group_members.php">Add Members</a></p>
+	<p><a href="add_group_members.php?id=<?php echo $group->id; ?>">Add Members</a></p>
 	</body>
 </html>
