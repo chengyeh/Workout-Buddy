@@ -7,8 +7,6 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-   
-   echo "Inside php";
   $errors = array();
 
   // Trim all the incoming data:
@@ -24,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       	$group->create();
       	
       	//Redirect to profile page
-      	redirect_to("profile.php");
+      	redirect_to("view_group.php?id={$database->insert_id()}");
 }
 ?>
 <html>

@@ -7,5 +7,12 @@ class Group extends DatabaseObject {
     public $id;
     public $group_name;
     public $group_owner;
+    
+    public function get_members(){
+    	global $database;
+    	$sql = "SELECT * FROM wb_group_members WHERE group_id=".$this->id;
+    	$group_member_array = $database->query($sql);
+    	return $group_member_array;
+    }
 }
 

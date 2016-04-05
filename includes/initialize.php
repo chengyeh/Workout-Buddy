@@ -23,7 +23,5 @@ require_once(LIB_PATH.DS."user.php");
 require_once(LIB_PATH.DS."group.php");
 //require_once(LIB_PATH.DS."photograph.php");
 //require_once(LIB_PATH.DS."comment.php");
-//require_once(LIB_PATH.DS."glaze.php");
-//require_once(LIB_PATH.DS."ingredient.php");
 //require_once(LIB_PATH.DS."image_resize.php");
 ?>

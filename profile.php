@@ -24,8 +24,12 @@ $user = User::find_by_id($session->user_id);
 	<h2>User Groups</h2>
 	<?php 
 		$groups = $user->find_groups();
-		foreach ($groups as $group){
-			echo  $group->group_name . "<br/>";
+		if(!empty($groups)){
+			foreach ($groups as $group){
+				echo  "<a href='view_group.php?id={$group->id}'>".$group->group_name."</a><br/>";
+			}
+		}else{
+			echo  "No groups<br/>";
 		}	
 	?>
 	<p><a href="add_group.php">Add Group</a></p>
