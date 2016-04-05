@@ -22,6 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       	$group->group_name= $trimmed['group_name'];
      
       	$group->create();
+      	
+      	//Redirect to profile page
+      	redirect_to("profile.php");
 }
 ?>
 <html>
@@ -31,11 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 </head>
 	<body>
 	<h1>Profile Page: Add Group</h1>
-	<p><a href="logout.php">logout</a></p>
+	<p><a href="profile.php">Profile</a>|<a href="logout.php">logout</a></p>
+	
+	<h2>User Info</h2>
 	<?php 
-	echo "<p>User Id: " . $session->user_id . "</p>";
-	echo "<p>User Name: " . $session->user_name. "</p>";
+		echo "<p>User Name: " . $session->user_name. "</p>";
+		echo "<p>User Id: " . $session->user_id . "</p>";
 	?>
+	
+	<h2>Group Add Form</h2>
 	<form action="add_group.php" method="post" enctype="multipart/form-data">
 		 <input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
 		<label>Group Name</label>
