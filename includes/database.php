@@ -96,7 +96,6 @@ class MySQLDatabase{
         return mysqli_fetch_array($result_set);
     }
     
-
      /**
 	 * Returns the number of rows in the result set.
 	 *
