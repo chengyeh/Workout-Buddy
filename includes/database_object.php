@@ -4,10 +4,22 @@ require_once(LIB_PATH.DS."database.php");
 class DatabaseObject {
     protected static $table_name;
     
+    /**
+     * Returns all the rows from a table as objects
+     *
+     * @param  
+     * @return 
+     */
     public static function find_all(){
         return static::find_by_sql("SELECT * FROM ".static::$table_name);
     }
     
+    /**
+     *	Returns a row from a table as object
+     *
+     * @param
+     * @return
+     */
     public static function find_by_id($id=0){
         global $database;
         $result_array = static::find_by_sql("SELECT * FROM " . static::$table_name .
@@ -15,6 +27,12 @@ class DatabaseObject {
         return !empty($result_array) ? array_shift($result_array) : false;
     }
     
+    /**
+     * Returns sql from a table as objects
+     *
+     * @param
+     * @return
+     */
     public static function find_by_sql($sql=""){
         global $database;
         $result_set = $database->query($sql);
@@ -24,7 +42,13 @@ class DatabaseObject {
         }
         return $object_array;
     }
-     
+
+    /**
+     * Returns the count of rows from the table
+     *
+     * @param
+     * @return
+     */
     public static function count_all(){
         global $database;
         $sql = "SELECT COUNT(*) FROM " . static::$table_name;
@@ -33,6 +57,12 @@ class DatabaseObject {
         return array_shift($row);
     }
     
+    /**
+     * Returns the count of rows from the table with condition
+     *
+     * @param
+     * @return
+     */
     public static function count_all_where($condition){
         global $database;
         $sql = "SELECT COUNT(*) FROM " . static::$table_name;
@@ -42,6 +72,12 @@ class DatabaseObject {
         return array_shift($row);
     }
     
+    /**
+     * Return a row of data from the table as object
+     *
+     * @param
+     * @return
+     */
     private static function instantiate($record){
         $class_name = get_called_class();
         $object = new $class_name;
@@ -53,11 +89,23 @@ class DatabaseObject {
         return $object;
     }
     
+    /**
+     * 
+     *
+     * @param
+     * @return
+     */
     private function has_attribute($attribute){
         $object_vars = $this->attributes();
         return array_key_exists($attribute, $object_vars);
     }
     
+    /**
+     * Return object's attributes as an associative array 
+     *
+     * @param
+     * @return
+     */
     protected function attributes(){
         $attributes = array();
         foreach(static::$db_fields as $field){
@@ -68,6 +116,12 @@ class DatabaseObject {
         return $attributes;
     }
     
+    /**
+     *
+     *
+     * @param
+     * @return
+     */
     protected function sanitized_attributes(){
         global $database;
         $clean_attributes = array();
@@ -77,10 +131,22 @@ class DatabaseObject {
         return $clean_attributes;
     }
     
+    /**
+     * Save a object to the database table
+     *
+     * @param
+     * @return
+     */
     public function save(){
         return isset($this->id) ? $this->update() : $this->create();
     }
     
+    /**
+     * Insert a object's data into the appropiate table
+     *
+     * @param
+     * @return
+     */
     public function create(){
         global $database;
         $attributes = $this->sanitized_attributes();
@@ -97,6 +163,12 @@ class DatabaseObject {
         }
     }
     
+    /**
+     * Objects data is updated to appropiate table
+     *
+     * @param
+     * @return
+     */
     public function update(){
         global $database;
         $attributes = $this->sanitized_attributes();
@@ -111,6 +183,12 @@ class DatabaseObject {
         return ($database->affected_rows() == 1) ? true : false;
     }
     
+    /**
+     * Delete object's data from the table.
+     *
+     * @param
+     * @return
+     */
     public function delete(){
         global $database;
         $sql = "DELETE FROM ". static::$table_name;
