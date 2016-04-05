@@ -12,7 +12,7 @@ class Group extends DatabaseObject {
     	global $database;
     	$sql = "SELECT * FROM wb_group_members WHERE group_id=".$this->id;
     	$group_member_array = $database->query($sql);
-    	return $database->fetch_array($group_member_array);
+    	return $group_member_array;
     }
 }
 

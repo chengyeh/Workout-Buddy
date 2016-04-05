@@ -43,26 +43,17 @@ if(!$group){
 
 	<?php 
 		$group_members = $group->get_members();
-		print_r ($group_members);
-		echo "<table><tr><th>Name</th></tr>";
-		while($row = $group_members->fetch_assoc())
+		if(($group_members->num_rows) > 0)
 		{
-			printf($row["member_id"]);
-			$user = User::find_by_id($row["member_id"]);
-			echo "<tr><td>" . $user->full_name() . "</td></tr>";	
-
+			echo "<table><tr><th>Name</th></tr>";
+			while($row = $group_members->fetch_assoc())
+			{
+				$user = User::find_by_id($row["member_id"]);
+				echo "<tr><td>" . $user->full_name() . "</td></tr>";	
+	
+			}
+			echo "</table>";			
 		}
-		echo "</table>";
-		// if(($group_members->num_rows) > 0){
-			// echo "<table><tr><th>Name</th></tr>";
-				// while($member_id = $group_members->fetch_assoc())
-				// {
-					// // echo $member_id['member_id'];
-					// $user = User::find_by_id($member_id["member_id"]);
-					// echo "<tr><td>" . $user->first_name() . "</td></tr>";	
-				// }
-			// echo "</table>";
-		// }
 	?>
 
 	
