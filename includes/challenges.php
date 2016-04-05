@@ -1,7 +1,7 @@
 <?php
 require_once(LIB_PATH.DS."database.php");
 
-class Group extends DatabaseObject {
+class challenges extends DatabaseObject {
    	protected static $table_name = "challenges";
     protected static $db_benchPress = array('id','name','bench_press');
     protected static $db_pullUps = array('id','name','pull_ups');
