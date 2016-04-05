@@ -8,6 +8,24 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //Create User object
 $user = User::find_by_id($session->user_id);
 ?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+  $errors = array();
+
+	if(!empty($_POST['delete_group']))
+	{
+		foreach($_POST['delete_group'] as $group_id)
+		{
+			$group = Group::find_by_id($group_id);
+			$group->delete(); 
+			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");	
+		} 
+	} 
+				   	
+      	//Redirect to profile page
+      	redirect_to("view_group.php?id={$database->insert_id()}");
+}
+?>
 <html>
 <head>
 	
@@ -22,16 +40,21 @@ $user = User::find_by_id($session->user_id);
 	?>
 	
 	<h2>User Groups</h2>
+	<form action="" method="post">
 	<?php 
 		$groups = $user->find_groups();
 		if(!empty($groups)){
-			foreach ($groups as $group){
-				echo  "<a href='view_group.php?id={$group->id}'>".$group->group_name."</a><br/>";
-			}
+			echo "<table><tr><th>Name</th><th>Delete</th></tr>";
+				foreach ($groups as $group){
+					echo  "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td>";
+					echo "<td style='text-align:center'><input type='checkbox' name='delete_group[]' value='" . $group->id . "'></td></tr>";
+				}
+			echo "<tr><td colspan='2' style='text-align:right'><button type='submit' name ='delete'>Delete</button></td></tr></table>";
 		}else{
 			echo  "No groups<br/>";
-		}	
+		}
 	?>
+	</form>
 	<p><a href="add_group.php">Add Group</a></p>
 	</body>
 </html>
