@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-//check if user logged in
+//check if user logged in; if not, throw it back to login page
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
@@ -24,12 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   // Trim all the string in _POST (incoming data):
   /*array_map trims down all the strings in an array and retrun an
-    array that does not include any white space*/
+    array (hash table?) that does not include any white space*/
   $trimmed = array_map('trim', $_POST);
 
 
 
-  //if id exists in the challenge -- update, otherwise, create
+  //if id exists in the challenge -- update, otherwise, create  ----(update it later)
   //so _GET gets id?
 
   $challenge = new challenge();
