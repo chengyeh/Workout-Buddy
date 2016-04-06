@@ -54,6 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	?>
 	</form>
 	<p><a href="add_group.php">Add Group</a></p>
-  <p><a href="addChallenges.php">Add Challenge</a><p>
+  <p><a href="addChallenges.php">Add Challenge</a>|<a href="view_challenges.php">View Challenge</a><p>
 	</body>
 </html>
