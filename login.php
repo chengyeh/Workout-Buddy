@@ -42,25 +42,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 } // End of SUBMIT conditional.
 ?>
-<!DOCTYPE div PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<title>Workout Buddy: Login</title>
-</head>
-<body>
-<h2>Login</h2>
-	<form action="login.php" method="post" enctype="multipart/form-data">
-		<label>Email Address</label>
-		<input type="email" name="email" required autofocus />
-		<label>Password</label>
-		<input type="password" name="password" required />
-		<button type="submit"  name="submit">Login</button>    
-	</form>
-	<p><a href="forgot_password.php">Forgot your password?</a></p>
-	<p><a href="signup.php">Sign Up</a></p>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Workout Buddy - Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="dist/css/signin.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+	  <a href="index.html"><img alt="workout buddy logo" src="images/Workout_Buddy_Logo.png" class="center-block"></a>
+      <form class="form-signin" action="login.php" method="post" enctype="multipart/form-data">
+        <h2 class="form-signin-heading">Please Sign In</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password"  name="password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Sign in</button>
+        <br/>
+        <p><a class="btn btn-lg btn-success btn-block" href="signup.php" role="button">Sign up</a></p>
+      </form>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
 </html>
-          
-          
-	</div>
-</div>
