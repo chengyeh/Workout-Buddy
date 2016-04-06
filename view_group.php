@@ -49,15 +49,12 @@ if(!$group){
 			while($row = $group_members->fetch_assoc())
 			{
 				$user = User::find_by_id($row["member_id"]);
-				echo "<tr><td>" . $user->full_name() . "</td></tr>";	
-	
+				echo "<tr><td><a href=''>" . $user->full_name() . "</a></td></tr>";	
 			}
 			echo "</table>";			
 		}
 	?>
 
-	
-	
 	<p><a href="add_group_members.php?id=<?php echo $group->id; ?>">Add Members</a></p>
 	</body>
 </html>

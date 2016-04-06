@@ -22,8 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		} 
 	} 
 				   	
-      	//Redirect to profile page
-      	redirect_to("view_group.php?id={$database->insert_id()}");
 }
 ?>
 <html>
@@ -40,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	?>
 	
 	<h2>User Groups</h2>
-	<form action="" method="post">
+	<form action="#" method="post">
 	<?php 
 		$groups = $user->find_groups();
 		if(!empty($groups)){

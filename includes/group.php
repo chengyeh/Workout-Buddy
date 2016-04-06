@@ -16,3 +16,4 @@ class Group extends DatabaseObject {
     }
 }
 
+?>

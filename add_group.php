@@ -12,8 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   // Trim all the incoming data:
 	$trimmed = array_map('trim', $_POST);
 				
-
-
 		// Add the user to the database: 
 		$group = new Group();
 		$group->group_owner= $trimmed['user_id'];	
@@ -28,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 <html>
 <head>
 	<title>Workout Buddy: Add Group</title>
-	
 </head>
 	<body>
 	<h1>Profile Page: Add Group</h1>
@@ -41,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	?>
 	
 	<h2>Group Add Form</h2>
-	<form action="add_group.php" method="post" enctype="multipart/form-data">
+	<form action="#" method="post" enctype="multipart/form-data">
 		 <input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
 		<label>Group Name</label>
 		<input type="text" name="group_name" required /><br/>
