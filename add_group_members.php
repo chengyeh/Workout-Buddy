@@ -62,14 +62,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h2>User Group Add Members</h2>
     <?php 
         $users = User::find_all();
+        $group_members = $group->get_members();
+        print_r($group_members);
         if(!empty($users)){
             echo "<form action='#' method='post'><table>";
             foreach ($users as $user){
-                if($user->id != $session->user_id)
-                {
-                    echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
-                    echo "<td>".  $user->full_name() ."</td></tr>"; 
-                }
+                // print_r($users);
+                // $row = $group_members->fetch_assoc();
+                // foreach($group_members["member_id"] as $member_in_group){
+                    if($user->id != $session->user_id)
+                    {
+                        echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
+                        echo "<td>".  $user->full_name() ."</td></tr>"; 
+                    }   
+                // }
             }
             echo "</table>";
             

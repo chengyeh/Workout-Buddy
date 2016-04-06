@@ -19,42 +19,56 @@ if(!$group){
 	$session->message("Unable to be find group.");
 	redirect_to('profile.php');
 }
+?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+  $errors = array();
 
+    if(!empty($_POST['delete_group_member']))
+    {
+        foreach($_POST['delete_group_member'] as $member_id)
+        {
+            $database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group->id . "' AND member_id='" . $member_id . "'");  
+        } 
+    } 
+                    
+}
 ?>
 <html>
-<head>
+    <head>
 	
-</head>
+    </head>
 	<body>
-	<h1>View Group Page</h1>
-	<p><a href="profile.php">Profile</a>|<a href="logout.php">logout</a></p>
-	<h2>User Info</h2>
-	<?php 
-		echo "<p>User Name: ". $user->full_name() . "<br/>";
-		echo "<p>User Id: " . $session->user_id . "</p>";
-	?>
-	
-	<h2>User Group Info</h2>
-	<?php 
-		echo "<p>Grop Name: ". $group->group_name . "<br/>";
-	?>
-	
-	<h2>User Group Members</h2>
-
-	<?php 
-		$group_members = $group->get_members();
-		if(($group_members->num_rows) > 0)
-		{
-			echo "<table><tr><th>Name</th></tr>";
-			while($row = $group_members->fetch_assoc())
-			{
-				$user = User::find_by_id($row["member_id"]);
-				echo "<tr><td><a href=''>" . $user->full_name() . "</a></td></tr>";	
-			}
-			echo "</table>";			
-		}
-	?>
-
-	<p><a href="add_group_members.php?id=<?php echo $group->id; ?>">Add Members</a></p>
+    	<h1>View Group Page</h1>
+    	<p><a href="profile.php">Profile</a>|<a href="logout.php">logout</a></p>
+    	<h2>User Info</h2>
+    	<?php 
+    		echo "<p>User Name: ". $user->full_name() . "<br/>";
+    		echo "<p>User Id: " . $session->user_id . "</p>";
+    	?>
+    	
+    	<h2>User Group Info</h2>
+    	<?php 
+    		echo "<p>Grop Name: ". $group->group_name . "<br/>";
+    	?>
+    	
+    	<h2>User Group Members</h2>
+        <form action="#" method="post">
+        	<?php 
+        		$group_members = $group->get_members();
+        		if(($group_members->num_rows) > 0)
+        		{
+        			echo "<table><tr><th>Name</th><th>Kick</th></tr>";
+        			while($row = $group_members->fetch_assoc())
+        			{
+        				$user = User::find_by_id($row["member_id"]);
+        				echo "<tr><td><a href=''>" . $user->full_name() . "</a></td>";	
+                        echo "<td style='text-align:center'><input type='checkbox' name='delete_group_member[]' value='" . $row["member_id"] . "'></td></tr>";
+        			}	
+                    echo "<tr><td colspan='2' style='text-align:right'><button type='submit' name ='kick'>Kick</button></td></tr></table>";		
+        		}
+        	?>
+    	</form>
+    	<p><a href="add_group_members.php?id=<?php echo $group->id; ?>">Add Members</a></p>
 	</body>
 </html>
