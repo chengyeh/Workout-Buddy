@@ -41,48 +41,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 ?>
 <html>
-<head>
-    
-</head>
+    <head>
+        
+    </head>
     <body>
-    <h1>Add Members to Group</h1>
-    <p><a href="profile.php">Profile</a>|<a href="view_group.php?id=1">Profile</a>|<a href="logout.php">logout</a></p>
-    <h2>User Info</h2>
-    <?php 
-        echo "<p>User Name: ". $user->full_name() . "<br/>";
-        echo "<p>User Id: " . $session->user_id . "</p>";
-    ?>
-    
-    <h2>User Group Info</h2>
-    <?php 
-        echo "<p>Grop Name: ". $group->group_name . "<br/>";
-        echo "<p>Grop Id: ". $group->id . "<br/>";
-    ?>
-    
-    <h2>User Group Add Members</h2>
-    <?php 
-        $users = User::find_all();
-        $group_members = $group->get_members();
-        print_r($group_members);
-        if(!empty($users)){
-            echo "<form action='#' method='post'><table>";
-            foreach ($users as $user){
-                // print_r($users);
-                // $row = $group_members->fetch_assoc();
-                // foreach($group_members["member_id"] as $member_in_group){
-                    if($user->id != $session->user_id)
-                    {
-                        echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
-                        echo "<td>".  $user->full_name() ."</td></tr>"; 
-                    }   
-                // }
-            }
-            echo "</table>";
-            
-            echo "<button type='submit' name='add_members'>Add Member(s)</button></form>";
-        }else{
-            echo  "No users<br/>";
-        }   
-    ?>
+        <h1>Add Members to Group</h1>
+        <p><a href="profile.php">Profile</a>|<a href="view_group.php?id=<?php echo $group->id ?>">View Group</a>|<a href="logout.php">logout</a></p>
+        <h2>User Info</h2>
+        <?php 
+            echo "<p>User Name: ". $user->full_name() . "<br/>";
+            echo "<p>User Id: " . $session->user_id . "</p>";
+        ?>
+        
+        <h2>User Group Info</h2>
+        <?php 
+            echo "<p>Grop Name: ". $group->group_name . "<br/>";
+            echo "<p>Grop Id: ". $group->id . "<br/>";
+        ?>
+        
+        <h2>User Group Add Members</h2>
+        <?php 
+            $users = User::find_all();
+            $group_member_id_array = $group->get_member_id_array();
+            // print_r($group_member_id_array);
+            // echo count($group_member_id_array);
+            if(!empty($users)){
+                echo "<form action='#' method='post'><table>";
+                foreach ($users as $user){
+                        if($user->id != $session->user_id)
+                        {
+                            $id_exist = false;
+                            for($i = 0; $i < count($group_member_id_array); $i++)
+                            {
+                                if($user->id == $group_member_id_array[$i]['member_id'])
+                                {
+                                    $id_exist = true;
+                                }
+                            }
+                            if($id_exist == false)
+                            {
+                                echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
+                                echo "<td>".  $user->full_name() ."</td></tr>";
+                            } 
+                        }   
+                }
+                echo "</table>";
+                echo "<button type='submit' name='add_members'>Add Member(s)</button></form>";
+            }else{
+                echo  "No users<br/>";
+            }   
+        ?>
     </body>
 </html>
