@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         			while($row = $group_members->fetch_assoc())
         			{
         				$user = User::find_by_id($row["member_id"]);
-        				echo "<tr><td><a href=''>" . $user->full_name() . "</a></td>";	
+        				echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td>";	
                         echo "<td style='text-align:center'><input type='checkbox' name='delete_group_member[]' value='" . $row["member_id"] . "'></td></tr>";
         			}	
                     echo "<tr><td colspan='2' style='text-align:right'><button type='submit' name ='kick'>Kick</button></td></tr></table>";		
