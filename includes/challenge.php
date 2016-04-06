@@ -10,6 +10,15 @@ class challenge extends DatabaseObject {
     public $bench_press = 0; //bench press (lbs)
     public $pull_ups = 0; //pull ups (numbers)
 
+
+    public static function get_BP200(){
+      global $database;
+    	$sql = "SELECT name, bench_press FROM challenge WHERE bench_press > 200;";
+      $bp200 = $database->query($sql);
+      return $bp200;
+    }
+
+
 /*
     public function get_members(){
     	global $database;
