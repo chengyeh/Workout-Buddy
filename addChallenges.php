@@ -7,6 +7,18 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
+/*
+//Create User object
+$user = User::find_by_id($session->user_id);
+
+//If the ID field is empty return the user to profile page
+if (empty($_GET['id'])){
+    $session->message("No group ID was provided.");
+    redirect_to('profile.php');
+}
+*/
+//$challenge = challenge::find_by_id($_GET['id']);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
@@ -19,19 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   //if id exists in the challenge -- update, otherwise, create
   //so _GET gets id?
-  $challenge = challenge::find_by_id($_GET['id']);
-  if(!$challenge){
-      $challenge = new challenge();
-      $challenge->who = $trimmed['user_id'];
-      $challenge->$bench_press = $trimmed['challenge_BP_lbs'];
-      $challenge->$pull_ups =$trimmed['challenge_PU_num'];
-      $challenge->create();
-  }
-  else{
-    //update the existing table -- need check on this
-  }
 
-
+  $challenge = new challenge();
+  $challenge->who = $trimmed['user_id'];
+  $challenge->name = $trimmed['challenge_name'];
+  $challenge->$bench_press = $trimmed['challenge_BP_lbs'];
+  $challenge->$pull_ups =$trimmed['challenge_PU_num'];
+  $challenge->create();
 
   //Redirect to profile page
   redirect_to("view_group.php?id={$database->insert_id()}");
