@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                             if($id_exist == false)
                             {
                                 echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
-                                echo "<td>".  $user->full_name() ."</td></tr>";
+                                echo "<td><a href='view_profile.php?id={$user->id}'>".  $user->full_name() ."</a></td></tr>";
                             } 
                         }   
                 }
