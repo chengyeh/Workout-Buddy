@@ -55,12 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     	
     	<h2>Group Members</h2>
     	<?php 
-    		//Get all the members from this group
-    		$group_members = $group->get_members();
-    		// if(($group_members->num_rows) > 0)
-    		// {
-    			//Restrict only the group owner can edit the group members
-    			if($user->id == $group->group_owner)
+		//Get all the members from this group
+		$group_members = $group->get_members();
+			//Restrict only the group owner can edit the group members
+			if($user->id == $group->group_owner)
+			{
+				if(($group_members->num_rows) > 0)
 				{
 					echo "<form action='#' method='post'>";
 					echo "<table><tr><th>Name</th><th>Kick</th></tr>";
@@ -71,10 +71,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         				echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td>";	
                         echo "<td style='text-align:center'><input type='checkbox' name='delete_group_member[]' value='" . $row["member_id"] . "'></td></tr>";
         			}	
-                    echo "<tr><td colspan='2' style='text-align:right'><button type='submit' name ='kick'>Kick</button></td></tr></table></form>";
-					echo "<p><a href='add_group_members.php?id={$group->id}'>Add Members</a></p>";
+                    echo "<tr><td colspan='2' style='text-align:right'><button type='submit' name ='kick'>Kick</button></td></tr></table></form>";	
 				}
-				else{
+				else 
+				{
+						echo "No members<br/>";
+				}
+				echo "<p><a href='add_group_members.php?id={$group->id}'>Add Members</a></p>";
+			}
+			else
+			{
+				if(($group_members->num_rows) > 0)
+				{
 					//Basic info of the group
 					echo "<table><tr><th>Name</th></tr>";
         			while($row = $group_members->fetch_assoc())
@@ -82,10 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         				$user = User::find_by_id($row["member_id"]);
         				echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td></tr>";
         			}	
-                    echo "</table>";	
+                    echo "</table>";
 				}
-
-    		// }
+				else
+				{
+					echo "No members<br/>";
+				}
+			}
     	?>
 	</body>
 </html>
