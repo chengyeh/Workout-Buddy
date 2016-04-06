@@ -11,7 +11,7 @@ if (empty($_GET['id'])){
 	redirect_to('profile.php');
 }
 
-//Create User object
+//Create User object from ID in the URL
 $user = User::find_by_id($_GET['id']);
 if(!$user){
 	$session->message("Unable to be find group.");
@@ -20,7 +20,7 @@ if(!$user){
 ?>
 <html>
 	<head>
-		<title></title>
+		<title><?php echo $user->full_name()?></title>
 	</head>
 	<body>
 		<h1>Profile Page</h1>
@@ -33,9 +33,11 @@ if(!$user){
 		
 		<h2>User Groups</h2>
 		<?php 
+			//Find all the groups from this user and add into array
 			$groups = $user->find_groups();
 			if(!empty($groups)){
 				echo "<table><tr><th>Name</th></tr>";
+					//List all the groups
 					foreach ($groups as $group){
 						echo  "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td></tr>";
 					}
