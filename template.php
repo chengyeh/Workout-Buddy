@@ -44,11 +44,11 @@
             <span class="icon-bar"></span>
           </button>
           <!--  <a class="navbar-brand" href="#">Project name</a> -->
-          <img id="navbar-logo-image" alt="workout buddy logo" src="images/Workout_Buddy_Logo2_small.png">
+          <img id="navbar-logo-image" alt="workout buddy logo" src="images/Workout_Buddy_Logo_small.png">
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><a href="profile.php">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">
@@ -64,20 +64,27 @@
               </ul>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/">Default</a></li>
-            <li><a href="../navbar-static-top/">Static top</a></li>
-            <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
-          </ul>
+          
+          <ul class="nav navbar-nav navbar-right" id="navbar-status">
+            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
         </div><!--/.nav-collapse -->
       </div>
+      
     </nav>
 
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-  	<p>Main content goes here</p>
-
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
     </div> <!-- /container -->
 
 

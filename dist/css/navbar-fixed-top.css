@@ -6,3 +6,7 @@ body {
 #navbar-logo-image{
 	margin-right: 20px;
 }
+
+#navbar-status {
+	margin-top: 10px;
+}

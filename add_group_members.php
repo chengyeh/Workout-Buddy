@@ -5,7 +5,7 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+//Create User object for current session user
 $user = User::find_by_id($session->user_id);
 
 //If the ID field is empty return the user to profile page
@@ -14,6 +14,7 @@ if (empty($_GET['id'])){
     redirect_to('profile.php');
 }
 
+//Create Group object from ID in the URL 
 $group = Group::find_by_id($_GET['id']);
 if(!$group){
     $session->message("Unable to be find group.");
@@ -42,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 ?>
 <html>
     <head>
-        
+        <title><?php echo $group->group_name ?></title>
     </head>
     <body>
         <h1>Add Members to Group</h1>
@@ -60,17 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         ?>
         
         <h2>User Group Add Members</h2>
-        <?php 
+        <?php
+        	//Get all existing users into array  
             $users = User::find_all();
+			//Get all group members id
             $group_member_id_array = $group->get_member_id_array();
-            // print_r($group_member_id_array);
-            // echo count($group_member_id_array);
             if(!empty($users)){
                 echo "<form action='#' method='post'><table>";
                 foreach ($users as $user){
+                		//Do not display current user
                         if($user->id != $session->user_id)
                         {
                             $id_exist = false;
+							//If the user is already in the group, do not display his/her name
                             for($i = 0; $i < count($group_member_id_array); $i++)
                             {
                                 if($user->id == $group_member_id_array[$i]['member_id'])
@@ -78,10 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                                     $id_exist = true;
                                 }
                             }
+							//Display the user who is not in the group
                             if($id_exist == false)
                             {
                                 echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
-                                echo "<td>".  $user->full_name() ."</td></tr>";
+                                echo "<td><a href='view_profile.php?id={$user->id}'>".  $user->full_name() ."</a></td></tr>";
                             } 
                         }   
                 }
