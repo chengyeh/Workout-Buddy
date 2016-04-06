@@ -17,29 +17,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		foreach($_POST['delete_group'] as $group_id)
 		{
 			$group = Group::find_by_id($group_id);
-			$group->delete(); 
-			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");	
-		} 
-	} 
-				   	
+			$group->delete();
+			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");
+		}
+	}
+
 }
 ?>
 <html>
 <head>
-	
+
 </head>
 	<body>
 	<h1>Profile Page</h1>
 	<p><a href="logout.php">logout</a></p>
 	<h2>User Info</h2>
-	<?php 
+	<?php
 		echo "<p>User Name: ". $user->full_name() . "<br/>";
 		echo "<p>User Id: " . $session->user_id . "</p>";
 	?>
-	
+
 	<h2>User Groups</h2>
 	<form action="#" method="post">
-	<?php 
+	<?php
 		$groups = $user->find_groups();
 		if(!empty($groups)){
 			echo "<table><tr><th>Name</th><th>Delete</th></tr>";
@@ -54,5 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	?>
 	</form>
 	<p><a href="add_group.php">Add Group</a></p>
+  <p><a href="addChallenges.php">Add Challenge</a><p>
 	</body>
 </html>

@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $challenge = new challenge();
   $challenge->who = $trimmed['user_id'];
   $challenge->name = $trimmed['challenge_name'];
-  $challenge->$bench_press = $trimmed['challenge_BP_lbs'];
-  $challenge->$pull_ups =$trimmed['challenge_PU_num'];
+  $challenge->bench_press = $trimmed['challenge_BP_lbs'];
+  $challenge->pull_ups =$trimmed['challenge_PU_num'];
   $challenge->create();
 
   //Redirect to profile page
