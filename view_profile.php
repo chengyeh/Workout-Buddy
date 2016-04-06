@@ -24,7 +24,7 @@ if(!$user){
 	</head>
 	<body>
 		<h1>Profile Page</h1>
-		<p><a href="logout.php">logout</a></p>
+		<p><a href="profile.php">Profile</a>|<a href="logout.php">logout</a></p>
 		<h2>User Info</h2>
 		<?php 
 			echo "<p>User Name: ". $user->full_name() . "<br/>";
