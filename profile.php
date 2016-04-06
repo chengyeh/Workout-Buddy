@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Kuei Chu" >
     <link rel="icon" href="../../favicon.ico">
 
     <title>Fixed Top Navbar Example for Bootstrap</title>
@@ -128,7 +128,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	?>
 	</form>
 	<p><a href="add_group.php">Add Group</a></p>
-	<p><a href="addChallenges.php">Add Challenge</a><p>
+
+  <p><a href="addChallenges.php">Add Challenge</a>|<a href="view_challenges.php">View Challenge</a><p>
+
     </div> <!-- /container -->
 
 
@@ -142,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
   
   
+
 	</body>
 </html>
 
