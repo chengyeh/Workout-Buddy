@@ -96,7 +96,7 @@ if(isset($search_string) && empty($message)){
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="find_user.php">Find User</a></li>
-                <li><a href="message.php">Messages</a></li>
+                <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
@@ -145,7 +145,7 @@ if(isset($search_string) && empty($message)){
 				echo "<table class='table'>";
 		  		echo "<tr><th>Name</th><th>Discription</th><th></th></tr>";
 		  		foreach ($groups as $group){
-					echo "<tr><td>{$group->group_name}</td><td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' target='_blank' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
+					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td><td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' target='_blank' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
 				}
 				echo "</table>";
 			}else{
