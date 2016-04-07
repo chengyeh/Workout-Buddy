@@ -62,6 +62,12 @@ class User extends DatabaseObject {
     	$groups_object_array = Group::find_by_sql($sql);
     	return $groups_object_array;
     }
+	
+	public function groups_joined(){
+    	$sql = "SELECT * FROM wb_group_members WHERE member_id=".$this->id;
+    	$group_members_object_array = GroupMember::find_by_sql($sql);
+    	return $group_members_object_array;
+    }
 
 }
 

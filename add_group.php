@@ -25,6 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       	$group->group_discription = $trimmed['group_discription'];
       	$group->group_activity = $trimmed['group_activity'];
       	$group->create();
+		
+		$group_member = new GroupMember();
+		$group_member->group_id = $database->insert_id();
+		$group_member->member_id = $trimmed['user_id'];
+		$group_member->create();
 
       	//Redirect to profile page
       	redirect_to("view_group.php?id={$database->insert_id()}");
