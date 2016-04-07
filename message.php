@@ -49,8 +49,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			echo "<form action='#' method='post'><table>";
 			foreach ($users as $user)
 			{
-				echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
-  				echo "<td>".  $user->full_name() ."</td></tr>";
+				$s = User::find_by_id($session->user_id);
+				if($user->id==$s->id)
+				{
+
+				}
+				else
+				{
+					echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
+  					echo "<td>".  $user->full_name() ."</td></tr>";
+				}
+
 			}
 			echo "</table>";
 
