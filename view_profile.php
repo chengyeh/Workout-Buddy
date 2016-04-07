@@ -107,6 +107,7 @@ if(!$view_user){
 	<?php 
 		echo "<p>Name: ". $view_user->full_name() . "<br/>";
 	?>
+	<p><a class="btn btn-default" href="add_group_members.php?id=<?php echo $group->id; ?>" role="button">Send Message</a></p>
 	
 	<h2>User Groups</h2>
 	<?php 
