@@ -106,8 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 	<h2>User Info</h2>
 	<?php
-		echo "<p>Name: " . $user->full_name() . "<br/>";
-		echo "<p>Id: " . $user->id . "</p>";
+		echo "<p>" . $user->full_name() . "<br/>";
 	?>
 
 	<h2>Groups Owns</h2>
@@ -135,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<?php
 		if(!empty($groups_joined))
 		{
-			echo "<table class='table'><tr><th>Name</th><th>Status</th></tr>";
+			echo "<table class='table'><tr><th>Name</th><th class='text-center'>Status</th></tr>";
 			foreach ($groups_joined as $group_member_row){
 				$same_group = false;
 				//Check if the joined group is the one this user owns
@@ -151,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				{
 					$group_joined = Group::find_by_id($group_member_row->group_id);
 					echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
-					echo "<td>{$group_joined->group_status}</td>";
+					echo "<td class='text-center'>{$group_joined->group_status}</td>";
 				}
 			}
 			echo "</table>";
