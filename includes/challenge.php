@@ -11,13 +11,21 @@ class challenge extends DatabaseObject {
     public $pull_ups = 0; //pull ups (numbers)
 
 
+
+
+    public static function bp_top3(){
+      global $database;
+      $sql = "SELECT name, bench_press FROM challenge ORDER BY bench_press DESC LIMIT 3;"
+      $bp_top3 = $database->query($sql);
+      return $bp_top3;
+    }
+
     public static function get_BP200(){
       global $database;
     	$sql = "SELECT name, bench_press FROM challenge WHERE bench_press > 200;";
       $bp200 = $database->query($sql);
       return $bp200;
     }
-
 
 /*
     public function get_members(){
