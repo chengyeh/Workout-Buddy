@@ -25,6 +25,12 @@ class challenge extends DatabaseObject {
       return $pu_top3;
     }
 
+    public static function tm_top3(){
+      global $database;
+      $sql = "SELECT name, treadmill_mileage FROM challenge ORDER BY treadmill_mileage DESC LIMIT 3;";
+      $tm_top3 = $database->query($sql);
+      return $tm_top3;
+    }
 
     public static function get_BP200(){
       global $database;
