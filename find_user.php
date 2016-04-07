@@ -1,3 +1,42 @@
+<?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
+require_once('includes/initialize.php');
+if(!$session->is_logged_in()){ redirect_to("login.php"); }
+
+//Create User object
+$user = User::find_by_id($session->user_id);
+
+?>
+<?php
+$search_string;
+
+if(isset($_GET['submit'])){
+  $search = array();
+  $fname = $database->escape_value($_GET['first_name']);
+  $lname = $database->escape_value($_GET['last_name']);
+  
+  if((isset($fname)&& (!empty($fname)|| $fname !=0)) && (isset($lname)&& (!empty($lname)|| $lname !=0))){
+    $search_string = " first_name LIKE '%{$fname}%' AND last_name LIKE '%{$lname}%' ";
+  }elseif(isset($fname)&& (!empty($fname)|| $fname !=0)){
+    $search_string = " first_name LIKE '%{$fname}%' ";
+  }elseif(isset($lname)&& (!empty($lname)|| $lname !=0)){
+    $search_string = " last_name LIKE '%{$lname}%' ";
+  }else{
+    $message = "Check your search name.";
+  }
+}
+
+if(isset($search_string) && empty($message)){
+	//Asemble sql statement
+	$sql = "SELECT * FROM wb_users ";
+	$sql .= "WHERE {$search_string} ";
+	$sql .= "ORDER BY last_name ASC ";
+	
+	$users = User::find_by_sql($sql);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,7 +48,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <title>Find User</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +72,7 @@
 
   <body>
 
-    <!-- Fixed navbar -->
+       <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -76,16 +115,47 @@
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
+    <!-- Two coloum layout -->
+  	<!-- First coloum: Search box -->
+  	<div class="col-md-3">
+  	<h2>Search</h2>
+  	<form action="find_user.php" method="get">
+  		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Search by First Name</label>
+		   <input type="text" name="first_name" class="form-control">	
+		</fieldset>
+  		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Search by Last Name</label>
+		   <input type="text" name="last_name" class="form-control">	
+		</fieldset>
+		<button type="submit" name="submit" class="btn btn-default">Search</button>
+  	</form>
+  	</div>
   	
+  	<!-- Second coloum: Search results -->
+  	<div class="col-md-9">
   	
+  	<?php 
+  		if(isset($users)){
+			echo "<h2>Search Results for {$fname} {$lname}</h2>";
+	  		if(!empty($users)){
+				echo "<table class='table'>";
+		  		echo "<tr><th>First Name</th><th>Last Name</th><th></th></tr>";
+		  		foreach ($users as $user){
+					echo "<tr><td><a href='view_profile.php?id={$user->id}'>{$user->first_name}</a></td><td><a href='view_profile.php?id={$user->id}'>{$user->last_name}</a></td></tr>";
+				}
+				echo "</table>";
+			}else{
+				echo "<h3>No users found.</h3>";
+			}
+		}
+  	?>
+  	</div>
   	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
+
+
+
+
     </div> <!-- /container -->
 
 
@@ -99,3 +169,4 @@
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
+
