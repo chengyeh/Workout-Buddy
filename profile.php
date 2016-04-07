@@ -79,14 +79,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More Actions<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
+                <li><a href="add_group.php">Add Group</a></li>
+                <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="#">Something else here</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
+                <li><a href="addChallenges.php">Add Challenge</a></li>
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li>
@@ -102,13 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-  	<p>Main content goes here</p>
 	<h1>Profile Page</h1>
-	<p><a href="logout.php">logout</a></p>
+
 	<h2>User Info</h2>
 	<?php
-		echo "<p>User Name: ". $user->full_name() . "<br/>";
-		echo "<p>User Id: " . $session->user_id . "</p>";
+		echo $user->full_name() . "<br/>";
 	?>
 
 	<h2>User Groups</h2>
@@ -116,12 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<?php
 		$groups = $user->find_groups();
 		if(!empty($groups)){
-			echo "<table><tr><th>Name</th><th>Delete</th></tr>";
+			echo "<table class='table'><tr><th>Name</th><th class='text-center'>Delete</th></tr>";
 				foreach ($groups as $group){
 					echo  "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td>";
 					echo "<td style='text-align:center'><input type='checkbox' name='delete_group[]' value='" . $group->id . "'></td></tr>";
 				}
-			echo "<tr><td colspan='2' style='text-align:right'><button type='submit' name ='delete'>Delete</button></td></tr></table>";
+			echo "<tr><td></td><td class='text-center'><button type='submit' class='btn btn-default' name ='delete'>Delete</button></td></tr></table>";
 		}else{
 			echo  "No groups<br/>";
 		}

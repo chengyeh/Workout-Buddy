@@ -4,6 +4,14 @@ ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
+
+//Get all the group activity to popluate the 
+//select box in form
+$group_activity = Group::get_activity();
+
+echo "<pre>";
+print_r($group_activity);
+echo "</pre>";
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -16,8 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$group = new Group();
 		$group->group_owner= $trimmed['user_id'];
       	$group->group_name= $trimmed['group_name'];
-      	$group->group_status=$trimmed['group_status'];
-
+      	$group->group_status= $trimmed['group_status'];
+      	$group->group_discription = $trimmed['group_discription'];
+      	$group->group_activity = $trimmed['group_activity'];
       	$group->create();
 
       	//Redirect to profile page
@@ -99,26 +108,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
 
     <div class="container">
-
+    
+	<div class="col-xs-12 col-sm-6 col-md-8">
 	<h2>Group Add</h2>
-	<form>
+	<form action="#" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
+	
 		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Example label</label>
-		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+		   <label for="formGroupExampleInput">Group Name</label>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name="group_name" required autofocus>
 		</fieldset>
   		<fieldset class="form-group">
-    		<label for="formGroupExampleInput2">Another label</label>
-    		<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+    		<label for="formGroupExampleInput2">
+    		<input type="radio" name="group_status" value="Private">&nbsp Private
+    		</label>
+    		&nbsp
+    		<label for="formGroupExampleInput2">
+			<input type="radio" name="group_status" value="Public">&nbsp Public
+			</label>
   		</fieldset>
+  		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Group Discription</label>
+		   <textarea name="group_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Discription"rows="4" cols="50" required></textarea>
+		</fieldset>
+		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Group Activity</label>
+		   <select name="group_activity" class="form-control" required>
+		   <?php 
+		   		echo "<option value=''></option>";
+		   		foreach ($group_activity as $key => $value){
+					echo "<option value='{$value}'>{$value}</option>";
+				}		   
+		   ?>	  
+			</select>
+		</fieldset>
+		<button type="submit" name="submit" class="btn btn-default">Add group</button>
 	</form>
-	<form action="#" method="post" enctype="multipart/form-data">
-		 <input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
-		<label>Group Name</label>
-		<input type="text" name="group_name" required /><br/>
-		<input type="radio" name="group_status" value="Private">Private<br>
-		<input type="radio" name="group_status" value="Public">Public<br>
-		<button type="submit" name="submit">Add group</button>
-	</form>
+	
+	</div>
+	
 	</div> <!-- /container -->
 
 
