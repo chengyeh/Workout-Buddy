@@ -1,4 +1,8 @@
 <?php
+/**
+ * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ * 
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -25,6 +29,11 @@ if(!$group){
 $group_owner = User::find_by_id($group->group_owner); 	
 ?>
 <?php
+/**
+ * Query the database and obtain an array containin all members of the group. 
+ * 
+
+ */
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
@@ -116,14 +125,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     	
     	<h2>Group Info</h2>
     	<?php 
-    		echo "<p>". $group->group_name . "</p><br/>";
-			echo "<p>Owner: ". $group_owner->full_name() . "</p><br/>";
+    	/**
+        * Print out all the details of the group based on the group define by the $group variable. 
+        * 
+        *
+        */
+    		echo "<p>Group Name: ". $group->group_name . "<br/>";
+			echo "<p>Group Id: " . $group->id . "</p>";
+			echo "<p>Owner: ". $group_owner->full_name() . "<br/>";
     	?>
     	
     	<h2>Group Members</h2>
     	<p><a class="btn btn-default" href="add_group_members.php?id={$group->id}" role="button">Add Members</a></p>
     	<?php 
-		//Get all the members from this group
+		/**
+                * Get all members of the group utilizin the get_members function from groupp. Restrict permissions to delete or add to owner only and display all users in a table along with the option to delete them if desired. If there are no members in the group, print no members.
+                */
 		$group_members = $group->get_members();
 			//Restrict only the group owner can edit the group members
 			if($user->id == $group->group_owner)
