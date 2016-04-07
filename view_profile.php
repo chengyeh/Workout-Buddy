@@ -1,4 +1,9 @@
 <?php
+/**
+ * Each User has a profile page based on their give information, the groups they have created, the groups they are a part of and other constants appearing on all parts of the websites. The $user variable is associated with the 
+ * 
+ */
+...
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -27,13 +32,19 @@ if(!$user){
 		<p><a href="profile.php">Profile</a>|<a href="logout.php">logout</a></p>
 		<h2>User Info</h2>
 		<?php 
+                    /**
+                        * Retrieve user details from database and display their name and ID
+                        */
 			echo "<p>User Name: ". $user->full_name() . "<br/>";
 			echo "<p>User Id: " . $user->id . "</p>";
 		?>
 		
 		<h2>User Groups</h2>
 		<?php 
-			//Find all the groups from this user and add into array
+                    /**
+                    * Query Database for all the groups that the user is part of and displa them in the form of a table. Echo "No groups" if query cannot find any groups associated with the User.  
+                    * 
+                    */
 			$groups = $user->find_groups();
 			if(!empty($groups)){
 				echo "<table><tr><th>Name</th></tr>";
