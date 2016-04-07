@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <tr><td><label>Your name:</label></td><td><input type="text" name="challenge_name" required /></td></tr>
         <tr><td><label>Bench Press (lbs):</label></td><td><input type="text" name="challenge_BP_lbs" required /></td></tr>
         <tr><td><label>Numbers of pull ups:</label></td><td><input type="text" name="challenge_PU_num" required /></td></tr>
-        <tr><td><label>Treadmill mileage:</label></td><td><<input type="text" name="challenge_TMM" required>
+        <tr><td><label>Treadmill mileage:</label></td><td><input type="text" name="challenge_TMM" required></td></tr>
     		<tr><td><button type="submit" name="submit">Update challenge! WooHoo</button></td><td></td></tr>
   	</form>
     </table>
