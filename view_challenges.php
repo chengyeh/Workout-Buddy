@@ -25,14 +25,14 @@ $user = User::find_by_id($session->user_id);
       	echo "<p>User Name: ". $user->full_name() . "<br/>";
       	echo "<p>User Id: " . $session->user_id . "</p>";
       ?>
-      <h4>At WorkBuddy, we challenge our buddies to become the next Mr. Universe</h2>
       <!---Display current leader board--->
+      <center>
       <table>
       <?php
 
-          if($result = challenge::get_BP200()){
-              echo "<tr>Here's our member(s) who bench press over 200 lbs<tr>";
-              echo "<tr><td>Name:</td><td>lbs</td>";
+          if($result = challenge::bp_top3()){
+              echo "<tr><td><h5>BENCH PRESS</h5></td><td><h5>TOP 3</h5></td><tr>";
+              echo "<tr><td></td><td>lbs</td>";
               while($row = $result->fetch_assoc()){
                 echo "<tr>";
                 echo "<td>" .$row["name"]  . "</td>";
@@ -44,8 +44,38 @@ $user = User::find_by_id($session->user_id);
           else{
             echo "Looks like no one bench press more than 200lbs";
           }
+          echo "<tr><td>---------------------------</td><td>-----------------</td></td>";
+          if($result = challenge::pu_top3()){
+              echo "<tr><td><h5>PULL UPs</h5></td><td><h5>TOP 3</h5><td><tr>";
+              echo "<tr><td></td><td>numbers</td>";
+              while($row = $result->fetch_assoc()){
+                echo "<tr>";
+                echo "<td>" .$row["name"]  . "</td>";
+                echo "<td>" .$row["pull_ups"] . "</td>";
+                echo "</tr>";
+            }
+            $result->free();
+          }//end if
+          else{
+            echo "Looks like no one bench press more than 200lbs";
+          }
+          echo "<tr><td>---------------------------</td><td>-----------------</td></td>";
+          if($result = challenge::tm_top3()){
+              echo "<tr><td><h5>Treadmill</h5></td><td><h5>TOP 3</h5><td><tr>";
+              echo "<tr><td></td><td>miles</td>";
+              while($row = $result->fetch_assoc()){
+                echo "<tr>";
+                echo "<td>" .$row["name"]  . "</td>";
+                echo "<td>" .$row["treadmill_mileage"] . "</td>";
+                echo "</tr>";
+            }
+            $result->free();
+          }//end if
+          else{
+            echo "Looks like no one bench press more than 200lbs";
+          }
        ?>
      </table>
-
+   </center>
   </body>
 </html>
