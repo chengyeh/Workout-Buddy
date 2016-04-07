@@ -3,7 +3,7 @@
  * Each User has a profile page based on their give information, the groups they have created, the groups they are a part of and other constants appearing on all parts of the websites. The $user variable is associated with the 
  * 
  */
-...
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -23,38 +23,6 @@ if(!$view_user){
 	redirect_to('profile.php');
 }
 ?>
-<html>
-	<head>
-		<title><?php echo $user->full_name()?></title>
-	</head>
-	<body>
-		<h1>Profile Page</h1>
-		<p><a href="profile.php">Profile</a>|<a href="logout.php">logout</a></p>
-		<h2>User Info</h2>
-		<?php 
-                    /**
-                        * Retrieve user details from database and display their name and ID
-                        */
-			echo "<p>User Name: ". $user->full_name() . "<br/>";
-			echo "<p>User Id: " . $user->id . "</p>";
-		?>
-		
-		<h2>User Groups</h2>
-		<?php 
-                    /**
-                    * Query Database for all the groups that the user is part of and displa them in the form of a table. Echo "No groups" if query cannot find any groups associated with the User.  
-                    * 
-                    */
-			$groups = $user->find_groups();
-			if(!empty($groups)){
-				echo "<table><tr><th>Name</th></tr>";
-					//List all the groups
-					foreach ($groups as $group){
-						echo  "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td></tr>";
-					}
-				echo "</table>";
-			}else{
-				echo  "No groups<br/>";
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -113,11 +81,12 @@ if(!$view_user){
               <ul class="dropdown-menu">
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a href="find_user.php">Find User</a></li>
+                <li><a href="message.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="view_challenges.php">View Challenge</a></li>
               </ul>
             </li>
           </ul>
@@ -136,8 +105,7 @@ if(!$view_user){
 
 	<h2>User Info</h2>
 	<?php 
-		echo "<p>User Name: ". $view_user->full_name() . "<br/>";
-		echo "<p>User Id: " . $view_user->id . "</p>";
+		echo "<p>Name: ". $view_user->full_name() . "<br/>";
 	?>
 	
 	<h2>User Groups</h2>
