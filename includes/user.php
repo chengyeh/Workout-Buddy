@@ -58,7 +58,7 @@ class User extends DatabaseObject {
     }
     
     public function find_groups(){
-    	$sql = "SELECT * FROM wb_group WHERE group_owner=".$this->id;
+    	$sql = "SELECT * FROM wb_group WHERE group_owner=".$this->id. " ORDER BY group_name ASC, group_status DESC";
     	$groups_object_array = Group::find_by_sql($sql);
     	return $groups_object_array;
     }

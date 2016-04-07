@@ -9,9 +9,6 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //select box in form
 $group_activity = Group::get_activity();
 
-echo "<pre>";
-print_r($group_activity);
-echo "</pre>";
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -116,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	
 		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Group Name</label>
-		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name="group_name" required autofocus>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Group Name" name="group_name" required autofocus>
 		</fieldset>
   		<fieldset class="form-group">
     		<label for="formGroupExampleInput2">
