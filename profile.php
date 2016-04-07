@@ -106,17 +106,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 	<h2>User Info</h2>
 	<?php
-		echo $user->full_name() . "<br/>";
+		echo "<p>Name: " . $user->full_name() . "<br/>";
+		echo "<p>Id: " . $user->id . "</p>";
 	?>
 
-	<h2>User Groups</h2>
+	<h2>Groups Owns</h2>
 	<p><a class="btn btn-default" href="add_group.php" role="button">Add Group</a></p>
 	<form action="#" method="post">
 	<?php
-		$groups = $user->find_groups();
-		if(!empty($groups)){
+		$groups_owned = $user->find_groups();
+		$groups_joined = $user->groups_joined();
+		if(!empty($groups_owned)){
 			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
-				foreach ($groups as $group){
+				//List all the groups this user owns
+				foreach ($groups_owned as $group){
 					echo "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td>";
 					echo "<td>{$group->group_status}</td>";
 					echo "<td style='text-align:center'><input type='checkbox' name='delete_group[]' value='" . $group->id . "'></td></tr>";
@@ -128,6 +131,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	?>
 	</form>
 	
+	<h2>Groups Joined</h2>
+	<?php
+		if(!empty($groups_joined))
+		{
+			echo "<table class='table'><tr><th>Name</th><th>Status</th></tr>";
+			foreach ($groups_joined as $group_member_row){
+				$same_group = false;
+				//Check if the joined group is the one this user owns
+				for($i = 0; $i < count($groups_owned); $i++)
+				{
+					if($group_member_row->group_id == $groups_owned[$i]->id)
+					{
+						$same_group = true;
+					}
+				}
+				//If it's not owned by this user, list its info
+				if($same_group == false)
+				{
+					$group_joined = Group::find_by_id($group_member_row->group_id);
+					echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
+					echo "<td>{$group_joined->group_status}</td>";
+				}
+			}
+			echo "</table>";
+		}
+	?>
 
   <p><a href="addChallenges.php">Add Challenge</a>|<a href="view_challenges.php">View Challenge</a><p>
 
