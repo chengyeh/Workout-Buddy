@@ -29,7 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $mess5->create();
         }
      }
-
+     else if(empty($_POST['user_id_array']))
+     {
+     	redirect_to("message_menu.php");
+     }
 
 }
 ?>
@@ -47,16 +50,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			foreach ($users as $user)
 			{
 				echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
-				echo $user->id;
-  						echo "<td>".  $user->full_name() ."</td></tr>";
+  				echo "<td>".  $user->full_name() ."</td></tr>";
 			}
 			echo "</table>";
 
 			echo "<input type='text' name='message'>";
+
 			echo "<input type='submit' value='Send Message' name='submit'></form>";
-		}else{
-			echo  "No users<br/>";
+
 		}
+		else
+		{
+
+		}
+
 	?>
 	</body>
 </html>
