@@ -21,7 +21,7 @@ class challenge extends DatabaseObject {
     public static function pu_top3(){
       global $database;
       $sql = "SELECT name, pull_ups FROM challenge ORDER BY pull_ups DESC LIMIT 3;";
-      $pu_top3 =  = $database->query($sql);
+      $pu_top3 = $database->query($sql);
       return $pu_top3;
     }
 
@@ -33,14 +33,7 @@ class challenge extends DatabaseObject {
       return $bp200;
     }
 
-/*
-    public function get_members(){
-    	global $database;
-    	$sql = "SELECT * FROM wb_group_members WHERE group_id=".$this->id;
-    	$group_member_array = $database->query($sql);
-    	return $database->fetch_array($group_member_array);
-    }
-*/
+
 }
 
 ?>
