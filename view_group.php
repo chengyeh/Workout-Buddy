@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <title><?php echo $group->group_name; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -105,11 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
               <ul class="dropdown-menu">
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a href="find_user.php">Find User</a></li>
+                <li><a href="message.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="view_challenges.php">View Challenge</a></li>
               </ul>
             </li>
           </ul>
@@ -131,25 +132,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         *
         */
     		echo "<p>Group Name: ". $group->group_name . "<br/>";
-			echo "<p>Group Id: " . $group->id . "</p>";
+			echo "<p>Group Activity: ". $group->group_activity . "<br/>";
 			echo "<p>Owner: ". $group_owner->full_name() . "<br/>";
     	?>
     	
     	<h2>Group Members</h2>
-    	<p><a class="btn btn-default" href="add_group_members.php?id={$group->id}" role="button">Add Members</a></p>
+    	<!-- <p><a class="btn btn-default" href="add_group_members.php?id=<?php echo $group->id; ?>" role="button">Add Members</a></p> -->
     	<?php 
 		/**
                 * Get all members of the group utilizin the get_members function from groupp. Restrict permissions to delete or add to owner only and display all users in a table along with the option to delete them if desired. If there are no members in the group, print no members.
                 */
 		$group_members = $group->get_members();
-			//Restrict only the group owner can edit the group members
+			//Restrict only the group owner can add or delete the group members
 			if($user->id == $group->group_owner)
 			{
+				echo "<p><a class='btn btn-default' href='add_group_members.php?id={$group->id}' role='button'>Add Members</a></p>";
 				if(($group_members->num_rows) > 0)
 				{
 					echo "<form action='#' method='post'>";
-					echo "<table class='table'><tr><th>Name</th><th class='text-center'>Kick</th></tr>";
-					//Display all the members from this group and checkbox to delete them
+					echo "<table class='table'><tr><th>Name</th><th class='text-center'>Remove</th></tr>";
+					//Display all the members from this group and check box to delete them
         			while($row = $group_members->fetch_assoc())
         			{
         				$user = User::find_by_id($row["member_id"]);
@@ -164,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 							echo "<td style='text-align:center'>Owner</td></tr>";
 						}	
         			}	
-                    echo "<tr><td></td><td class='text-center'><button type='submit' name ='kick'>Kick</button></td></tr></table></form>";	
+                    echo "<tr><td></td><td class='text-center'><button type='submit' class='btn btn-default' name ='remove'>Remove</button></td></tr></table></form>";	
 				}
 				else 
 				{

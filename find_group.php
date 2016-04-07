@@ -48,7 +48,7 @@ if(isset($search_string) && empty($message)){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <title>Find Group</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -95,11 +95,12 @@ if(isset($search_string) && empty($message)){
               <ul class="dropdown-menu">
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a href="find_user.php">Find User</a></li>
+                <li><a href="message.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="view_challenges.php">View Challenge</a></li>
               </ul>
             </li>
           </ul>
