@@ -7,6 +7,11 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
+//Create User object
+$user = User::find_by_id($session->user_id);
+$database->query("UPDATE `wb_messages` SET `read`=1 WHERE `receiver`=".$user->id);
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   $errors = array();
@@ -17,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         foreach($_POST['delete_message'] as $message_id)
         {
         	$value=1;
-            $database->query("UPDATE message_test SET del_receive = 1 WHERE id = ".$message_id);
+            $database->query("UPDATE wb_messages SET del_receive = 1 WHERE id = ".$message_id);
         }
     }
 }
@@ -40,14 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 
 	<?php
-			  	error_reporting(E_ALL);
+
+
+
+			error_reporting(E_ALL);
 			ini_set("display_errors", 1);
 
 			require_once('includes/initialize.php');
 			if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-			//Create User object
-			$user = User::find_by_id($session->user_id);
+
 
 			$message_array=$user->receive_messages();
 			$a=1;
@@ -59,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 
 				$t=User::find_by_id($message1['user']);
-				echo $message1['id'];
+
 				echo "<td>";
 				echo $a."<td>";
 				$a=$a+1;
@@ -71,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 				echo "<tr>";
 
 
-			
+
 			}
 			echo "</table>";
 			echo "<input type='submit' name ='submit' value='Submit'>";

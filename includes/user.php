@@ -73,7 +73,7 @@ class User extends DatabaseObject {
       {
     	global $database;
     	$a=0;
-    	$sql = "SELECT * FROM message_test WHERE user=".$this->id." AND del_sent=".$a;
+    	$sql = "SELECT * FROM wb_messages WHERE user=".$this->id." AND del_sent=".$a;
     	$group_message_array = $database->query($sql);
     	return $group_message_array;
       }
@@ -82,7 +82,7 @@ class User extends DatabaseObject {
       {
     	global $database;
     	$a=0;
-    	$sql = "SELECT * FROM message_test WHERE receiver=".$this->id." AND del_receive=".$a;
+    	$sql = "SELECT * FROM wb_messages WHERE receiver=".$this->id." AND del_receive=".$a;
     	$group_message_array = $database->query($sql);
     	return $group_message_array;
       }

@@ -22,16 +22,21 @@ if(!$view_user){
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
-  // Trim all the incoming data:
+  //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
-
-        // Add the message to the database:
-        $pm = new Message();
-        $pm->user = $trimmed['user_id'];
-        $pm->reciever = $view_user->id;
-        $pm->message = $trimmed['message'];
-
-        $pm->create();
+		
+	date_default_timezone_set('America/Chicago');
+    $dt = new DateTime();
+	$tz = new DateTimeZone('America/Chicago');
+	
+    //Add the message to the database:
+    $pm = new Message();
+    $pm->user = $trimmed['user_id'];
+    $pm->receiver = $view_user->id;
+    $pm->message = $trimmed['message'];
+	$pm->Date = $dt->format('m-d-Y');
+    $pm->Time = $dt->format('H:i:s');
+    $pm->create();
 }
 ?>
 
