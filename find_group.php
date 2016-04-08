@@ -29,13 +29,13 @@ if(isset($_GET['submit'])){
 
 if(isset($search_string) && empty($message)){
 	//Asemble sql statement
-// 	$sql = "SELECT * FROM wb_group ";
-// 	$sql .= "WHERE {$search_string} AND  group_status='Public' ";
-// 	$sql .= "ORDER BY group_name ASC ";
-	
 	$sql = "SELECT * FROM wb_group ";
-	$sql .= "WHERE {$search_string} AND group_status = 'Public' AND wb_group.id ";
- 	$sql .=	"NOT IN (SELECT wb_group_members.group_id FROM wb_group_members WHERE member_id={$_SESSION['user_id']})";
+	$sql .= "WHERE {$search_string} AND  group_status='Public' ";
+	$sql .= "ORDER BY group_name ASC ";
+	
+	// $sql = "SELECT * FROM wb_group ";
+	// $sql .= "WHERE {$search_string} AND group_status = 'Public' AND wb_group.id ";
+ 	// $sql .=	"NOT IN (SELECT wb_group_members.group_id FROM wb_group_members WHERE member_id={$_SESSION['user_id']})";
 	
     $groups = Group::find_by_sql($sql);
 }
@@ -149,7 +149,23 @@ if(isset($search_string) && empty($message)){
 				echo "<table class='table'>";
 		  		echo "<tr><th>Name</th><th>Discription</th><th></th></tr>";
 		  		foreach ($groups as $group){
-					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td><td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
+		  			$group_member_id_array = $group->get_member_id_array();
+					$ifJoin = false;
+					for($i = 0; $i < count($group_member_id_array); $i++)
+					{
+						if($session->user_id == $group_member_id_array[$i]['member_id'])
+						{
+							$ifJoin = true;
+						}
+					}
+					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td>";
+					if($ifJoin == false)
+					{
+						echo "<td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
+					}
+					else {
+						echo "<td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-warning' href='view_group.php?id={$group->id}' role='button'>Joined</a></td></tr>";
+					}					
 				}
 				echo "</table>";
 			}else{
