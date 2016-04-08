@@ -8,9 +8,5 @@ class Message extends DatabaseObject {
     public $user;
     public $reciever;
     public $message;
-
-
-
-
 }
 ?>
