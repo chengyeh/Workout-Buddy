@@ -1,5 +1,5 @@
 <?php
-/*!
+/**
  * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
  * 
  */
@@ -132,8 +132,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         *
         */
     		echo "<p>Group Name: ". $group->group_name . "<br/>";
-			echo "<p>Group Activity: ". $group->group_activity . "<br/>";
 			echo "<p>Owner: ". $group_owner->full_name() . "<br/>";
+			echo "<p>Activity: ". $group->group_activity . "<br/>";
+            echo "<p>Description: ". $group->group_discription . "<br/>";
     	?>
     	
     	<h2>Group Members</h2>

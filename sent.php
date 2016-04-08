@@ -15,11 +15,6 @@
 	<tr>
 
 	<?php
-	/**
-	 * Finds all messages sent by a specific user to other users.
-	 * Queries database and returns all messages sent in a table.
-	 * 
-	 */
 			  	error_reporting(E_ALL);
 			ini_set("display_errors", 1);
 

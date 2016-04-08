@@ -1,10 +1,5 @@
 <?php
-/**
-     * Get Rid of all zeros from date
-     *
-     * @param  input string of date
-     * @return time string without zeros
-     */
+
 function strip_zeros_from_date( $marked_string="" ) {
   // first remove the marked zeros
   $no_zeros = str_replace('*0', '', $marked_string);
@@ -12,12 +7,7 @@ function strip_zeros_from_date( $marked_string="" ) {
   $cleaned_string = str_replace('*', '', $no_zeros);
   return $cleaned_string;
 }
-/**
-     * Print a message from other classes
-     *
-     * @param  message in string form
-     * @return return error message or actual string
-     */
+
 function output_message($message="") {
   if (!empty($message)) { 
     return "<p class=\"alert alert-error\"><strong>{$message}</strong></p>";
@@ -25,11 +15,7 @@ function output_message($message="") {
     return "";
   }
 }
-/**
-     * Automatically load a class that should you want running on a page.
-     *
-     * @param  Name of class
-     */
+
 function __autoload($class_name){
     $class_name = strtolower($class_name);
     $path = LIB_PATH.DS."{$class_name}.php";
@@ -47,12 +33,7 @@ function redirect_to($location = NULL){
         exit;
     }
 }
-/**
-     * Store all performed actions into a log
-     *
-     * @param  action : the type of action taken
-	 * @param  message: the message associated with the action
-     */
+
 function log_action($action , $message){
     $logfile = SITE_ROOT.DS.'logs'.DS.'log.txt';
     $new = file_exists($logfile) ? false : true;
@@ -66,24 +47,12 @@ function log_action($action , $message){
         echo "Could not open the log file.";
     }
 }
-/**
-     * Convert Datetime from number into string
-     *
-     * @param  Datetime number
-     * @return Datetime as string
-     */
+
 function datetime_to_text($datetime=""){
     $unixdatetime = strtotime($datetime);
     return strftime("%B %d, %Y at %I:%M %p", $unixdatetime);
 }
 
-/**
-     * Create a thumbnail. Display format is jpeg
-     *
-     * @param  src: location of thumbnail
-	 * @param  dest: destination of wherethumbnail will be placed
-     * @param desired_width: size of thumbnail in pixels
-     */
 function make_thumb($src, $dest, $desired_width) {
     /* read the source image */
     $source_image = imagecreatefromjpeg($src);

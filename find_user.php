@@ -1,9 +1,4 @@
 <?php
-/**
- * Finds a user matching a users search request. The user can search for another user by their first or last name.
- * If neither value is defined by the user, an error message is shown. The search takes into consideration whether user provides either first or last name or neither.
- * A successful query returns the user.
- */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 

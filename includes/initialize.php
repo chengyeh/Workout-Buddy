@@ -3,7 +3,7 @@ defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 
 defined('SITE_ROOT') ? null :
 
-define('SITE_ROOT', DS.'home'.DS.'dfernand'.DS.'public_html'.DS.'eecs448'.DS.'EECS448_Project3');
+define('SITE_ROOT', DS.'home'.DS.'pdoddapa'.DS.'public_html'.DS.'EECS_448');
 
 
 defined('LIB_PATH') ? null :

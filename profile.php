@@ -1,9 +1,4 @@
 <?php
- /**
- * This class serves as the central starting point for the user to access all other classes for various functionality.
- * Based on the user choice, the page redirects the user to different classes.
- * 
- */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -137,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	</form>
 
 	<h2>Groups Joined</h2>
+	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
 	<?php
 		if(!empty($groups_joined))
 		{

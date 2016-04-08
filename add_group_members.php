@@ -1,9 +1,4 @@
 <?php
-/**
- * Creates a new group_member object associated with a pre-existing group.
- * If successfully created, the group object is stored in the wb_group_member and the user is redirected the view_group.php page.
- *  The message object contains the following values: user, reciever, message.
- */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 

@@ -1,10 +1,4 @@
 <?php
-/**
- * Creates a new challenge object and stores it in the database. 
- * The database object takes in several values for various exercises.
- * The message object contains the following values: who, name, benchpress, pull_ups, treadmill_mileage.
- * After successful storage of challenege object, user is redirected to profile.
- */
 //error checking
 error_reporting(E_ALL);
 ini_set("display_errors", 1);

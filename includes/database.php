@@ -3,13 +3,17 @@ require_once(LIB_PATH.DS."config.php");
 
 class MySQLDatabase{
     
-    private $connection;/*!< A variable referencing the connection*/
-    public $last_query;/*!< Variable tracking last query*/
-    private $magic_quotes_active;/*!< Variable keeping track of awehther magic_qoutes is active*/
-    private $real_escape_string_exists;/*!< Variable to keep track of wether real_escape_string exists or not*/
+    private $connection;
+    public $last_query;
+    private $magic_quotes_active;
+    private $real_escape_string_exists;
     
     /**
-	 * Default constructor which connects to database 
+	 * Default constructor connects to database 
+	 *
+	 * @param
+	 * @param
+	 * @return
 	 */
     function __construct(){
         $this->open_connection();
@@ -18,7 +22,11 @@ class MySQLDatabase{
     }
 
    /**
-	 * Opens the connection to the database. 
+	 * This method opens the connection to the database. 
+	 *
+	 * @param
+	 * @param
+	 * @return
 	 */
     public function open_connection(){
         $this->connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS);
@@ -33,7 +41,11 @@ class MySQLDatabase{
     }
     
      /**
-	 * Close the connection to the database. 
+	 * This method close the connection to the database. 
+	 *
+	 * @param
+	 * @param
+	 * @return
 	 */
     public function close_connection(){
         if (isset($this->connection)){
@@ -43,7 +55,7 @@ class MySQLDatabase{
     }
     
      /**
-	 * Query the database with given sql string.
+	 * This method queries database with given sql string.
 	 *
 	 * @param SQL statement as string
 	 * @return result set
@@ -56,10 +68,10 @@ class MySQLDatabase{
     }
     
      /**
-	 * Escapes special characters from the string.
+	 * This method escapes special characters from the string.
 	 *
-	 * @param string value
-	 * @return string of all special characters escaped
+	 * @param string
+	 * @return string all special characters escaped
 	 */
     public function escape_value($value){
         if($this->real_escape_string_exists){
@@ -74,21 +86,21 @@ class MySQLDatabase{
     //database-neutral methods.
     
     /**
-	 * Create an array that corresponds to the fetched row or NULL if there 
-	 * are no more rows for the result set represented by the result parameter.
+	 * Returns an array that corresponds to the fetched row or NULL if there 
+	 *are no more rows for the result set represented by the result parameter.
 	 *
 	 * @param result set
-	 * @return associated array
+	 * @return returns associated array
 	 */
     public function fetch_array($result_set){
         return mysqli_fetch_array($result_set);
     }
     
      /**
-	 * Obtain the number of rows in the result set.
+	 * Returns the number of rows in the result set.
 	 *
 	 * @param  Unbuffered result sets 
-	 * @return number of rows in the result set.
+	 * @return Returns number of rows in the result set.
 	 */
 
     public function num_rows($result_set){
@@ -96,30 +108,30 @@ class MySQLDatabase{
     }
     
      /**
-	 * Query database for last id of insert into a database.
+	 * Returns the last id of insert into that database.
 	 *
-	 * 
-	 * @return Results of database Query
+	 * @param
+	 * @return
 	 */
     public function insert_id(){
         return mysqli_insert_id($this->connection);
     }
     
      /**
-	 * Query the database number of rows affected by last sql statement.
+	 * Returns the number of rows affected by last sql statement.
 	 *
-	 * 
-	 * @return Results of database query  
+	 * @param
+	 * @return
 	 */
     public function affected_rows(){
         return mysqli_affected_rows($this->connection);
     }
     
      /**
-	 * Confirms whether databse was successully queried.
+	 * Confirms wheather query was a success.
 	 *
 	 * @param
-	 * @return Output message.
+	 * @return
 	 */
     private function confirm_query($result){
         if(!$result){
@@ -130,7 +142,7 @@ class MySQLDatabase{
     }
 }//end of MySQLDatabse class.
 
-/*!< A global database variable reference the database in use.*/
+//Create instance of the Database class.
 $database = new MySQLDatabase();
 
 ?>

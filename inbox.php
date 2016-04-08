@@ -15,9 +15,6 @@
 	<tr>
 
 	<?php
-	/**
-	 * Displays all messages sent between from user to another. If no messages exist between users, a message indicating this is displayed.
-	 */
 			  	error_reporting(E_ALL);
 			ini_set("display_errors", 1);
 

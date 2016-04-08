@@ -1,9 +1,4 @@
 <?php
-/**
- * Creates a message object at the request of a user.
- * The message object contains the following values: user, reciever, message.
- * 
- */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 

@@ -1,9 +1,4 @@
-<?php
-/**
- * Creates a new group_member object in a group where the user is not the owner. Allows an user to join a pre-existing group.
- * The add_public_group_member object contains the following values: user, group_id, member_id.
- * If successfully created, the user is listed as a group_member of the group and redirected to the view_group.php page.
- */
+<?php 
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 

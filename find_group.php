@@ -1,8 +1,4 @@
 <?php
-/**
- * Finds the group matching a users search request. The user can search in terms of what exercise the group focuses on.
- * A successful query returns an array contain all the results of the query. The groups in the array are displayed in a table.
- */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -33,11 +29,15 @@ if(isset($_GET['submit'])){
 
 if(isset($search_string) && empty($message)){
 	//Asemble sql statement
-	$sql = "SELECT * FROM wb_group ";
-	$sql .= "WHERE {$search_string} AND  group_status='Public' ";
-	$sql .= "ORDER BY group_name ASC ";
+// 	$sql = "SELECT * FROM wb_group ";
+// 	$sql .= "WHERE {$search_string} AND  group_status='Public' ";
+// 	$sql .= "ORDER BY group_name ASC ";
 	
-	$groups = Group::find_by_sql($sql);
+	$sql = "SELECT * FROM wb_group ";
+	$sql .= "WHERE {$search_string} AND group_status = 'Public' AND wb_group.id ";
+ 	$sql .=	"NOT IN (SELECT wb_group_members.group_id FROM wb_group_members WHERE member_id={$_SESSION['user_id']})";
+	
+    $groups = Group::find_by_sql($sql);
 }
 ?>
 
@@ -149,7 +149,7 @@ if(isset($search_string) && empty($message)){
 				echo "<table class='table'>";
 		  		echo "<tr><th>Name</th><th>Discription</th><th></th></tr>";
 		  		foreach ($groups as $group){
-					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td><td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' target='_blank' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
+					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td><td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
 				}
 				echo "</table>";
 			}else{

@@ -1,9 +1,4 @@
 <?php
-/**
- * Creates a new group object with various parameter of the users choosing and the user is set as the owner of the group.
- *  The group object contains the following values: group_owner, group_name, group_status, group_discription, group_activity
- * If successfully created, the group object is stored in the wb_group and the user is redirected the view_group.php page.
- */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
