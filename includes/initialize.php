@@ -25,6 +25,7 @@ require_once(LIB_PATH.DS."group.php");
 require_once(LIB_PATH.DS."group_members.php");
 require_once(LIB_PATH.DS."message.php");
 require_once(LIB_PATH.DS."challenge.php");
+require_once(LIB_PATH.DS."strenghGrowthAnalysis.php");
 //require_once(LIB_PATH.DS."photograph.php");
 //require_once(LIB_PATH.DS."comment.php");
 //require_once(LIB_PATH.DS."image_resize.php");
