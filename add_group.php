@@ -1,4 +1,9 @@
 <?php
+/**
+ * Creates a new group object with various parameter of the users choosing and the user is set as the owner of the group.
+ *  The group object contains the following values: group_owner, group_name, group_status, group_discription, group_activity
+ * If successfully created, the group object is stored in the wb_group and the user is redirected the view_group.php page.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -94,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="find_user.php">Find User</a></li>
-                <li><a href="message.php">Messages</a></li>
+                <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>

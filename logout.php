@@ -1,4 +1,7 @@
 <?php
+/**
+ * Logs a user out of an existing session with the database. The user is then redirected to login.php.
+ */
 ob_start();
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }

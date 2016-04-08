@@ -1,4 +1,9 @@
 <?php
+/**
+ * Finds a user matching a users search request. The user can search for another user by their first or last name.
+ * If neither value is defined by the user, an error message is shown. The search takes into consideration whether user provides either first or last name or neither.
+ * A successful query returns the user.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -96,7 +101,7 @@ if(isset($search_string) && empty($message)){
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="find_user.php">Find User</a></li>
-                <li><a href="message.php">Messages</a></li>
+                <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>

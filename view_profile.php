@@ -10,6 +10,9 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
+//Create User object for current session user
+$user = User::find_by_id($session->user_id);
+
 //If the ID field is empty return the user to profile page
 if (empty($_GET['id'])){
 	$session->message("No group ID was provided.");
@@ -82,7 +85,7 @@ if(!$view_user){
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="find_user.php">Find User</a></li>
-                <li><a href="message.php">Messages</a></li>
+                <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
@@ -106,6 +109,10 @@ if(!$view_user){
 	<h2>User Info</h2>
 	<?php 
 		echo "<p>Name: ". $view_user->full_name() . "<br/>";
+		if($view_user->id != $user->id)
+		{
+			echo "<p><a class='btn btn-default' href='personal_msg.php?id={$view_user->id}' role='button'>Send Message</a></p>";
+		}
 	?>
 	
 	<h2>User Groups</h2>

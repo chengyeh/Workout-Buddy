@@ -1,4 +1,7 @@
 <?php
+/**
+ * Obtains users Username and Password. The database is queried and a hashed password is compared to in order ensure correct credentials.
+ */
 require_once('includes/initialize.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

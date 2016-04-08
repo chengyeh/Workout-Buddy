@@ -1,24 +1,29 @@
 <?php
 require_once(LIB_PATH.DS."database.php");
-
+/**
+     * Database object containing information of all the various attributes(table column headers, presence of attribute etc.) of the database.
+     *
+     * @param  
+     * @return All rows from table are returned
+     */
 class DatabaseObject {
     protected static $table_name;
     
     /**
-     * Returns all the rows from a table as objects
+     * Query all the rows from a table
      *
      * @param  
-     * @return 
+     * @return All rows from table are returned
      */
     public static function find_all(){
         return static::find_by_sql("SELECT * FROM ".static::$table_name);
     }
     
     /**
-     *	Returns a row from a table as object
+     *	Query table to acquire user by id and store results in an array
      *
-     * @param
-     * @return
+     * @param int $ID to keep track of user
+     * @return Array containing queried objects
      */
     public static function find_by_id($id=0){
         global $database;
@@ -28,10 +33,10 @@ class DatabaseObject {
     }
     
     /**
-     * Returns sql from a table as objects
+     * Query SQL from a table as objects and store in an array
      *
-     * @param
-     * @return
+     * @param Empty String
+     * @return Array containing queried objects
      */
     public static function find_by_sql($sql=""){
         global $database;
@@ -44,10 +49,10 @@ class DatabaseObject {
     }
 
     /**
-     * Returns the count of rows from the table
+     * Query the count of rows from the table
      *
      * @param
-     * @return
+     * @return array containing number of rows
      */
     public static function count_all(){
         global $database;
@@ -58,10 +63,10 @@ class DatabaseObject {
     }
     
     /**
-     * Returns the count of rows from the table with condition
+     * Count the number of times a certain value appears in a table and store it in an array
      *
-     * @param
-     * @return
+     *
+     * @return array containing row size
      */
     public static function count_all_where($condition){
         global $database;
@@ -73,10 +78,10 @@ class DatabaseObject {
     }
     
     /**
-     * Return a row of data from the table as object
+     * Query database for a certain object
      *
-     * @param
-     * @return
+     * @param The value being searched for in table
+     * @return A row of data from the table as object
      */
     private static function instantiate($record){
         $class_name = get_called_class();
@@ -90,10 +95,10 @@ class DatabaseObject {
     }
     
     /**
-     * 
+     * Checks whether the database contains a certain attribute(column name)
      *
-     * @param
-     * @return
+     * @param Attribute name
+     * @return True or false based on whether attribute is present.
      */
     private function has_attribute($attribute){
         $object_vars = $this->attributes();
@@ -101,10 +106,10 @@ class DatabaseObject {
     }
     
     /**
-     * Return object's attributes as an associative array 
+     * Query database for object's attributes and store as an array.
      *
      * @param
-     * @return
+     * @return Array with attributes 
      */
     protected function attributes(){
         $attributes = array();
@@ -117,7 +122,7 @@ class DatabaseObject {
     }
     
     /**
-     *
+     * 
      *
      * @param
      * @return
@@ -134,8 +139,6 @@ class DatabaseObject {
     /**
      * Save a object to the database table
      *
-     * @param
-     * @return
      */
     public function save(){
         return isset($this->id) ? $this->update() : $this->create();
@@ -143,9 +146,7 @@ class DatabaseObject {
     
     /**
      * Insert a object's data into the appropiate table
-     *
-     * @param
-     * @return
+     * @return true if succesully inserted into table, else false.
      */
     public function create(){
         global $database;
@@ -167,7 +168,7 @@ class DatabaseObject {
      * Objects data is updated to appropiate table
      *
      * @param
-     * @return
+     * @return return true or false if a row was updated
      */
     public function update(){
         global $database;
@@ -187,7 +188,7 @@ class DatabaseObject {
      * Delete object's data from the table.
      *
      * @param
-     * @return
+     * @return True of false based on whether object was deleted.
      */
     public function delete(){
         global $database;

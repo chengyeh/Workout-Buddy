@@ -1,4 +1,7 @@
 <?php
+/**
+ * Validates a user_email with an emailed code pending successful signup. After validation, user is able to use all features of website.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
