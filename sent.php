@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         foreach($_POST['delete_message'] as $message_id)
         {
         	$value=1;
-            $database->query("UPDATE message_test SET del_sent = 1 WHERE id = ".$message_id);
+            $database->query("UPDATE wb_messages SET del_sent = 1 WHERE id = ".$message_id);
         }
     }
 }
