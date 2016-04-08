@@ -3,7 +3,7 @@ require_once(LIB_PATH.DS."database.php");
 
 class strenghGrowthAnalysis extends DatabaseObject {
     protected static $table_name = "strenghGrowthAnalysis";
-    protected static $db_fields = array('id', 'who',
+    protected static $db_fields = array('id', 'who', 'bench_press_imp', 'bench_press_previous', 'pull_up_imp', 'pull_up_previous', 'treadmill_imp', 'treadmill_previous');
 
     public $id;
     public $who;
@@ -20,13 +20,6 @@ class strenghGrowthAnalysis extends DatabaseObject {
     public $treadmill_imp = 0.0;
     public $treadmill_previous = 0.0;
 
-
-    public static function check_if_user_has_record(){
-      global $database;
-      $sql = "SELECT * FROM strenghGrowthAnalysis WHERE who LIKE '". $trimmed['user_id'] . "';";
-      $check = $database->query($sql);
-      return $check;
-    }
 }
 
 ?>
