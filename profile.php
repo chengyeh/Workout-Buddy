@@ -92,9 +92,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
               </ul>
             </li>
           </ul>
-
+			
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
+            <li><span ><a href="inbox.php">Inbox </a>&nbsp
+            
+            <?php 
+            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'=0 AND receiver=".$user->id);
+            	$number_messages = $database->num_rows($result_set);
+            	echo "<span class='badge'>{$number_messages}</span>";
+            ?>
+            
+            &nbsp &nbsp &nbsp &nbsp<span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
+   			
         </div><!--/.nav-collapse -->
       </div>
 
@@ -158,11 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			echo "</table>";
 		}
 	?>
-
-  <p><a href="addChallenges.php">Add Challenge</a>|<a href="view_challenges.php">View Challenge</a><p>
-
     </div> <!-- /container -->
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -172,8 +177,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
-
-
-
 	</body>
 </html>
