@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="find_user.php">Find User</a></li>
-                <li><a href="message_menu.php">Messages</a></li>
+                <li><a href="message_menu.php">Messaging</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li><span ><a href="inbox.php">Inbox </a>&nbsp
             
             <?php 
-            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'=0 AND receiver=".$user->id);
+            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
             	$number_messages = $database->num_rows($result_set);
             	echo "<span class='badge'>{$number_messages}</span>";
             ?>
