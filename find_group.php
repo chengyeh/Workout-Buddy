@@ -149,7 +149,7 @@ if(isset($search_string) && empty($message)){
 				echo "<table class='table'>";
 		  		echo "<tr><th>Name</th><th>Discription</th><th></th></tr>";
 		  		foreach ($groups as $group){
-					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td><td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' target='_blank' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
+					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td><td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
 				}
 				echo "</table>";
 			}else{
