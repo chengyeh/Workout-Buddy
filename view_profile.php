@@ -1,7 +1,7 @@
 <?php
 /**
- * Each User has a profile page based on their give information, the groups they have created, the groups they are a part of and other constants appearing on all parts of the websites. The $user variable is associated with the 
- * 
+ * Each User has a profile page based on their give information, the groups they have created, the groups they are a part of and other constants appearing on all parts of the websites. The $user variable is associated with the
+ *
  */
 
 error_reporting(E_ALL);
@@ -93,12 +93,12 @@ if(!$view_user){
               </ul>
             </li>
           </ul>
-          
+
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
         </div><!--/.nav-collapse -->
       </div>
-      
+
     </nav>
 
     <div class="container">
@@ -107,16 +107,16 @@ if(!$view_user){
     <h1>Profile Page</h1>
 
 	<h2>User Info</h2>
-	<?php 
+	<?php
 		echo "<p>Name: ". $view_user->full_name() . "<br/>";
 		if($view_user->id != $user->id)
 		{
 			echo "<p><a class='btn btn-default' href='personal_msg.php?id={$view_user->id}' role='button'>Send Message</a></p>";
 		}
 	?>
-	
+
 	<h2>User Groups</h2>
-	<?php 
+	<?php
 		//Find all the groups from this user and add into array
 		$groups_joined = $view_user->groups_joined();
 		if(!empty($groups_joined))
@@ -129,7 +129,7 @@ if(!$view_user){
 				echo "<td>{$group_joined->group_status}</td>";
 			}
 			echo "</table>";
-			
+
 		}else{
 			echo "No groups<br/>";
 		}
