@@ -132,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	</form>
 
 	<h2>Groups Joined</h2>
+	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
 	<?php
 		if(!empty($groups_joined))
 		{

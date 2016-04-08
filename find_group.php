@@ -29,11 +29,15 @@ if(isset($_GET['submit'])){
 
 if(isset($search_string) && empty($message)){
 	//Asemble sql statement
-	$sql = "SELECT * FROM wb_group ";
-	$sql .= "WHERE {$search_string} AND  group_status='Public' ";
-	$sql .= "ORDER BY group_name ASC ";
+// 	$sql = "SELECT * FROM wb_group ";
+// 	$sql .= "WHERE {$search_string} AND  group_status='Public' ";
+// 	$sql .= "ORDER BY group_name ASC ";
 	
-	$groups = Group::find_by_sql($sql);
+	$sql = "SELECT * FROM wb_group ";
+	$sql .= "WHERE {$search_string} AND group_status = 'Public' AND wb_group.id ";
+ 	$sql .=	"NOT IN (SELECT wb_group_members.group_id FROM wb_group_members WHERE member_id={$_SESSION['user_id']})";
+	
+    $groups = Group::find_by_sql($sql);
 }
 ?>
 
