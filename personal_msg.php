@@ -18,6 +18,22 @@ if(!$view_user){
 	redirect_to('profile.php');
 }
 ?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+  $errors = array();
+
+  // Trim all the incoming data:
+    $trimmed = array_map('trim', $_POST);
+
+        // Add the message to the database:
+        $pm = new Message();
+        $pm->user = $trimmed['user_id'];
+        $pm->reciever = $view_user->id;
+        $pm->message = $trimmed['message'];
+
+        $pm->create();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +46,7 @@ if(!$view_user){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Add Group</title>
+    <title>Send Message to <?php echo $view_user->full_name(); ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -102,12 +118,12 @@ if(!$view_user){
 		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
 	
 		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Reciever</label>
-		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="<?php echo $view_user->full_name(); ?>" name="group_name" disabled autofocus>
+		   <label for="formGroupExampleInput">Recipient</label>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="<?php echo $view_user->full_name(); ?>" name="recipient" disabled autofocus>
 		</fieldset>
   		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Message</label>
-		   <textarea name="group_discription" class="form-control" id="formGroupExampleInput" placeholder="Message"rows="4" cols="50" required></textarea>
+		   <textarea name="message" class="form-control" id="formGroupExampleInput" placeholder="Message"rows="4" cols="50" required></textarea>
 		</fieldset>
 		<button type="submit" name="submit" class="btn btn-default">Send</button>
 	</form>
