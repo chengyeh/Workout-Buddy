@@ -10,7 +10,7 @@
 
 	<a href="sent.php">Sent</a>
     <br>
-    <a href="message.php">Send Message</a>
+    <a href="message_send.php">Send Message</a>
 
 
   </body>

@@ -17,15 +17,23 @@ $user = User::find_by_id($session->user_id);
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
+
+
 	if(!empty($_POST['user_id_array']))
     {
         foreach($_POST['user_id_array'] as $user_id)
         {
+        	date_default_timezone_set('America/Chicago');
+        	$dt = new DateTime();
+			$tz = new DateTimeZone('America/Chicago');
+			$dt->setTimezone($tz);
             // Add the group member to the database:
             $mess5 = new Message();
             $mess5->user = $user->id;
-            $mess5->reciever = $user_id;
+            $mess5->receiver = $user_id;
          	 $mess5->message = $_POST['message'];
+         	 $mess5->Date = $dt->format('m-d-Y');
+         	 $mess5->Time = $dt->format('H:i:s');
             $mess5->create();
         }
      }
