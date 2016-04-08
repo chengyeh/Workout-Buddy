@@ -69,10 +69,11 @@ class User extends DatabaseObject {
     	return $group_members_object_array;
     }
 
-    public function get_messages()
+      public function get_messages()
       {
     	global $database;
-    	$sql = "SELECT * FROM wb_messages WHERE user=".$this->id;
+    	$a=0;
+    	$sql = "SELECT * FROM message_test WHERE user=".$this->id." AND del_sent=".$a;
     	$group_message_array = $database->query($sql);
     	return $group_message_array;
       }
@@ -80,7 +81,8 @@ class User extends DatabaseObject {
       public function receive_messages()
       {
     	global $database;
-    	$sql = "SELECT * FROM wb_messages WHERE reciever=".$this->id;
+    	$a=0;
+    	$sql = "SELECT * FROM message_test WHERE receiver=".$this->id." AND del_receive=".$a;
     	$group_message_array = $database->query($sql);
     	return $group_message_array;
       }

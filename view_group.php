@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="find_user.php">Find User</a></li>
-                <li><a href="message.php">Messages</a></li>
+                <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
@@ -132,17 +132,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         *
         */
     		echo "<p>Group Name: ". $group->group_name . "<br/>";
-			echo "<p>Group Activity: ". $group->group_activity . "<br/>";
 			echo "<p>Owner: ". $group_owner->full_name() . "<br/>";
+			echo "<p>Status: ". $group->group_status . "<br/>";
+			echo "<p>Activity: ". $group->group_activity . "<br/>";
+            echo "<p>Description: ". $group->group_discription . "<br/>";
     	?>
     	
     	<h2>Group Members</h2>
-    	<!-- <p><a class="btn btn-default" href="add_group_members.php?id=<?php echo $group->id; ?>" role="button">Add Members</a></p> -->
     	<?php 
 		/**
-                * Get all members of the group utilizin the get_members function from groupp. Restrict permissions to delete or add to owner only and display all users in a table along with the option to delete them if desired. If there are no members in the group, print no members.
+                * Get all members of the group utilizin the get_members function from group. Restrict permissions to delete or add to owner only and display all users in a table along with the option to delete them if desired. If there are no members in the group, print no members.
                 */
-		$group_members = $group->get_members();
+			$group_members = $group->get_members();
 			//Restrict only the group owner can add or delete the group members
 			if($user->id == $group->group_owner)
 			{
@@ -151,12 +152,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				{
 					echo "<form action='#' method='post'>";
 					echo "<table class='table'><tr><th>Name</th><th class='text-center'>Remove</th></tr>";
-					//Display all the members from this group and check box to delete them
+					//List all the members from this group
         			while($row = $group_members->fetch_assoc())
         			{
         				$user = User::find_by_id($row["member_id"]);
 
         				echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td>";
+						//Display check box to delete the group members
 						if($row["member_id"] != $session->user_id)
 						{
 							echo "<td style='text-align:center'><input type='checkbox' name='delete_group_member[]' value='" . $row["member_id"] . "'></td></tr>";
@@ -176,9 +178,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			}
 			else
 			{
+				//Get all group members id
+				$group_member_id_array = $group->get_member_id_array();
+				//If it's a public group, show join or leave button
+				if($group->group_status == "Public")
+				{
+					$ifJoin = false;
+					if(!empty($group_member_id_array))
+					{
+						for($i = 0; $i < count($group_member_id_array); $i++)
+						{
+						 	if($user->id == $group_member_id_array[$i]['member_id'])
+							{
+								$ifJoin = true;
+							}
+						}
+					}
+					
+					if($ifJoin == false)
+					{
+						echo "<p><a class='btn btn-success' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></p>";
+					}
+					else 
+					{
+						echo "<p><a class='btn btn-danger' href='leave_group.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Leave</a></p>";
+					}				
+				}
+				elseif($group->group_status == "Private")
+				{
+					//If it's a private group, show leave button only when the user was added to the group
+					$ifJoin = false;
+					if(!empty($group_member_id_array))
+					{
+						for($i = 0; $i < count($group_member_id_array); $i++)
+						{
+						 	if($user->id == $group_member_id_array[$i]['member_id'])
+							{
+								$ifJoin = true;
+							}
+						}
+					}
+					
+					if($ifJoin == true)
+					{
+						echo "<p><a class='btn btn-danger' href='leave_group.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Leave</a></p>";
+					}
+				}
+				
 				if(($group_members->num_rows) > 0)
 				{
-					//Basic info of the group
+					//List all the members from this group
 					echo "<table class='table'><tr><th>Name</th></tr>";
         			while($row = $group_members->fetch_assoc())
         			{

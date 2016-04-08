@@ -1,0 +1,27 @@
+var class_p_o_p3 =
+[
+    [ "authorise", "class_p_o_p3.html#aa19e807272af0a5a99d51f4fb5cb5ebc", null ],
+    [ "catchWarning", "class_p_o_p3.html#a9a1c6d7d5abe85e004d8546e30933d94", null ],
+    [ "checkResponse", "class_p_o_p3.html#a04047b99bcd87ed0d2222bbf2116ff79", null ],
+    [ "connect", "class_p_o_p3.html#aae9031598164fde5dd6d27bf9a35b813", null ],
+    [ "disconnect", "class_p_o_p3.html#abe175fcf658475bc56e9d6fa02bc88ec", null ],
+    [ "getErrors", "class_p_o_p3.html#a6e548ebf2656742bfd19939ead923ed2", null ],
+    [ "getResponse", "class_p_o_p3.html#a036e1e5d5d4f9b5b0dd72bf9a2b8295d", null ],
+    [ "login", "class_p_o_p3.html#a6a62cec18394c970ae4f0ad5cd694ab1", null ],
+    [ "sendString", "class_p_o_p3.html#a517133fc963d79977f1eae330e14e0d1", null ],
+    [ "setError", "class_p_o_p3.html#a0bc8cac7e04a83c9ca87a99690ef1194", null ],
+    [ "$connected", "class_p_o_p3.html#adb9756d4524181e191069eaa76afb6cf", null ],
+    [ "$CRLF", "class_p_o_p3.html#a75538b15bafd1ec1eaaa6ea0bbfa642a", null ],
+    [ "$do_debug", "class_p_o_p3.html#a09ca59ee83fba6c8137646a13f1664d1", null ],
+    [ "$errors", "class_p_o_p3.html#ab24faf4aa647cdcee494fc48524ad4ff", null ],
+    [ "$host", "class_p_o_p3.html#a711797613cb863ca0756df789c396bf2", null ],
+    [ "$password", "class_p_o_p3.html#a607686ef9f99ea7c42f4f3dd3dbb2b0d", null ],
+    [ "$POP3_PORT", "class_p_o_p3.html#a1b5e612c53a85355ca0a5ef5121becfb", null ],
+    [ "$POP3_TIMEOUT", "class_p_o_p3.html#a5a68cb992276c956e16214f08e62ce3a", null ],
+    [ "$pop_conn", "class_p_o_p3.html#ae846263e987b8fece9591cc0c2566b50", null ],
+    [ "$port", "class_p_o_p3.html#aa0787efab4b22e8a212882f3409d4c77", null ],
+    [ "$tval", "class_p_o_p3.html#a19650abd43de047c5f64c5a1a84e4533", null ],
+    [ "$username", "class_p_o_p3.html#a0eb82aa5f81cf845de4b36cd653c42cf", null ],
+    [ "$Version", "class_p_o_p3.html#a8a43e1c8b245951155d04b279276af95", null ],
+    [ "CRLF", "class_p_o_p3.html#aa8bdd4d85e1ba0db8c09f92688c27ca6", null ]
+];

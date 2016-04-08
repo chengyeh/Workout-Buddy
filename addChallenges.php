@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $challenge->bench_press = $trimmed['challenge_BP_lbs'];
   $challenge->pull_ups = $trimmed['challenge_PU_num'];
   $challenge->treadmill_mileage = $trimmed['challenge_TMM'];
+
   $challenge->create();
 
 
