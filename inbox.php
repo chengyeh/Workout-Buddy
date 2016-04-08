@@ -1,3 +1,4 @@
+
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -99,50 +100,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
     <!-- Main component for a primary marketing message or call to action -->
     <h2>Inbox</h2>
-  	<table class='table'>
-		<tr>
-			<th>No.</th>
-			<th>From</th>
-			<th>Message</th>
-			<th>Time</th>
-			<th>Date</th>
-			<th class='text-center'>Delete</th>
-		</tr>
 
-		<?php
+	<?php
 		$message_array=$user->receive_messages();
 		$a=1;
 
 		echo "<form action='#' method='POST'>";
-		echo "<tr>";
-		while($message1 = $message_array->fetch_assoc())
+		if(($message_array->num_rows) > 0)
 		{
+			echo "<table class='table'><tr><th>No.</th><th>From</th><th>Message</th><th>Time</th><th>Date</th><th class='text-center'>Delete</th></tr>";
+			while($message1 = $message_array->fetch_assoc())
+			{
+				$t=User::find_by_id($message1['user']);
 
-
-			$t=User::find_by_id($message1['user']);
-
-			echo "<td>" . $a ."</td>";
-			$a=$a+1;
-			echo "<td>" . $t->full_name()."</td>";
-			echo "<td>" . $message1['message'] . "</td>";
-			echo "<td>".$message1['Time'] . "</td>";
-			echo "<td>".$message1['Date'] . "</td>";
-			echo "<td class='text-center'>"."<input type='checkbox' name='delete_message[]' value='".$message1["id"]."'>";
-			echo "</tr>";
-
-
-
+				echo "<tr>";
+				echo "<td>" . $a ."</td>";
+				$a=$a+1;
+				echo "<td>" . $t->full_name()."</td>";
+				echo "<td>" . $message1['message'] . "</td>";
+				echo "<td>" . $message1['Time'] . "</td>";
+				echo "<td>" . $message1['Date'] . "</td>";
+				echo "<td class='text-center'><input type='checkbox' name='delete_message[]' value='" . $message1["id"] . "'></td>";
+				echo "</tr>";
+			}
+			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-default' name ='submit' value='Submit'></td></tr>";
+			echo "</table>";
 		}
-
-		echo "<td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-default' name ='submit' value='Submit'></td>";
-		echo "</table>";
 		echo "</form>";
+
 		if($a==1)
 		{
-			echo "<tr>"."<td>"."No Messages";
-
+			echo "<p>" . "No Messages" . "</p>";
 		}
-		?>
+	?>
+
     </div> <!-- /container -->
 
 
