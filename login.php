@@ -1,6 +1,8 @@
 <?php
 require_once('includes/initialize.php');
 
+$error_message;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 	// Validate the email address:
@@ -8,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$e = $database->escape_value($_POST['email']);
 	} else {
 		$e = FALSE;
-		echo '<p class="alert alert-error">You forgot to enter your email address!</p>';
+		$error_message = "You forgot to enter your email address!";
 	}
 	
 	// Validate the password:
@@ -16,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$p = $database->escape_value($_POST['password']);
 	} else {
 		$p = FALSE;
-		echo '<p class="alert alert-error">You forgot to enter your password!</p>';
+		$error_message = "You forgot to enter your password!";
 	}
 	
 	if ($e && $p) { // If everything's OK.
@@ -33,11 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			redirect_to("profile.php");
 				
 		} else { // No match was made.
-			echo '<p class="alert alert-error">Either the email address and password entered do not match those on file or you have not yet activated your account.</p>';
+			$error_message = "Either the email address and password entered do not match those on file or you have not yet activated your account.";
 		}
 		
 	} else { // If everything wasn't OK.
-		echo '<p class="alert alert-error">Please try again.</p>';
+		$error_message = "Please try again.";
 	}
 	
 } // End of SUBMIT conditional.
@@ -78,6 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <body>
 
     <div class="container">
+    <?php 
+		if(isset($error_message)){
+			echo "<div class='alert alert-danger' role='alert'>".$error_message."</div>";
+		}
+	 ?>
+    
 	  <a href="index.html"><img alt="workout buddy logo" src="images/Workout_Buddy_Logo.png" class="center-block"></a>
       <form class="form-signin" action="login.php" method="post" enctype="multipart/form-data">
         <h2 class="form-signin-heading">Please Sign In</h2>
