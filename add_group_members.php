@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Add Members</title>
+    <title>Workout Buddy: Add Members</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">

@@ -20,7 +20,7 @@ $user = User::find_by_id($session->user_id);
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Messages</title>
+    <title>Workout Buddy: Messages</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -87,17 +87,15 @@ $user = User::find_by_id($session->user_id);
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-  	
+  	<h1>Message Menu</h1>
+  	<hr>
   	
   	<p><a class="btn btn-default" href="inbox.php" role="button">Inbox</a></p>
-    <br>
+    <hr>
 	<p><a class="btn btn-default" href="sent.php" role="button">Messages Sent</a></p>
-    <br>
+    <hr>
     <p><a class="btn btn-default" href="find_user.php" role="button">Find User</a></p>
-  	
 
-  	
-  	
     </div> <!-- /container -->
 
 
