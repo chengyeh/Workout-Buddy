@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Inbox</title>
+    <title>Workout Buddy: Inbox</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">

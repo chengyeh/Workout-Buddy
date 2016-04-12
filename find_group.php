@@ -52,7 +52,7 @@ if(isset($search_string) && empty($message)){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Find Group</title>
+    <title>Workout Buddy: Find Group</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
