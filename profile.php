@@ -94,18 +94,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
               </ul>
             </li>
           </ul>
-			
+
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span ><a href="inbox.php">Inbox </a>&nbsp
-            
-            <?php 
+
+            <?php
             	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
             	$number_messages = $database->num_rows($result_set);
             	echo "<span class='badge'>{$number_messages}</span>";
             ?>
-            
+
             &nbsp &nbsp &nbsp &nbsp<span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
-   			
+
         </div><!--/.nav-collapse -->
       </div>
 
@@ -127,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<?php
 		$groups_owned = $user->find_groups();
 		$groups_joined = $user->groups_joined();
+		$exercises_added=$user->exercises_added();
 		if(!empty($groups_owned)){
 			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
 				//List all the groups this user owns
@@ -165,6 +166,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
 					echo "<td class='text-center'>{$group_joined->group_status}</td>";
 				}
+			}
+			echo "</table>";
+		}else{
+			echo  "No groups<br/>";
+		}
+	?>
+
+	<br>
+	<h2>Exercises</h2>
+	<p><a class="btn btn-default" href="add_exercise.php" role="button">Add Exercise</a></p>
+	<?php
+		if(!empty($exercises_added))
+		{
+			echo "<table class='table'><tr><th>Exercise</th><th class='text-center'>Type</th></tr>";
+			foreach ($exercises_added as $exercise_row){
+
+
+
+					echo "<tr><td>".$exercise_row->x_description."</a></td>";
+					echo "<td class='text-center'>{$exercise_row->x_type}</td>";
+
 			}
 			echo "</table>";
 		}else{
