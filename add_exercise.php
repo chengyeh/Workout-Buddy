@@ -1,23 +1,34 @@
-
 <?php
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+
+
+
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
-//Create User object
+
+//Create User object for current session user
 $user = User::find_by_id($session->user_id);
-$database->query("UPDATE `wb_messages` SET `read`=1 WHERE `receiver`=".$user->id);
-if ($_SERVER['REQUEST_METHOD'] == 'POST')
-{
+?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
-    if(!empty($_POST['delete_message']))
-    {
-        foreach($_POST['delete_message'] as $message_id)
-        {
-        	$value=1;
-            $database->query("UPDATE wb_messages SET del_receive = 1 WHERE id = ".$message_id);
-        }
-    }
+
+  //Trim all the incoming data:
+    $trimmed = array_map('trim', $_POST);
+
+
+            // Add the group member to the database:
+            $exer = new Exercise();
+            $exer->x_user_id = $user->id;
+            $exer->x_description = $trimmed['x_description'];
+         	$exer->x_type = $trimmed['type'];
+         	$exer->reps = $trimmed['reps'];
+
+         	$exer->trigger = 0;
+
+            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',0,$exer->reps)");
 }
 ?>
 
@@ -32,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Workout Buddy: Inbox</title>
+    <title></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -80,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
                 <li><a href="add_group.php">Add Group</a></li>
                 <li><a href="find_group.php">Find Group</a></li>
                 <li><a href="find_user.php">Find User</a></li>
-                <li><a href="message_menu.php">Messaging</a></li>
+                <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Nav header</li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
@@ -99,40 +110,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h2>Inbox</h2>
+    <h2>Exercises</h2>
+   	<?php
+   	echo "<form action='#' method='POST'>";
+   	echo "<select name='type'>";
+  	echo "<option value='Benchpress'>Bench Press</option>";
+	echo "<option value='Curls'>Curls</option>";
+	echo "</select>";
+	echo "<br>";
+	echo "<label>Reps(#):</label>";
+	echo "<br>";
+	echo "<input type='text' name='reps'>";
+	echo "<br>";
+	echo "<label>Description</label>";
+	echo "<br>";
+	echo "<input type='text' name='x_description'>";
+	echo "<br>";
+   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
+   	echo "</form>";
+   	?>
 
-	<?php
-		$message_array=$user->receive_messages();
-		$a=1;
 
-		echo "<form action='#' method='POST'>";
-		if(($message_array->num_rows) > 0)
-		{
-			echo "<table class='table'><tr><th>No.</th><th>From</th><th>Message</th><th>Time</th><th>Date</th><th class='text-center'>Delete</th></tr>";
-			while($message1 = $message_array->fetch_assoc())
-			{
-				$t=User::find_by_id($message1['user']);
 
-				echo "<tr>";
-				echo "<td>" . $a ."</td>";
-				$a=$a+1;
-				echo "<td>" . $t->full_name()."</td>";
-				echo "<td>" . $message1['message'] . "</td>";
-				echo "<td>" . $message1['Time'] . "</td>";
-				echo "<td>" . $message1['Date'] . "</td>";
-				echo "<td class='text-center'><input type='checkbox' name='delete_message[]' value='" . $message1["id"] . "'></td>";
-				echo "</tr>";
-			}
-			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-default' name ='submit' value='Submit'></td></tr>";
-			echo "</table>";
-		}
-		echo "</form>";
-
-		if($a==1)
-		{
-			echo "<p>" . "No Messages" . "</p>";
-		}
-	?>
 
     </div> <!-- /container -->
 
