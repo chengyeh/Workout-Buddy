@@ -96,15 +96,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           </ul>
 
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span ><a href="inbox.php">Inbox </a>&nbsp
+            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
+            <li>
+            	<span>
+	            <?php
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+	            	$number_messages = $database->num_rows($result_set);
+	            	echo "<span class='badge'>{$number_messages}</span>";
+	            ?>
+	            <a href="inbox.php">Inbox</a>
+	            </span>&nbsp&nbsp
+            </li>
 
-            <?php
-            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
-            	$number_messages = $database->num_rows($result_set);
-            	echo "<span class='badge'>{$number_messages}</span>";
-            ?>
-
-            &nbsp &nbsp &nbsp &nbsp<span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
+            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
+         </ul>
 
         </div><!--/.nav-collapse -->
       </div>

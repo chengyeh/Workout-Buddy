@@ -2,39 +2,15 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+$number_messages=0;
+
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Get all the group activity to popluate the 
-//select box in form
-$group_activity = Group::get_activity();
-
+//Create User object
+$user = User::find_by_id($session->user_id);
 ?>
-<?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
 
-  // Trim all the incoming data:
-	$trimmed = array_map('trim', $_POST);
-
-		// Add the group to the database:
-		$group = new Group();
-		$group->group_owner= $trimmed['user_id'];
-      	$group->group_name= $trimmed['group_name'];
-      	$group->group_status= $trimmed['group_status'];
-      	$group->group_discription = $trimmed['group_discription'];
-      	$group->group_activity = $trimmed['group_activity'];
-      	$group->create();
-		
-		$group_member = new GroupMember();
-		$group_member->group_id = $database->insert_id();
-		$group_member->member_id = $trimmed['user_id'];
-		$group_member->create();
-
-      	//Redirect to profile page
-      	redirect_to("view_group.php?id={$database->insert_id()}");
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -43,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Kuei Chu" >
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Workout Buddy: Add Group</title>
+    <title>Home - <?php echo $user->full_name()?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -56,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- Custom styles for this template -->
     <link href="dist/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="dist/css/calendar.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -66,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+  	<link href="dist/css/calendar.css" rel="stylesheet" type="text/css" media="all">
+	<script type="text/javascript" src="js/calendar.js"></script> 
   </head>
 
   <body>
@@ -102,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
               </ul>
             </li>
           </ul>
-          
+
 		<ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
             <li>
@@ -119,54 +98,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
             <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
          </ul>
-         
-         </div><!--/.nav-collapse -->
+
+        </div><!--/.nav-collapse -->
       </div>
-      
+
     </nav>
 
     <div class="container">
-    
-	<div class="col-xs-12 col-sm-6 col-md-8">
-	<h2>Group Add</h2>
-	<form action="#" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
-	
-		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Group Name</label>
-		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Group Name" name="group_name" required autofocus>
-		</fieldset>
-  		<fieldset class="form-group">
-    		<label for="formGroupExampleInput2">
-    		<input type="radio" name="group_status" value="Private" required>&nbsp Private
-    		</label>
-    		&nbsp
-    		<label for="formGroupExampleInput2">
-			<input type="radio" name="group_status" value="Public">&nbsp Public
-			</label>
-  		</fieldset>
-  		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Group Discription</label>
-		   <textarea name="group_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Discription"rows="4" cols="50" required></textarea>
-		</fieldset>
-		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Group Activity</label>
-		   <select name="group_activity" class="form-control" required>
-		   <?php 
-		   		echo "<option value=''></option>";
-		   		foreach ($group_activity as $key => $value){
-					echo "<option value='{$value}'>{$value}</option>";
-				}		   
-		   ?>	  
-			</select>
-		</fieldset>
-		<button type="submit" name="submit" class="btn btn-default">Add group</button>
-	</form>
-	
-	</div>
-	
-	</div> <!-- /container -->
-
+		<div id="calendar-wrap">
+			<div id="showCalendar"></div>
+			<div id="overlay">
+				<div id="events"></div>
+			</div>
+		</div>
+    </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -176,5 +121,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+	</body>
 </html>
