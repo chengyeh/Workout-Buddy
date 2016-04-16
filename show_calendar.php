@@ -10,22 +10,6 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //Create User object
 $user = User::find_by_id($session->user_id);
 ?>
-<?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
-
-	if(!empty($_POST['delete_group']))
-	{
-		foreach($_POST['delete_group'] as $group_id)
-		{
-			$group = Group::find_by_id($group_id);
-			$group->delete();
-			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");
-		}
-	}
-
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- Custom styles for this template -->
     <link href="dist/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="dist/css/calendar.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -58,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+  	<link href="dist/css/calendar.css" rel="stylesheet" type="text/css" media="all">
+	<script type="text/javascript" src="js/calendar.js"></script> 
   </head>
 
   <body>
@@ -95,12 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </li>
           </ul>
 
-          <ul class="nav navbar-nav navbar-right" id="navbar-status">
+		<ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
             <li>
             	<span>
 	            <?php
-	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$session->user_id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
 	            ?>
@@ -118,87 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
 
     <div class="container">
-
-    <!-- Main component for a primary marketing message or call to action -->
-	<h1>Profile Page</h1>
-
-	<h2>User Info</h2>
-	<?php
-		echo "<p>" . $user->full_name() . "</p>";
-	?>
-
-	<h2>Groups Owns</h2>
-	<p><a class="btn btn-default" href="add_group.php" role="button">Add Group</a></p>
-	<form action="#" method="post">
-	<?php
-		$groups_owned = $user->find_groups();
-		$groups_joined = $user->groups_joined();
-		$exercises_added=$user->exercises_added();
-		if(!empty($groups_owned)){
-			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
-				//List all the groups this user owns
-				foreach ($groups_owned as $group){
-					echo "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td>";
-					echo "<td>{$group->group_status}</td>";
-					echo "<td style='text-align:center'><input type='checkbox' name='delete_group[]' value='" . $group->id . "'></td></tr>";
-				}
-			echo "<tr><td></td><td></td><td class='text-center'><button type='submit' class='btn btn-default' name ='delete'>Delete</button></td></tr></table>";
-		}else{
-			echo  "No groups<br/>";
-		}
-	?>
-	</form>
-
-	<h2>Groups Joined</h2>
-	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
-	<?php
-		if(!empty($groups_joined))
-		{
-			echo "<table class='table'><tr><th>Name</th><th class='text-center'>Status</th></tr>";
-			foreach ($groups_joined as $group_member_row){
-				$same_group = false;
-				//Check if the joined group is the one this user owns
-				for($i = 0; $i < count($groups_owned); $i++)
-				{
-					if($group_member_row->group_id == $groups_owned[$i]->id)
-					{
-						$same_group = true;
-					}
-				}
-				//If it's not owned by this user, list its info
-				if($same_group == false)
-				{
-					$group_joined = Group::find_by_id($group_member_row->group_id);
-					echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
-					echo "<td class='text-center'>{$group_joined->group_status}</td>";
-				}
-			}
-			echo "</table>";
-		}else{
-			echo  "No groups<br/>";
-		}
-	?>
-
-	<br>
-	<h2>Exercises</h2>
-	<p><a class="btn btn-default" href="add_exercise.php" role="button">Add Exercise</a></p>
-	<?php
-		if(!empty($exercises_added))
-		{
-			echo "<table class='table'><tr><th>Exercise</th><th class='text-center'>Type</th></tr>";
-			foreach ($exercises_added as $exercise_row){
-
-
-
-					echo "<tr><td>".$exercise_row->x_description."</a></td>";
-					echo "<td class='text-center'>{$exercise_row->x_type}</td>";
-
-			}
-			echo "</table>";
-		}else{
-			echo  "No groups<br/>";
-		}
-	?>
+		<div id="calendar-wrap">
+			<div id="showCalendar"></div>
+			<div id="overlay">
+				<div id="events"></div>
+			</div>
+		</div>
     </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript

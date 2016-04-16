@@ -105,9 +105,24 @@ if(isset($search_string) && empty($message)){
             </li>
           </ul>
           
-          <ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
-        </div><!--/.nav-collapse -->
+		<ul class="nav navbar-nav navbar-right" id="navbar-status">
+            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
+            <li>
+            	<span>
+	            <?php
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$session->user_id);
+	            	$number_messages = $database->num_rows($result_set);
+	            	echo "<span class='badge'>{$number_messages}</span>";
+	            ?>
+	            <a href="inbox.php">Inbox</a>
+	            </span>&nbsp&nbsp
+            </li>
+
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
+            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
+         </ul>
+         
+         </div><!--/.nav-collapse -->
       </div>
       
     </nav>
