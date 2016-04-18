@@ -69,13 +69,6 @@ class User extends DatabaseObject {
     	return $group_members_object_array;
     }
 
-    public function exercises_added()
-    {
-    	$sql = "SELECT * FROM wb_exercises WHERE x_user_id=".$this->id;
-    	$exercise_array = Exercise::find_by_sql($sql);
-    	return $exercise_array;
-    }
-
       public function get_messages()
       {
     	global $database;

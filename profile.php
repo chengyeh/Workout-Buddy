@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<?php
 		$groups_owned = $user->find_groups();
 		$groups_joined = $user->groups_joined();
-		$exercises_added=$user->exercises_added();
+		$exercises_added=$user->exercise_routines_added();
 		if(!empty($groups_owned)){
 			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
 				//List all the groups this user owns
