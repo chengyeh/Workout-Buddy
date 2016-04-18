@@ -3,17 +3,17 @@ require_once(LIB_PATH.DS."database.php");
 
 class DatabaseObject {
     protected static $table_name;
-    
+
     /**
      * Returns all the rows from a table as objects
      *
-     * @param  
-     * @return 
+     * @param
+     * @return
      */
     public static function find_all(){
         return static::find_by_sql("SELECT * FROM ".static::$table_name);
     }
-    
+
     /**
      *	Returns a row from a table as object
      *
@@ -26,7 +26,12 @@ class DatabaseObject {
                         " WHERE id=". $database->escape_value($id) . " LIMIT 1");
         return !empty($result_array) ? array_shift($result_array) : false;
     }
-    
+    public static function find_by_x_id($x_id=0){
+        global $database;
+        $result_array = static::find_by_sql("SELECT * FROM " . static::$table_name .
+                        " WHERE x_id=". $database->escape_value($x_id) . " LIMIT 1");
+        return !empty($result_array) ? array_shift($result_array) : false;
+    }
     /**
      * Returns sql from a table as objects
      *
@@ -56,7 +61,7 @@ class DatabaseObject {
         $row = $database->fetch_array($result_set);
         return array_shift($row);
     }
-    
+
     /**
      * Returns the count of rows from the table with condition
      *
@@ -71,7 +76,7 @@ class DatabaseObject {
         $row = $database->fetch_array($result_set);
         return array_shift($row);
     }
-    
+
     /**
      * Return a row of data from the table as object
      *
@@ -88,9 +93,9 @@ class DatabaseObject {
         }
         return $object;
     }
-    
+
     /**
-     * 
+     *
      *
      * @param
      * @return
@@ -99,9 +104,9 @@ class DatabaseObject {
         $object_vars = $this->attributes();
         return array_key_exists($attribute, $object_vars);
     }
-    
+
     /**
-     * Return object's attributes as an associative array 
+     * Return object's attributes as an associative array
      *
      * @param
      * @return
@@ -115,7 +120,7 @@ class DatabaseObject {
         }
         return $attributes;
     }
-    
+
     /**
      *
      *
@@ -130,7 +135,7 @@ class DatabaseObject {
         }
         return $clean_attributes;
     }
-    
+
     /**
      * Save a object to the database table
      *
@@ -140,7 +145,7 @@ class DatabaseObject {
     public function save(){
         return isset($this->id) ? $this->update() : $this->create();
     }
-    
+
     /**
      * Insert a object's data into the appropiate table
      *
@@ -162,7 +167,7 @@ class DatabaseObject {
             return false;
         }
     }
-    
+
     /**
      * Objects data is updated to appropiate table
      *
@@ -182,7 +187,7 @@ class DatabaseObject {
         $database->query($sql);
         return ($database->affected_rows() == 1) ? true : false;
     }
-    
+
     /**
      * Delete object's data from the table.
      *
@@ -194,7 +199,7 @@ class DatabaseObject {
         $sql = "DELETE FROM ". static::$table_name;
         $sql .= " WHERE id=". $database->escape_value($this->id);
         $sql .= " LIMIT 1";
-        
+
         $database->query($sql);
         return ($database->affected_rows() == 1) ? true : false;
     }
