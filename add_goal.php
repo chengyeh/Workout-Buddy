@@ -19,30 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $trimmed = array_map('trim', $_POST);
 
 
-            // Add the group member to the database:
-            $exer = new Exercise();
-            $exer->x_user_id = $user->id;
-            $exer->x_description = $trimmed['x_description'];
-         	$exer->x_type = $trimmed['type'];
-         	$exer->reps = $trimmed['reps'];
-         	$challenge=isset($_POST['chlng_check']);
-         	if(empty($challenge))
-			{
 
-				$exer->trigger = 0;
-			}
-			else
-			{
-
-				$exer->trigger = 1;
-			}
-
-
-            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',$exer->trigger,$exer->reps)");
-			if($exer->trigger==1)
-			{
-				redirect_to('add_goal.php');
-			}
 }
 ?>
 
@@ -124,33 +101,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h2>Exercises</h2>
+    <h2>Goals</h2>
    	<?php
    	echo "<form action='#' method='POST'>";
-   	echo "<select name='type'>";
-  	echo "<option value='Benchpress'>Bench Press</option>";
-	echo "<option value='Curls'>Curls</option>";
-	echo "</select>";
-	echo "<br>";
-	echo "<label>Reps(#):</label>";
-	echo "<br>";
-	echo "<input type='text' name='reps'>";
-	echo "<br>";
-	echo "<label>Description</label>";
-	echo "<br>";
-	echo "<input type='text' name='x_description'>";
-	echo "<br>";
-	echo "<label>Make Challenge</label>";
-	echo "<input type='checkbox' name='chlng_check' value='0'>";
-	echo "<br>";
 
    	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
    	echo "</form>";
    	?>
-
-
-
-
     </div> <!-- /container -->
 
 

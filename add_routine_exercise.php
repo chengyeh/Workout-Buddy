@@ -1,16 +1,34 @@
 <?php
-
+/**
+ * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ *
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-
-
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
+if (empty($_GET['id'])){
+	$session->message("No group ID was provided.");
+	redirect_to('profile.php');
+
+}
+
+//Create Exercise object from ID in the URL
+$addexercise = Routine::find_by_id($_GET['id']);
+$var_types = Types::find_by_id(1);
+if(!$addexercise)
+{
+	$session->message("Unable to be find group.");
+	redirect_to('login.php');
+}
+
+
 ?>
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
@@ -20,29 +38,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
             // Add the group member to the database:
-            $exer = new Exercise();
-            $exer->x_user_id = $user->id;
-            $exer->x_description = $trimmed['x_description'];
-         	$exer->x_type = $trimmed['type'];
-         	$exer->reps = $trimmed['reps'];
-         	$challenge=isset($_POST['chlng_check']);
-         	if(empty($challenge))
-			{
+            if(isset($_POST['select_type']))
+            {
+            	$answer=$_POST['select_type'];
 
-				$exer->trigger = 0;
+            	echo $answer;
+				if($answer==1)
+				{
+					echo "hi";
+				}
+				else if($answer==2)
+				{
+					echo "bye";
+				}
+				else if($answer==3)
+				{
+					echo "yoyoyo";
+				}
+				else
+				{
+					echo "no";
+				}
+            }
+
+            $type_input = new Types();
+            $type_input->routine_id = $addexercise->id;
+            $type_input->type = $answer;
+
+         	$database->query("INSERT INTO `wb_exercise`(`routine_id`, type) VALUES ($type_input->routine_id,'$type_input->type')");
+
+			 $total_exercises=$user->find_last_exercise($addexercise->id);
+
+			 $q=0;
+			 foreach ($total_exercises as $exercise_number)
+			 {
+			 		echo $q;
+					$b=$exercise_number->id;
+					if($b > $q)
+					{
+						$q=$b;
+					}
+
 			}
-			else
-			{
+			echo $q;
+			echo $addexercise->id;
+			$a=$type_input->routine_id;
+			 redirect_to("add_exercise_set.php?rout_id=".$a."&ex_id=".$q);
 
-				$exer->trigger = 1;
-			}
-
-
-            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',$exer->trigger,$exer->reps)");
-			if($exer->trigger==1)
-			{
-				redirect_to('add_goal.php');
-			}
 }
 ?>
 
@@ -124,28 +166,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h2>Exercises</h2>
+    <h2>Add Exercise</h2>
    	<?php
-   	echo "<form action='#' method='POST'>";
-   	echo "<select name='type'>";
-  	echo "<option value='Benchpress'>Bench Press</option>";
-	echo "<option value='Curls'>Curls</option>";
-	echo "</select>";
-	echo "<br>";
-	echo "<label>Reps(#):</label>";
-	echo "<br>";
-	echo "<input type='text' name='reps'>";
-	echo "<br>";
-	echo "<label>Description</label>";
-	echo "<br>";
-	echo "<input type='text' name='x_description'>";
-	echo "<br>";
-	echo "<label>Make Challenge</label>";
-	echo "<input type='checkbox' name='chlng_check' value='0'>";
-	echo "<br>";
+   			echo "<p>Name: ". $addexercise->name . "<br/>";
+			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
+			echo "<p>ID: ". $addexercise->id . "<br/>";
 
-   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
-   	echo "</form>";
+			
+		   	echo "<form action='#' method='POST'>";
+		   		echo "<select name='select_type'>";
+				$display_types=$var_types->show_types();
+				$a=1;
+				foreach($display_types as $display_feature)
+				{
+					echo '<option value="'.$a.'">'.$display_feature->name.'</option>';
+					$a=$a+1;
+				}
+				echo "</select>";
+				echo "<br>";
+		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Exercise</button>";
+		   	echo "</form>";
+
+
    	?>
 
 

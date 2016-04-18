@@ -1,49 +1,35 @@
 <?php
-
+/**
+ * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ *
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-
-
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
+
+//If the ID field is empty return the user to profile page
+if (empty($_GET['id'])){
+	$session->message("No group ID was provided.");
+	redirect_to('profile.php');
+}
+
+//Create Exercise object from ID in the URL
+$exercise1 = Exercise::find_by_x_id($_GET['id']);
+if(!$exercise1){
+	$session->message("Unable to be find group.");
+	redirect_to('profile.php');
+}
+
+
 ?>
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
-
-  //Trim all the incoming data:
-    $trimmed = array_map('trim', $_POST);
 
 
-            // Add the group member to the database:
-            $exer = new Exercise();
-            $exer->x_user_id = $user->id;
-            $exer->x_description = $trimmed['x_description'];
-         	$exer->x_type = $trimmed['type'];
-         	$exer->reps = $trimmed['reps'];
-         	$challenge=isset($_POST['chlng_check']);
-         	if(empty($challenge))
-			{
-
-				$exer->trigger = 0;
-			}
-			else
-			{
-
-				$exer->trigger = 1;
-			}
-
-
-            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',$exer->trigger,$exer->reps)");
-			if($exer->trigger==1)
-			{
-				redirect_to('add_goal.php');
-			}
-}
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title></title>
+    <title><?php echo $exercise1->x_description; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -123,35 +109,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <div class="container">
 
-    <!-- Main component for a primary marketing message or call to action -->
-    <h2>Exercises</h2>
-   	<?php
-   	echo "<form action='#' method='POST'>";
-   	echo "<select name='type'>";
-  	echo "<option value='Benchpress'>Bench Press</option>";
-	echo "<option value='Curls'>Curls</option>";
-	echo "</select>";
-	echo "<br>";
-	echo "<label>Reps(#):</label>";
-	echo "<br>";
-	echo "<input type='text' name='reps'>";
-	echo "<br>";
-	echo "<label>Description</label>";
-	echo "<br>";
-	echo "<input type='text' name='x_description'>";
-	echo "<br>";
-	echo "<label>Make Challenge</label>";
-	echo "<input type='checkbox' name='chlng_check' value='0'>";
-	echo "<br>";
+    	<h2>Exercise Info</h2>
+    	<?php
+    		echo "<p>Exercise Name: ". $exercise1->x_description . "<br/>";
+			echo "<p>Status: ". $exercise1->x_type . "<br/>";
+			echo "<p>Reps: ". $exercise1->reps . "<br/>";
+			if($exercise1->trigger==1)
+			{
+				echo "This is a challenge";
+			}
+			else
+			{
+				echo "This is not a challenge";
+			}
 
-   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
-   	echo "</form>";
-   	?>
+    	?>
 
 
-
-
-    </div> <!-- /container -->
+   </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript

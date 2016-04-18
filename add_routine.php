@@ -20,29 +20,106 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
             // Add the group member to the database:
-            $exer = new Exercise();
-            $exer->x_user_id = $user->id;
-            $exer->x_description = $trimmed['x_description'];
-         	$exer->x_type = $trimmed['type'];
-         	$exer->reps = $trimmed['reps'];
-         	$challenge=isset($_POST['chlng_check']);
-         	if(empty($challenge))
+            $rout = new Routine();
+            $rout->user_id = $user->id;
+            $rout->name = $trimmed['routine_name'];
+            $rout->description = $trimmed['routine_description'];
+         	$monday=isset($_POST['mon']);
+         	if(empty($monday))
 			{
 
-				$exer->trigger = 0;
+				$rout->mon = 0;
 			}
 			else
 			{
 
-				$exer->trigger = 1;
+				$rout->mon = 1;
 			}
-
-
-            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',$exer->trigger,$exer->reps)");
-			if($exer->trigger==1)
+			$tuesday=isset($_POST['tues']);
+         	if(empty($tuesday))
 			{
-				redirect_to('add_goal.php');
+
+				$rout->tues = 0;
 			}
+			else
+			{
+
+				$rout->tues = 1;
+			}
+			$wednesday=isset($_POST['wed']);
+         	if(empty($wednesday))
+			{
+
+				$rout->wed = 0;
+			}
+			else
+			{
+
+				$rout->wed = 1;
+			}
+			$thursday=isset($_POST['thurs']);
+         	if(empty($thursday))
+			{
+
+				$rout->thurs = 0;
+			}
+			else
+			{
+
+				$rout->thurs = 1;
+			}
+			$friday=isset($_POST['fri']);
+         	if(empty($friday))
+			{
+
+				$rout->fri = 0;
+			}
+			else
+			{
+
+				$rout->fri = 1;
+			}
+			$saturday=isset($_POST['sat']);
+         	if(empty($saturday))
+			{
+
+				$rout->sat = 0;
+			}
+			else
+			{
+
+				$rout->sat = 1;
+			}
+			$sunday=isset($_POST['sun']);
+         	if(empty($sunday))
+			{
+
+				$rout->sun = 0;
+			}
+			else
+			{
+
+				$rout->sun = 1;
+			}
+         	$database->query("INSERT INTO `wb_routine`(`user_id`, name, description, `mon`, `tues`, `wed`, `thurs`, `fri`, `sat`, `sun`) VALUES ($rout->user_id,'$rout->name','$rout->description',$rout->mon,$rout->tues,$rout->wed,$rout->thurs,$rout->fri,$rout->sat,$rout->sun)");
+			 /*$routine1=$database->query("SELECT * FROM wb_routine ORDER BY id DESC LIMIT 1");*/
+			 /*$exercises_added=$user->exercises_added();*/
+			 $total_routines=$user->find_last_routine();
+			 /*foreach ($exercises_added as $exercise_row)*/
+			 $a=0;
+
+			 foreach ($total_routines as $routine_number)
+			 {
+
+					$b=$routine_number->id;
+					if($b > $a)
+					{
+						$a=$b;
+					}
+
+			}
+			echo $a;
+			redirect_to("add_routine_exercise.php?id=$a");
 }
 ?>
 
@@ -127,24 +204,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h2>Exercises</h2>
    	<?php
    	echo "<form action='#' method='POST'>";
-   	echo "<select name='type'>";
-  	echo "<option value='Benchpress'>Bench Press</option>";
-	echo "<option value='Curls'>Curls</option>";
-	echo "</select>";
 	echo "<br>";
-	echo "<label>Reps(#):</label>";
+	echo "<label>Name:</label>";
 	echo "<br>";
-	echo "<input type='text' name='reps'>";
+	echo "<input type='text' name='routine_name'>";
 	echo "<br>";
 	echo "<label>Description</label>";
 	echo "<br>";
-	echo "<input type='text' name='x_description'>";
+	echo "<input type='text' name='routine_description'>";
 	echo "<br>";
-	echo "<label>Make Challenge</label>";
-	echo "<input type='checkbox' name='chlng_check' value='0'>";
+	echo "<label>Monday</label>";
+	echo "<input type='checkbox' name='mon' value='0'>";
+	echo "<br>";
+	echo "<label>Tuesday</label>";
+	echo "<input type='checkbox' name='tues' value='0'>";
+	echo "<br>";
+	echo "<label>Wednesday</label>";
+	echo "<input type='checkbox' name='wed' value='0'>";
+	echo "<br>";
+	echo "<label>Thursday</label>";
+	echo "<input type='checkbox' name='thurs' value='0'>";
+	echo "<br>";
+	echo "<label>Friday</label>";
+	echo "<input type='checkbox' name='fri' value='0'>";
+	echo "<br>";
+	echo "<label>Saturday</label>";
+	echo "<input type='checkbox' name='sat' value='0'>";
+	echo "<br>";
+	echo "<label>Sunday</label>";
+	echo "<input type='checkbox' name='sun' value='0'>";
 	echo "<br>";
 
-   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
+   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit Routine</button>";
    	echo "</form>";
    	?>
 

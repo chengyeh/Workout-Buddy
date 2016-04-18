@@ -1,49 +1,35 @@
 <?php
-
+/**
+ * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ *
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-
-
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
+
+//If the ID field is empty return the user to profile page
+if (empty($_GET['id'])){
+	$session->message("No group ID was provided.");
+	redirect_to('profile.php');
+}
+
+//Create Exercise object from ID in the URL
+$rout_show = Routine::find_by_id($_GET['id']);
+if(!$rout_show){
+	$session->message("Unable to be find group.");
+	redirect_to('profile.php');
+}
+
+
 ?>
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
-
-  //Trim all the incoming data:
-    $trimmed = array_map('trim', $_POST);
 
 
-            // Add the group member to the database:
-            $exer = new Exercise();
-            $exer->x_user_id = $user->id;
-            $exer->x_description = $trimmed['x_description'];
-         	$exer->x_type = $trimmed['type'];
-         	$exer->reps = $trimmed['reps'];
-         	$challenge=isset($_POST['chlng_check']);
-         	if(empty($challenge))
-			{
-
-				$exer->trigger = 0;
-			}
-			else
-			{
-
-				$exer->trigger = 1;
-			}
-
-
-            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',$exer->trigger,$exer->reps)");
-			if($exer->trigger==1)
-			{
-				redirect_to('add_goal.php');
-			}
-}
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title></title>
+    <title><?php echo $exercise1->x_description; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -123,35 +109,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <div class="container">
 
-    <!-- Main component for a primary marketing message or call to action -->
-    <h2>Exercises</h2>
-   	<?php
-   	echo "<form action='#' method='POST'>";
-   	echo "<select name='type'>";
-  	echo "<option value='Benchpress'>Bench Press</option>";
-	echo "<option value='Curls'>Curls</option>";
-	echo "</select>";
-	echo "<br>";
-	echo "<label>Reps(#):</label>";
-	echo "<br>";
-	echo "<input type='text' name='reps'>";
-	echo "<br>";
-	echo "<label>Description</label>";
-	echo "<br>";
-	echo "<input type='text' name='x_description'>";
-	echo "<br>";
-	echo "<label>Make Challenge</label>";
-	echo "<input type='checkbox' name='chlng_check' value='0'>";
-	echo "<br>";
+    	<h2>Workout Info</h2>
+    	<?php
+    		echo "<p>Name: ". $rout_show->name . "<br/>";
+			echo "<p>Description: ". $rout_show->description . "<br/>";
+			echo "This workout is done on: "."<br>";
+			if($rout_show->mon==1)
+			{
+				echo "Monday"."<br>";
+			}
+			else if($rout_show->tues==1)
+			{
+				echo "Tuesday"."<br>";
+			}
+			else if($rout_show->wed==1)
+			{
+				echo "Wednesday"."<br>";
+			}
+			else if($rout_show->thurs==1)
+			{
+				echo "Thursday"."<br>";
+			}
+			else if($rout_show->fri==1)
+			{
+				echo "Friday"."<br>";
+			}
+			else if($rout_show->sat==1)
+			{
+				echo "Saturday"."<br>";
+			}
+			else if($rout_show->sun==1)
+			{
+				echo "Sunday"."<br>";
+			}
 
-   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
-   	echo "</form>";
-   	?>
+			 $total_exercises=$user->find_last_exercise($rout_show->id);
 
+			 foreach ($total_exercises as $exercise_number)
+			 {
+			 		//echo $exercise_number->id;
+			 		$display_type = Types::find_by_id($exercise_number->id);
+					echo $rout_show->id;
+					echo "<tr><td><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>".$display_type->name."</a></td>";
 
+			 }
 
+    	?>
+    	<p><a class="btn btn-default" href="profile.php" role="button">Go Back to Home</a></p>
 
-    </div> <!-- /container -->
+   </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript

@@ -1,16 +1,35 @@
 <?php
-
+/**
+ * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ *
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-
-
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
+if (empty($_GET['rout_id'])){
+	$session->message("No group ID was provided.");
+	redirect_to('profile.php');
+
+}
+
+//Create Exercise object from ID in the URL
+$addexercise = Routine::find_by_id($_GET['rout_id']);
+$addtype = Exercises::find_by_id($_GET['ex_id']);
+/*$var_types = Types::find_by_id(1);*/
+if(!$addexercise)
+{
+	$session->message("Unable to be find group.");
+	redirect_to('login.php');
+}
+
+
 ?>
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
@@ -18,31 +37,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
 
+			$new_set = new Set();
+            $new_set->exercise_id = $addtype->id;
+           	$new_set->routine_id = $addexercise->id;
+           	$a=$new_set->routine_id;
+         	$monday=isset($_POST['mon']);
+         	$set1_reps=$_POST['set1_reps'];
+         	$set2_reps=$_POST['set2_reps'];
+         	$set3_reps=$_POST['set3_reps'];
+         	$set1_weight=$_POST['set1_weight'];
+         	$set2_weight=$_POST['set2_weight'];
+         	$set3_weight=$_POST['set3_weight'];
+         	/*
+         	echo $set1_reps;
+         	echo "<br>";
+         	echo $set2_reps;
+         	echo "<br>";
+         	echo $set3_reps;
+         	echo "<br>";
+         	echo $set1_weight;
+         	echo "<br>";
+         	echo $set2_weight;
+         	echo "<br>";
+         	echo $set3_weight;
+         	echo "<br>";
+         	echo $new_set->exercise_id;
+         	echo "<br>";
+         	echo $new_set->routine_id;
+         	*/
+         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,1,$set1_reps,$set1_weight)");
+			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,2,$set2_reps,$set2_weight)");
+			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,3,$set3_reps,$set3_weight)");
+			 redirect_to("add_routine_exercise.php?id=$a");
+			 /*
+			 $total_routines=$user->find_last_routine();
+			 $a=0;
+			 foreach ($total_routines as $routine_number)
+			 {
+					$b=$routine_number->id;
+					if($b > $a)
+					{
+						$a=$b;
+					}
+			  }
+			echo $a;	*/
 
-            // Add the group member to the database:
-            $exer = new Exercise();
-            $exer->x_user_id = $user->id;
-            $exer->x_description = $trimmed['x_description'];
-         	$exer->x_type = $trimmed['type'];
-         	$exer->reps = $trimmed['reps'];
-         	$challenge=isset($_POST['chlng_check']);
-         	if(empty($challenge))
-			{
 
-				$exer->trigger = 0;
-			}
-			else
-			{
-
-				$exer->trigger = 1;
-			}
-
-
-            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',$exer->trigger,$exer->reps)");
-			if($exer->trigger==1)
-			{
-				redirect_to('add_goal.php');
-			}
 }
 ?>
 
@@ -124,28 +164,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h2>Exercises</h2>
+    <h2>Exercise Agenda</h2>
    	<?php
-   	echo "<form action='#' method='POST'>";
-   	echo "<select name='type'>";
-  	echo "<option value='Benchpress'>Bench Press</option>";
-	echo "<option value='Curls'>Curls</option>";
-	echo "</select>";
-	echo "<br>";
-	echo "<label>Reps(#):</label>";
-	echo "<br>";
-	echo "<input type='text' name='reps'>";
-	echo "<br>";
-	echo "<label>Description</label>";
-	echo "<br>";
-	echo "<input type='text' name='x_description'>";
-	echo "<br>";
-	echo "<label>Make Challenge</label>";
-	echo "<input type='checkbox' name='chlng_check' value='0'>";
-	echo "<br>";
+   			echo "<p>Workout: ". $addexercise->name . "<br/>";
+   			echo $addtype->type."<br>";
 
-   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
-   	echo "</form>";
+   			$actual_name=Types::find_by_id($addtype->type);
+
+   			echo $actual_name->name;
+
+   			echo "<form action='#' method='POST'>";
+		   		echo "<select name='select_set'>";
+
+
+				for($i=1; $i <=5; $i++)
+				{
+					echo '<option value="'.$i.'">'.$i.'</option>';
+
+				}
+				echo "</select>";
+				echo "<br><label>Set 1:  </label>";
+				echo "<br>";
+				echo "Reps <input type='text' name='set1_reps'>";
+				echo "Weight <input type='text' name='set1_weight'>";
+				echo "<br>";
+				echo "<label>Set 2:  </label>";
+				echo "<br>";
+				echo "Reps <input type='text' name='set2_reps'>";
+				echo "Weight <input type='text' name='set2_weight'>";
+				echo "<br>";
+				echo "<label>Set 3:  </label>";
+				echo "<br>";
+				echo "Reps <input type='text' name='set3_reps'>";
+				echo "Weight <input type='text' name='set3_weight'>";
+				echo "<br>";
+
+				echo "<br>";
+		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Agenda</button>";
+		   	echo "</form>";
+
+   			/*
+			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
+			echo "<p>ID: ". $addexercise->id . "<br/>";
+			echo "<p>exercise Name: ". $addtype->id . "<br/>";
+			echo "<p>Descripiton: ". $addtype->routine_id . "<br/>";
+			echo "<p>ID: ". $addtype->type . "<br/>";
+			*/
+
+
    	?>
 
 
