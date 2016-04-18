@@ -69,13 +69,6 @@ class User extends DatabaseObject {
     	return $group_members_object_array;
     }
 
-    public function exercises_added()
-    {
-    	$sql = "SELECT * FROM wb_exercises WHERE x_user_id=".$this->id;
-    	$exercise_array = Exercise::find_by_sql($sql);
-    	return $exercise_array;
-    }
-
       public function get_messages()
       {
     	global $database;
@@ -93,6 +86,49 @@ class User extends DatabaseObject {
     	$group_message_array = $database->query($sql);
     	return $group_message_array;
       }
+
+      public function exercises_added()
+    {
+    	$sql = "SELECT * FROM wb_exercises WHERE x_user_id=".$this->id;
+    	$exercise_array = Exercise::find_by_sql($sql);
+    	return $exercise_array;
+    }
+
+     public function exercise_routines_added()
+    {
+    	$sql = "SELECT * FROM wb_routine WHERE user_id=".$this->id;
+    	$exercise_array = Routine::find_by_sql($sql);
+    	return $exercise_array;
+    }
+
+    public function find_last_routine()
+    {
+    	$sql = "SELECT * FROM wb_routine WHERE user_id=".$this->id;
+    	$exercise_array = Routine::find_by_sql($sql);
+    	return $exercise_array;
+    }
+
+    public function find_all_exercises($a,$b)
+    {
+    	$sql = "SELECT * FROM wb_exercise_set WHERE exercise_id=".$a." AND routine_id=".$b;
+    	$exercise_array = Exercises::find_by_sql($sql);
+    	return $exercise_array;
+    }
+
+    public function find_last_exercise($a)
+    {
+    	$sql = "SELECT * FROM wb_exercise WHERE routine_id=".$a;
+    	$exercise_array = Routine::find_by_sql($sql);
+    	return $exercise_array;
+    }
+
+	 public function find_type($a)
+   {
+   		global $database;
+    	$sql = "SELECT name FROM wb_exercise_type WHERE id=".$a;
+    	$name_type = $database->query($sql);
+    	return $name_type;
+    }
 
 }
 

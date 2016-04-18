@@ -1,10 +1,13 @@
+//Global variables to trak month,year,day
 var showmonth;
 var showyear;
+var showday;
 
 window.onload = function() {
 	  initialCalendar();
 };
-	
+
+
 function initialCalendar(){
     // Create our XMLHttpRequest object
     var hr = new XMLHttpRequest();
@@ -13,7 +16,8 @@ function initialCalendar(){
     var currentTime = new Date();
     showmonth = currentTime.getMonth() + 1;
     showyear = currentTime.getFullYear();
-    var vars = "showmonth="+showmonth+"&showyear="+showyear;
+    showday = currentTime.getDate();
+    var vars = "showmonth="+showmonth+"&showyear="+showyear+"&showday="+showday;
     hr.open("POST", url, true);
     // Set content type header information for sending url encoded variables in the request
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
