@@ -182,22 +182,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   <br>
 	<h2>Exercise Routines</h2>
 	<p><a class="btn btn-default" href="add_routine.php" role="button">Add Routine</a></p>
-	<?php
-		if(!empty($exercises_added))
+	<?php	
+		$user_routine_objects = $user->exercise_routines_added();
+		
+		if(!empty($user_routine_objects))
 		{
-			echo "<table class='table'><tr><th>Exercise</th><th class='text-center'>Type</th></tr>";
-			foreach ($exercises_added as $exercise_row){
-
-					$exercises_added = Routine::find_by_id($exercise_row->id);
-					echo "<tr><td><a href='view_routine.php?id={$exercises_added->id}'>".$exercise_row->name."</a></td>";
-					/*$exercises_added = Exercise::find_by_id($exercise_row->x_id);
-					echo "<tr><td><a href='view_exercise.php?id={$exercises_added->x_id}'>".$exercise_row->x_description."</a></td>";
-					echo "<td class='text-center'>{$exercise_row->x_type}</td>";
-					*/
+			echo "<table class='table'><tr><th>Routine</th>";
+			
+			foreach ($user_routine_objects as $routine_object){
+				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
 			}
 			echo "</table>";
 		}else{
-			echo  "No groups<br/>";
+			echo  "<p>No Routines</p>";
 		}
 	?>
     </div> <!-- /container -->

@@ -94,7 +94,7 @@ class User extends DatabaseObject {
     	return $exercise_array;
     }
 
-     public function exercise_routines_added()
+    public function exercise_routines_added()
     {
     	$sql = "SELECT * FROM wb_routine WHERE user_id=".$this->id;
     	$exercise_array = Routine::find_by_sql($sql);

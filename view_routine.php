@@ -118,27 +118,27 @@ if(!$rout_show){
 			{
 				echo "Monday"."<br>";
 			}
-			else if($rout_show->tues==1)
+			if($rout_show->tues==1)
 			{
 				echo "Tuesday"."<br>";
 			}
-			else if($rout_show->wed==1)
+			if($rout_show->wed==1)
 			{
 				echo "Wednesday"."<br>";
 			}
-			else if($rout_show->thurs==1)
+			if($rout_show->thurs==1)
 			{
 				echo "Thursday"."<br>";
 			}
-			else if($rout_show->fri==1)
+			if($rout_show->fri==1)
 			{
 				echo "Friday"."<br>";
 			}
-			else if($rout_show->sat==1)
+			if($rout_show->sat==1)
 			{
 				echo "Saturday"."<br>";
 			}
-			else if($rout_show->sun==1)
+			if($rout_show->sun==1)
 			{
 				echo "Sunday"."<br>";
 			}
@@ -147,13 +147,21 @@ if(!$rout_show){
 
 			 foreach ($total_exercises as $exercise_number)
 			 {
-			 		//echo $exercise_number->id;
-			 		$display_type = Types::find_by_id($exercise_number->id);
-					echo $rout_show->id;
-					echo "<tr><td><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>".$display_type->name."</a></td>";
+			 		//echo $rout_show->id;
+			 		$temp_ex=Exercises::find_by_id($exercise_number->id);
+			 		//echo $temp_ex->type;
+			 		//echo $exercise_number->type;
+			 		$display_type = Types::find_by_id($temp_ex->type);
+
+
+					//echo $display_type->id;
+
+					echo "<tr><td><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>".$display_type->name."</a></td><br>";
 
 			 }
-
+			 		//redirect_to("add_routine_exercise.php?id=$a");
+					//echo("<button onclick=\"location.href='add_routine_exercise.php?id'\">Back to Home</button>");
+					echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$rout_show->id' role='button'>Add Exercise</a></p>"
     	?>
     	<p><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
     	<p><a class="btn btn-default" href="profile.php" role="button">Go Back to Home</a></p>
