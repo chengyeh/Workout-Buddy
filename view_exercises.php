@@ -127,6 +127,11 @@ if(!$rout_obj){
 					echo "<br>";
 
 			 }
+			 //edit_exercise.php?rout_id=".$a."&ex_id=".$q
+			 //echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$rout_show->id' role='button'>Edit Exercise</a></p>"
+
+			 echo "<p><a class='btn btn-default' href='edit_exercise.php?rout_id=$rout_obj->id&ex_id=$ex_obj->id&' role='button'>Edit Exercise</a></p>";
+    		 echo "<p><a class='btn btn-default' href='view_routine.php?id=$rout_obj->id&ex_id=$ex_obj->id&' role='button'>Back to Routine</a></p>";
     	?>
 
 

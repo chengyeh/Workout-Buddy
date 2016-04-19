@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
 			echo "<p>ID: ". $addexercise->id . "<br/>";
 
-			
+
 		   	echo "<form action='#' method='POST'>";
 		   		echo "<select name='select_type'>";
 				$display_types=$var_types->show_types();
@@ -185,6 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "</select>";
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Exercise</button>";
+		   	echo "<p><a class='btn btn-default' href='view_routine.php?id=$addexercise->id' role='button'>Back to Routine</a></p>";
 		   	echo "</form>";
 
 

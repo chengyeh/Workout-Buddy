@@ -65,10 +65,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	echo "<br>";
          	echo $new_set->routine_id;
          	*/
-         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,1,$set1_reps,$set1_weight)");
-			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,2,$set2_reps,$set2_weight)");
-			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,3,$set3_reps,$set3_weight)");
-			 redirect_to("add_routine_exercise.php?id=$a");
+         	$a=1;
+         	$b=2;
+         	$c=3;
+
+         	$database->query("UPDATE `wb_exercise_set` SET `reps`=$set1_reps, `weight`=$set1_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$a." AND routine_id=".$new_set->routine_id);
+			$database->query("UPDATE `wb_exercise_set` SET `reps`=$set2_reps, `weight`=$set2_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$b." AND routine_id=".$new_set->routine_id);
+			$database->query("UPDATE `wb_exercise_set` SET `reps`=$set3_reps, `weight`=$set3_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$c." AND routine_id=".$new_set->routine_id);
+			 //redirect_to("add_routine_exercise.php?id=$a");
 			 /*
 			 $total_routines=$user->find_last_routine();
 			 $a=0;
@@ -200,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "<br>";
 
 				echo "<br>";
-		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Agenda</button>";
+		   	echo "<button type='submit' name='submit' class='btn btn-default'>Update Agenda</button>";
 		   	echo "</form>";
    			echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$addtype->id' role='button'>Back to Exercise</a></p>";
    			/*
@@ -213,6 +217,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
    	?>
+
+
+
 
     </div> <!-- /container -->
 

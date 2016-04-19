@@ -155,10 +155,13 @@ if(!$rout_show){
 
 
 					//echo $display_type->id;
+
 					echo "<tr><td><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>".$display_type->name."</a></td><br>";
 
 			 }
-
+			 		//redirect_to("add_routine_exercise.php?id=$a");
+					//echo("<button onclick=\"location.href='add_routine_exercise.php?id'\">Back to Home</button>");
+					echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$rout_show->id' role='button'>Add Exercise</a></p>"
     	?>
     	<p><a class="btn btn-default" href="profile.php" role="button">Go Back to Home</a></p>
 
