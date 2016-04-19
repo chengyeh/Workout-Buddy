@@ -19,7 +19,8 @@ if (empty($_GET['rout_id'])){
 
 //Create Exercise object from ID in the URL
 $addexercise = Routine::find_by_id($_GET['rout_id']);
-$addtype = Exercises::find_by_id($_GET['ex_id']);
+$addtype = $_GET['type_id'];
+
 /*$var_types = Types::find_by_id(1);*/
 if(!$addexercise)
 {
@@ -38,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $trimmed = array_map('trim', $_POST);
 
 			$new_set = new Set();
-            $new_set->exercise_id = $addtype->id;
            	$new_set->routine_id = $addexercise->id;
            	$a=$new_set->routine_id;
          	$monday=isset($_POST['mon']);
@@ -65,9 +65,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	echo "<br>";
          	echo $new_set->routine_id;
          	*/
-         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,1,$set1_reps,$set1_weight)");
-			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,2,$set2_reps,$set2_weight)");
-			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($new_set->exercise_id,$new_set->routine_id,3,$set3_reps,$set3_weight)");
+         	$database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
+
+			 $total_exercises=$user->find_last_exercise($addexercise->id);
+
+			 $q=0;
+			 foreach ($total_exercises as $exercise_number)
+			 {
+			 		echo $q;
+					$b=$exercise_number->id;
+					if($b > $q)
+					{
+						$q=$b;
+					}
+
+			}
+
+         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,1,$set1_reps,$set1_weight)");
+			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
+			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
 			 redirect_to("add_routine_exercise.php?id=$a");
 			 /*
 			 $total_routines=$user->find_last_routine();
@@ -167,9 +183,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h2>Exercise Agenda</h2>
    	<?php
    			echo "<p>Workout: ". $addexercise->name . "<br/>";
-   			echo $addtype->type."<br>";
+   			//echo $addtype->type."<br>";
 
-   			$actual_name=Types::find_by_id($addtype->type);
+   			$actual_name=Types::find_by_id($addtype);
 
    			echo $actual_name->name;
 
@@ -202,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Agenda</button>";
 		   	echo "</form>";
-   			echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$addtype->id' role='button'>Back to Exercise</a></p>";
+   			echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$addexercise->id' role='button'>Back to Exercise</a></p>";
    			/*
 			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
 			echo "<p>ID: ". $addexercise->id . "<br/>";
@@ -213,6 +229,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
    	?>
+
+
+
 
     </div> <!-- /container -->
 

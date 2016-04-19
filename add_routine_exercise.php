@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $type_input->routine_id = $addexercise->id;
             $type_input->type = $answer;
 
-         	$database->query("INSERT INTO `wb_exercise`(`routine_id`, type) VALUES ($type_input->routine_id,'$type_input->type')");
+         	//$database->query("INSERT INTO `wb_exercise`(`routine_id`, type) VALUES ($type_input->routine_id,'$type_input->type')");
 
 			 $total_exercises=$user->find_last_exercise($addexercise->id);
 
@@ -83,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			echo $q;
 			echo $addexercise->id;
 			$a=$type_input->routine_id;
-			 redirect_to("add_exercise_set.php?rout_id=".$a."&ex_id=".$q);
+			echo $a;
+			 redirect_to("add_exercise_set.php?rout_id=".$a."&type_id=".$answer);
 
 }
 ?>
@@ -185,9 +186,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "</select>";
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Exercise</button>";
-		   	echo "<p><a class='btn btn-default' href='view_routine.php?id=$addexercise->id' role='button'>Back to Routine</a></p>";
-		   	echo "</form>";
 
+		   	echo "</form>";
+			echo "<p><a class='btn btn-default' href='view_routine.php?id=$addexercise->id' role='button'>Back to Routine</a></p>";
 
    	?>
 
