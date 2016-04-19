@@ -3,7 +3,7 @@ require_once(LIB_PATH.DS."database.php");
 
 class Routine extends DatabaseObject {
    	protected static $table_name = "wb_routine";
-    protected static $db_fields = array('id','user_id','name','description','mon', 'tues','wed','thurs','fri','sat','sun');
+    protected static $db_fields = array('id','user_id','name','description','mon', 'tues','wed','thurs','fri','sat','sun','start_date','end_date');
     public $id;
     public $user_id;
     public $name;
@@ -15,6 +15,8 @@ class Routine extends DatabaseObject {
     public $fri;
     public $sat;
     public $sun;
+    public $start_date;
+    public $end_date;
 /*
 	 public function initialize(){
         if($this->active == 1){
