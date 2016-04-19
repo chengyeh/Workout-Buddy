@@ -7,6 +7,12 @@ class Exercises extends DatabaseObject {
     public $id;
     public $routine_id;
     public $type;
+	
+	public function get_sets(){
+    	$sql = "SELECT * FROM wb_exercise_set WHERE exercise_id=".$this->id. " ORDER BY 'order' ASC";
+    	$sets_object_array = Set::find_by_sql($sql);
+    	return $sets_object_array;
+    }
 
 /*
 	 public function initialize(){

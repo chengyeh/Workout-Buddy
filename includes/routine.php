@@ -15,6 +15,13 @@ class Routine extends DatabaseObject {
     public $fri;
     public $sat;
     public $sun;
+	
+    public function get_exercises(){
+    	$sql = "SELECT * FROM wb_exercise WHERE routine_id=".$this->id. " ORDER BY id ASC";
+    	$exercises_object_array = Exercises::find_by_sql($sql);
+    	return $exercises_object_array;
+    }
+	
 /*
 	 public function initialize(){
         if($this->active == 1){
