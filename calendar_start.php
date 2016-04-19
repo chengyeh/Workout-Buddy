@@ -20,10 +20,17 @@ $showday = preg_replace('#[^0-9]#i','',$showday);
 //Determine if current month/year is same as
 //show claendar current month/year 
 $date = $showyear."-" .$showmonth;
+
+//Set default time zone to central standard time
+date_default_timezone_set("America/Chicago");
+
+//Today's date year/month 
 $today = date("Y-m");
 
+//Today's date calendar date
 $day = date("d");
 
+//Determine if month same as calendar show month 
 if($date == $today){
 	$isCurrentMonth = true;
 }
