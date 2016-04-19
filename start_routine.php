@@ -1,7 +1,7 @@
 <?php
 /**
- * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
- *
+ * When User clicks start, all exercises of the routine and the sets belong to it are queried from the database and printed in a table.
+ * 
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -12,24 +12,55 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
 
-//If the ID field is empty return the user to profile page
+//If the id field is empty return the user to profile page
 if (empty($_GET['id'])){
 	$session->message("No group ID was provided.");
 	redirect_to('profile.php');
 }
 
-//Create Exercise object from ID in the URL
-$rout_show = Routine::find_by_id($_GET['id']);
-if(!$rout_show){
-	$session->message("Unable to be find group.");
+//Create Routine object from id in the URL 
+$routine = Routine::find_by_id($_GET['id']);
+if(!$routine){
+	$session->message("Unable to be find routine.");
 	redirect_to('profile.php');
 }
 
+//Create User object for routine owner
+$routine_owner = User::find_by_id($routine->user_id);
 
+$routine_exercises = $routine->get_exercises();
 ?>
 <?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+    
+    $errors = array();
 
-
+    //Trim all the incoming data:
+    $trimmed = array_map('trim', $_POST);
+    
+    date_default_timezone_set('America/Chicago');
+    $dt = new DateTime();
+    $tz = new DateTimeZone('America/Chicago');
+    
+    for($i = 1; $i <= $trimmed['sets_length']; $i++)
+    {
+        $log = new Log();
+        $log->user_id = $user->id;
+        $log->routine_id = $routine->id;
+        $log->exercise_id = $trimmed['exercise_id'];
+        $log->exercise_type_id = $trimmed['exercise_type'];
+        $log->set_id = $trimmed['set'.$i.'_id'];
+        $log->reps = $trimmed['set'.$i.'_rep'];
+        $log->weight = $trimmed['set'.$i.'_weight'];
+        $log->date = $dt->format('m-d-Y');
+        $log->time = $dt->format('H:i:s');
+        
+        $log->create();
+    }
+ 
+    //Redirect to profile page
+    // redirect_to("view_routine.php?id={$routine->id}");   
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +74,19 @@ if(!$rout_show){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title><?php echo $exercise1->x_description; ?></title>
+    <title>Fixed Top Navbar Example for Bootstrap</title>
+    
+    <!-- temp style -->
+    <style type="text/css">
+    table, td{
+    	border: 1px solid black;
+    	text-align: center;
+    }
+    
+    input{
+        width: 30%;
+    }
+	</style>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -99,66 +142,55 @@ if(!$rout_show){
               </ul>
             </li>
           </ul>
-
+          
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
         </div><!--/.nav-collapse -->
       </div>
-
+      
     </nav>
 
     <div class="container">
 
-    	<h2>Workout Info</h2>
-    	<?php
-    		echo "<p>Name: ". $rout_show->name . "<br/>";
-			echo "<p>Description: ". $rout_show->description . "<br/>";
-			echo "This workout is done on: "."<br>";
-			if($rout_show->mon==1)
-			{
-				echo "Monday"."<br>";
-			}
-			else if($rout_show->tues==1)
-			{
-				echo "Tuesday"."<br>";
-			}
-			else if($rout_show->wed==1)
-			{
-				echo "Wednesday"."<br>";
-			}
-			else if($rout_show->thurs==1)
-			{
-				echo "Thursday"."<br>";
-			}
-			else if($rout_show->fri==1)
-			{
-				echo "Friday"."<br>";
-			}
-			else if($rout_show->sat==1)
-			{
-				echo "Saturday"."<br>";
-			}
-			else if($rout_show->sun==1)
-			{
-				echo "Sunday"."<br>";
-			}
+    <!-- Main component for a primary marketing message or call to action -->
+    
+  	<?php
+      	$exercise_number = 1;
+      	foreach($routine_exercises as $exercise)
+    	{      	    
+    		$type = Types::find_by_id($exercise->type);
+    		$sets = $exercise->get_sets();
+            $sets_length = count($sets);
+            $set_number = 1;
 
-			 $total_exercises=$user->find_last_exercise($rout_show->id);
+    		echo "<form action='#' method='POST'>";
+            echo "<input type='hidden' name='exercise_id' value='{$exercise->id}'>";
+            echo "<input type='hidden' name='exercise_type' value='{$type->id}'>";
+            echo "<input type='hidden' name='sets_length' value='{$sets_length}'>";
+    		echo "<table><tr><td></td><td>Name</td><td>Set</td><td>Reps</td><td>Weight</td></tr><tr><td rowspan='3'><img src='images/{$type->image_filename}' width='30%' height='30%'></td><td rowspan='3'>{$type->name}</td>";        		
+    		foreach($sets as $set)
+    		{
+    		    echo "<input type='hidden' name='set{$set_number}_id' value='{$set->id}'>";
+    			if($set->order == 1)
+    			{
+    				echo "<td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'>/{$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'>/{$set->weight}</td></tr>";
+    			}
+    			else{
+    				echo "<tr><td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'>/{$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'>/{$set->weight}</td></tr>";
+    			}
+    			
+                $set_number++;
+    		}
+    		echo "</table>";
+    		echo "<button type='submit' name='next' class='btn btn-primary'>NEXT</button></form><br>";
+            
+            $exercise_number++;
+    	}	
+  	?>
+  	
+  	
 
-			 foreach ($total_exercises as $exercise_number)
-			 {
-			 		//echo $exercise_number->id;
-			 		$display_type = Types::find_by_id($exercise_number->id);
-					echo $rout_show->id;
-					echo "<tr><td><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>".$display_type->name."</a></td>";
-
-			 }
-
-    	?>
-    	<p><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
-    	<p><a class="btn btn-default" href="profile.php" role="button">Go Back to Home</a></p>
-
-   </div> <!-- /container -->
+    </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript
