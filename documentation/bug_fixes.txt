@@ -1,0 +1,2 @@
+1. In view_routine.php, fixed the "else if" to "if" for days of the week worked out
+2. In view_routine.php, fixed the total_exercises to display the type of workout done correctly
