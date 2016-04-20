@@ -10,6 +10,26 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //Create User object
 $user = User::find_by_id($session->user_id);
 ?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+  $errors = array();
+
+  // Trim all the incoming data:
+	$trimmed = array_map('trim', $_POST);
+
+		// Add the group to the database:
+		$event = new Event_Calendar();
+		$event->user_id = $database->escape_value($trimmed['user_id']);
+      	$event->name = $database->escape_value($trimmed['event_name']);
+		$event->description = $database->escape_value($trimmed['event_name']);
+      	$event->event_date= $database->escape_value($trimmed['event_date'])." ". $database->escape_value($trimmed['event_time']);
+      	
+      	$event->create();
+
+      	//Redirect to profile page
+      	redirect_to("show_calendar.php");
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +64,8 @@ $user = User::find_by_id($session->user_id);
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   	<link href="dist/css/calendar.css" rel="stylesheet" type="text/css" media="all">
-	<script type="text/javascript" src="js/calendar.js"></script> 
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  	<link rel="stylesheet" type="text/css" href="dist/css/jquery.timepicker.css">
   </head>
 
   <body>
@@ -105,16 +126,46 @@ $user = User::find_by_id($session->user_id);
     </nav>
 
     <div class="container">
-		<div id="calendar-wrap">
-			<div id="showCalendar"></div>
-			<div id="overlay">
-				<div id="events"></div>
+	<div class="col-xs-12 col-sm-6 col-md-8">
+	<h2>Add Event</h2>
+	<form action="#" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
+	
+		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Event Name</label>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Event Name" name="event_name" required autofocus>
+		</fieldset>
+  		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Event Discription</label>
+		   <textarea name="event_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Discription"rows="4" cols="50" required></textarea>
+		</fieldset>
+		<div class="panel panel-default">
+  		<div class="panel-body">
+		<fieldset class="form-group">
+		    <div class="form-inline">
+			<div class="form-group">
+			    <label for="exampleInputPassword1">Event Date</label>
+			    	<div class="input-group">
+			    	<input type="text" id="datepicker" class="form-control" name="event_date">
+			    	 <div class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
+			    	</div>
 			</div>
 			&nbsp&nbsp
-			<div>
-				<p><a class="btn btn-default" href="add_calendar_event.php" role="button">Add Event</a></p>
+			<div class="form-group">
+			    <label for="exampleInputPassword1">Event Time</label>
+			    	<div class="input-group col-sm-6">
+			    		<input class="hasDatepicker form-control" name="event_time" id="datetimepicker" data-time-format="H:i:s" type="text">
+			    	 <div class="input-group-addon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></div>
+			    	</div>
 			</div>
+			</div>
+		</fieldset>
 		</div>
+		</div>
+		<button type="submit" name="submit" class="btn btn-default">Add Event</button>
+	</form>
+	
+	</div>
 		
     </div> <!-- /container -->
 
@@ -126,5 +177,18 @@ $user = User::find_by_id($session->user_id);
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="js/jquery.timepicker.js"></script>
+    <script>
+		  $(function() {
+		    $( "#datepicker" ).datepicker({
+		    	  dateFormat: "yy-mm-dd"
+		    });
+		  });
+		  $(function() {
+			  $('#datetimepicker').timepicker();
+		  });
+	</script>
 	</body>
 </html>

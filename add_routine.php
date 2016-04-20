@@ -5,6 +5,9 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
+//Set default time zone to central standard time
+date_default_timezone_set("America/Chicago");
+
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
 ?>
@@ -94,9 +97,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$rout->start_date = $database->escape_value($trimmed['start_date']);
 	$rout->end_date = $database->escape_value($trimmed['end_date']);
 	
+	echo $rout->start_date ."<br/>";
+	echo $rout->end_date ."<br/>";
+	
+	$startDate = $rout->start_date;
+	$endDate = $rout->end_date;
+	
 	$rout->create();
 				
 	if ($database->affected_rows() == 1) {
+		//Routine added to the table
+		//Add routine to calendar
+		
+		for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
+			if (date('N', $i) == 1 && $rout->mon == 1) //Monday == 1
+				echo date('l Y-m-d', $i). "<br/>";
+			if (date('N', $i) == 2 && $rout->tues == 1) //Tuesday == 1
+				echo date('l Y-m-d', $i). "<br/>";
+			if (date('N', $i) == 3 && $rout->wed == 1) //Wenesday == 1
+				echo date('l Y-m-d', $i). "<br/>";
+			if (date('N', $i) == 4 && $rout->thurs == 1) //Thursday == 1
+				echo date('l Y-m-d', $i). "<br/>";
+			if (date('N', $i) == 5 && $rout->fri == 1) //Friday == 1
+				echo date('l Y-m-d', $i). "<br/>";
+			if (date('N', $i) == 6 && $rout->sat == 1) //Saturday == 1
+				echo date('l Y-m-d', $i). "<br/>";
+			if (date('N', $i) == 7 && $rout->sun == 1) //Sunday == 1
+				echo date('l Y-m-d', $i). "<br/>";
+		}
+		
 		echo 'Routine created';
 		redirect_to("add_routine_exercise.php?id=".$database->insert_id());
 	} 

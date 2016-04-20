@@ -1,14 +1,48 @@
 <?php
+/**
+ * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ * 
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-
-$number_messages=0;
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+//Create User object for current session user
 $user = User::find_by_id($session->user_id);
+
+//If the ID field is empty return the user to profile page
+if (empty($_GET['id'])){
+	$session->message("No event ID was provided.");
+	redirect_to('show_calendar.php');
+}
+
+//Create Group object from ID in the URL 
+$event = Event_Calendar::find_by_id($_GET['id']);
+if(!$event){
+	$session->message("Unable to be find event.");
+	redirect_to('show_calendar.php');
+}
+	
+?>
+<?php
+/**
+ * Query the database and obtain an array containin all members of the group. 
+ * 
+
+ */
+// if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+//   $errors = array();
+
+//     if(!empty($_POST['delete_group_member']))
+//     {
+//         foreach($_POST['delete_group_member'] as $member_id)
+//         {
+//             $database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group->id . "' AND member_id='" . $member_id . "'");  
+//         } 
+//     }               
+// }
 ?>
 
 <!DOCTYPE html>
@@ -19,10 +53,10 @@ $user = User::find_by_id($session->user_id);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="" >
+    <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Home - <?php echo $user->full_name()?></title>
+    <title><?php echo $event->name; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,7 +66,6 @@ $user = User::find_by_id($session->user_id);
 
     <!-- Custom styles for this template -->
     <link href="dist/css/navbar-fixed-top.css" rel="stylesheet">
-    <link href="dist/css/calendar.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -43,8 +76,6 @@ $user = User::find_by_id($session->user_id);
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  	<link href="dist/css/calendar.css" rel="stylesheet" type="text/css" media="all">
-	<script type="text/javascript" src="js/calendar.js"></script> 
   </head>
 
   <body>
@@ -81,13 +112,13 @@ $user = User::find_by_id($session->user_id);
               </ul>
             </li>
           </ul>
-
+          
 		<ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
             <li>
             	<span>
 	            <?php
-	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$session->user_id);
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
 	            ?>
@@ -97,26 +128,29 @@ $user = User::find_by_id($session->user_id);
 
             <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
             <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
-         </ul>
-
-        </div><!--/.nav-collapse -->
+         </ul>        
+         
+         </div><!--/.nav-collapse -->
       </div>
-
+      
     </nav>
 
     <div class="container">
-		<div id="calendar-wrap">
-			<div id="showCalendar"></div>
-			<div id="overlay">
-				<div id="events"></div>
-			</div>
-			&nbsp&nbsp
-			<div>
-				<p><a class="btn btn-default" href="add_calendar_event.php" role="button">Add Event</a></p>
-			</div>
-		</div>
-		
-    </div> <!-- /container -->
+    	
+    	<h2>Group Info</h2>
+    	<?php 
+    	/**
+        * Print out all the details of the event. 
+        * 
+        *
+        */
+    		echo "<p>Event Name : ". $event->name . "<br/>";
+			echo "<p>Event Description : ". $event->description . "<br/>";
+			echo "<p>Event Date/Time : ". $event->event_date . "<br/>";
+    	?>
+	<p><a class='btn btn-default' href='delete_cevent_calendar.php?id=<?php echo $event->id;?>' role='button'>Delete Event</a></p>
+   </div> <!-- /container -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -126,5 +160,5 @@ $user = User::find_by_id($session->user_id);
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
-	</body>
+  </body>
 </html>

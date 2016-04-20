@@ -1,0 +1,14 @@
+Dilesh
+Calendar functionality
+Php Calendar 
+https://www.youtube.com/playlist?list=PLC3FA336653950084
+
+Display date picker widget
+https://jqueryui.com/datepicker/
+
+Inserting events to calendar
+http://stackoverflow.com/questions/7061802/php-function-for-get-all-mondays-within-date-range
+
+time picker
+jonthornton/jquery-timepicker
+https://github.com/jonthornton/jquery-timepicker
