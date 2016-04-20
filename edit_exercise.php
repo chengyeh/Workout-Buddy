@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	$set1_weight=$_POST['set1_weight'];
          	$set2_weight=$_POST['set2_weight'];
          	$set3_weight=$_POST['set3_weight'];
+
          	/*
          	echo $set1_reps;
          	echo "<br>";
@@ -65,6 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	echo "<br>";
          	echo $new_set->routine_id;
          	*/
+         	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
+         	{
+         		echo "Please fill out every blank";
+         	}
+         	else
+         	{
          	$a=1;
          	$b=2;
          	$c=3;
@@ -72,7 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	$database->query("UPDATE `wb_exercise_set` SET `reps`=$set1_reps, `weight`=$set1_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$a." AND routine_id=".$new_set->routine_id);
 			$database->query("UPDATE `wb_exercise_set` SET `reps`=$set2_reps, `weight`=$set2_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$b." AND routine_id=".$new_set->routine_id);
 			$database->query("UPDATE `wb_exercise_set` SET `reps`=$set3_reps, `weight`=$set3_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$c." AND routine_id=".$new_set->routine_id);
-			 //redirect_to("add_routine_exercise.php?id=$a");
+			 redirect_to("view_exercises.php?id=$addtype->id&rout_id=$addexercise->id");
+         	}
+
 			 /*
 			 $total_routines=$user->find_last_routine();
 			 $a=0;
@@ -202,11 +211,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "Reps <input type='text' name='set3_reps'>";
 				echo "Weight <input type='text' name='set3_weight'>";
 				echo "<br>";
-
+				
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-default'>Update Agenda</button>";
 		   	echo "</form>";
-   			echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$addtype->id' role='button'>Back to Exercise</a></p>";
+   			echo "<p><a class='btn btn-default' href='view_exercises.php?id=$addtype->id&rout_id=$addexercise->id' role='button'>Back to Exercise</a></p>";
    			/*
 			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
 			echo "<p>ID: ". $addexercise->id . "<br/>";

@@ -3,10 +3,10 @@ require_once(LIB_PATH.DS."database.php");
 
 class Types extends DatabaseObject {
    	protected static $table_name = "wb_exercise_type";
-    protected static $db_fields = array('id','name');
+    protected static $db_fields = array('id','name','image_filename');
     public $id;
     public $name;
-
+	public $image_filename;
 
    public function show_types()
    {

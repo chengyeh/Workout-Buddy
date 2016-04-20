@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 						$same_group = true;
 					}
 				}
-				//If it's not owned by this user, list its info
+				//List all the groups this user joined but doesn't own
 				if($same_group == false)
 				{
 					$group_joined = Group::find_by_id($group_member_row->group_id);

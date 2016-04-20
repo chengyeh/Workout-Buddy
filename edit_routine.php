@@ -8,136 +8,25 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Set default time zone to central standard time
-date_default_timezone_set("America/Chicago");
-
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
+
+//If the ID field is empty return the user to profile page
+if (empty($_GET['rout_id'])){
+	$session->message("No group ID was provided.");
+	redirect_to('profile.php');
+}
+
+//Create Exercise object from ID in the URL
+$rout_obj_id = Routine::find_by_id($_GET['rout_id']);
+if(!$rout_obj_id){
+	$session->message("Unable to be find group.");
+	redirect_to('profile.php');
+}
+
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-<<<<<<< HEAD
-	$errors = array();
-	
-	//Trim all the incoming data:
-	$trimmed = array_map('trim', $_POST);
-	
-	// Add routine to database:
-	$rout = new Routine();
-	$rout->user_id = $user->id;
-	$rout->name = $database->escape_value($trimmed['routine_name']);
-	$rout->description = $database->escape_value($trimmed['routine_description']);
-	
-	$monday=isset($_POST['mon']);
-	if(empty($monday))
-	{
-		$rout->mon = 0;
-	}
-	else
-	{
-		$rout->mon = 1;
-	}
-	
-	$tuesday=isset($_POST['tues']);
-	if(empty($tuesday))
-	{
-		$rout->tues = 0;
-	}
-	else
-	{
-		$rout->tues = 1;
-	}
-	
-	$wednesday=isset($_POST['wed']);
-	if(empty($wednesday))
-	{
-		$rout->wed = 0;
-	}
-	else
-	{
-		$rout->wed = 1;
-	}
-	
-	$thursday=isset($_POST['thurs']);
-	if(empty($thursday))
-	{
-		$rout->thurs = 0;
-	}
-	else
-	{
-		$rout->thurs = 1;
-	}
-	
-	$friday=isset($_POST['fri']);
-	if(empty($friday))
-	{
-		$rout->fri = 0;
-	}
-	else
-	{
-		$rout->fri = 1;
-	}
-	
-	$saturday=isset($_POST['sat']);
-	if(empty($saturday))
-	{
-		$rout->sat = 0;
-	}
-	else
-	{
-		$rout->sat = 1;
-	}
-	
-	$sunday=isset($_POST['sun']);
-	if(empty($sunday))
-	{
-		$rout->sun = 0;
-	}
-	else
-	{
-		$rout->sun = 1;
-	}
-	
-	$rout->start_date = $database->escape_value($trimmed['start_date']);
-	$rout->end_date = $database->escape_value($trimmed['end_date']);
-	
-	echo $rout->start_date ."<br/>";
-	echo $rout->end_date ."<br/>";
-	
-	$startDate = $rout->start_date;
-	$endDate = $rout->end_date;
-	
-	$rout->create();
-				
-	if ($database->affected_rows() == 1) {
-		//Routine added to the table
-		//Add routine to calendar
-		
-		for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
-			if (date('N', $i) == 1 && $rout->mon == 1) //Monday == 1
-				echo date('l Y-m-d', $i). "<br/>";
-			if (date('N', $i) == 2 && $rout->tues == 1) //Tuesday == 1
-				echo date('l Y-m-d', $i). "<br/>";
-			if (date('N', $i) == 3 && $rout->wed == 1) //Wenesday == 1
-				echo date('l Y-m-d', $i). "<br/>";
-			if (date('N', $i) == 4 && $rout->thurs == 1) //Thursday == 1
-				echo date('l Y-m-d', $i). "<br/>";
-			if (date('N', $i) == 5 && $rout->fri == 1) //Friday == 1
-				echo date('l Y-m-d', $i). "<br/>";
-			if (date('N', $i) == 6 && $rout->sat == 1) //Saturday == 1
-				echo date('l Y-m-d', $i). "<br/>";
-			if (date('N', $i) == 7 && $rout->sun == 1) //Sunday == 1
-				echo date('l Y-m-d', $i). "<br/>";
-		}
-		
-		echo 'Routine created';
-		redirect_to("add_routine_exercise.php?id=".$database->insert_id());
-	} 
-	else { // If it did not run OK.
-		echo 'Routine not created';
-	}
-			
-=======
   $errors = array();
 
   //Trim all the incoming data:
@@ -255,7 +144,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 					$rout->sun = 1;
 				}
-	         	$database->query("INSERT INTO `wb_routine`(`user_id`, name, description, `mon`, `tues`, `wed`, `thurs`, `fri`, `sat`, `sun`) VALUES ($rout->user_id,'$rout->name','$rout->description',$rout->mon,$rout->tues,$rout->wed,$rout->thurs,$rout->fri,$rout->sat,$rout->sun)");
+
+				//$database->query("UPDATE `wb_exercise_set` SET `reps`=$set1_reps, `weight`=$set1_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$a." AND routine_id=".$new_set->routine_id);
+				$database->query("UPDATE `wb_routine` SET `name`='$rout->name', `description`='$rout->description', `mon`=$rout->mon, `tues`=$rout->tues, `wed`=$rout->wed, `thurs`=$rout->thurs, `fri`=$rout->fri, `sat`=$rout->sat, `sun`=$rout->sun WHERE id=".$rout_obj_id->id." AND user_id=".$rout->user_id);
+	         	//$database->query("INSERT INTO `wb_routine`(`user_id`, name, description, `mon`, `tues`, `wed`, `thurs`, `fri`, `sat`, `sun`) VALUES ($rout->user_id,'$rout->name','$rout->description',$rout->mon,$rout->tues,$rout->wed,$rout->thurs,$rout->fri,$rout->sat,$rout->sun)");
 				 /*$routine1=$database->query("SELECT * FROM wb_routine ORDER BY id DESC LIMIT 1");*/
 				 /*$exercises_added=$user->exercises_added();*/
 				 $total_routines=$user->find_last_routine();
@@ -272,13 +164,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 						}
 
 				}
-				echo $a;
-				redirect_to("add_routine_exercise.php?id=$a");
+				//echo $a;
+				redirect_to("view_routine.php?id=$rout_obj_id->id");
             }
 
 
 
->>>>>>> 02837b53ae42a2b782af0758ffc5b443ba614894
 }
 ?>
 
@@ -394,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	echo "<input type='checkbox' name='sun' value='0'>";
 	echo "<br>";
 
-   	echo "<button type='submit' name='submit' class='btn btn-default'>Submit Routine</button>";
+   	echo "<button type='submit' name='submit' class='btn btn-default'>Update Routine</button>";
    	echo "</form>";
    	?>
 
