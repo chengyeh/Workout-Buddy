@@ -20,106 +20,139 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
             // Add the group member to the database:
-            $rout = new Routine();
-            $rout->user_id = $user->id;
-            $rout->name = $trimmed['routine_name'];
-            $rout->description = $trimmed['routine_description'];
-         	$monday=isset($_POST['mon']);
-         	if(empty($monday))
-			{
 
-				$rout->mon = 0;
-			}
-			else
-			{
+            $name=$_POST['routine_name'];
+            $desc=$_POST['routine_description'];
+            $monday=isset($_POST['mon']);
+            $tuesday=isset($_POST['tues']);
+            $wednesday=isset($_POST['wed']);
+            $thursday=isset($_POST['thurs']);
+            $friday=isset($_POST['fri']);
+            $saturday=isset($_POST['sat']);
+            $sunday=isset($_POST['sun']);
+            if(empty($name) || empty($desc) || (empty($monday) && empty($tuesday) && empty($wednesday) && empty($thursday) && empty($friday) && empty($saturday) && empty($sunday)))
+            {
+            	echo "***Fields Missing***";
+            	if(empty($name))
+            	{
+            		echo "***Fill in Name***";
+            	}
 
-				$rout->mon = 1;
-			}
-			$tuesday=isset($_POST['tues']);
-         	if(empty($tuesday))
-			{
+            	if(empty($desc))
+            	{
+            		echo "***Fill in Description***";
+            	}
 
-				$rout->tues = 0;
-			}
-			else
-			{
+            	if(empty($monday) && empty($tuesday) && empty($wednesday) && empty($thursday) && empty($friday) && empty($saturday) && empty($sunday))
+            	{
+            		echo "***Fill in Day(s) to Work out***";
+            	}
+            }
+            else
+            {
+	            $rout = new Routine();
+	            $rout->user_id = $user->id;
+	            $rout->name = $trimmed['routine_name'];
+	            $rout->description = $trimmed['routine_description'];
+	            if(empty($monday))
+				{
 
-				$rout->tues = 1;
-			}
-			$wednesday=isset($_POST['wed']);
-         	if(empty($wednesday))
-			{
+					$rout->mon = 0;
+				}
+				else
+				{
 
-				$rout->wed = 0;
-			}
-			else
-			{
+					$rout->mon = 1;
+				}
 
-				$rout->wed = 1;
-			}
-			$thursday=isset($_POST['thurs']);
-         	if(empty($thursday))
-			{
+	         	if(empty($tuesday))
+				{
 
-				$rout->thurs = 0;
-			}
-			else
-			{
+					$rout->tues = 0;
+				}
+				else
+				{
 
-				$rout->thurs = 1;
-			}
-			$friday=isset($_POST['fri']);
-         	if(empty($friday))
-			{
+					$rout->tues = 1;
+				}
 
-				$rout->fri = 0;
-			}
-			else
-			{
+	         	if(empty($wednesday))
+				{
 
-				$rout->fri = 1;
-			}
-			$saturday=isset($_POST['sat']);
-         	if(empty($saturday))
-			{
+					$rout->wed = 0;
+				}
+				else
+				{
 
-				$rout->sat = 0;
-			}
-			else
-			{
+					$rout->wed = 1;
+				}
 
-				$rout->sat = 1;
-			}
-			$sunday=isset($_POST['sun']);
-         	if(empty($sunday))
-			{
+	         	if(empty($thursday))
+				{
 
-				$rout->sun = 0;
-			}
-			else
-			{
+					$rout->thurs = 0;
+				}
+				else
+				{
 
-				$rout->sun = 1;
-			}
-         	$database->query("INSERT INTO `wb_routine`(`user_id`, name, description, `mon`, `tues`, `wed`, `thurs`, `fri`, `sat`, `sun`) VALUES ($rout->user_id,'$rout->name','$rout->description',$rout->mon,$rout->tues,$rout->wed,$rout->thurs,$rout->fri,$rout->sat,$rout->sun)");
-			 /*$routine1=$database->query("SELECT * FROM wb_routine ORDER BY id DESC LIMIT 1");*/
-			 /*$exercises_added=$user->exercises_added();*/
-			 $total_routines=$user->find_last_routine();
-			 /*foreach ($exercises_added as $exercise_row)*/
-			 $a=0;
+					$rout->thurs = 1;
+				}
 
-			 foreach ($total_routines as $routine_number)
-			 {
+	         	if(empty($friday))
+				{
 
-					$b=$routine_number->id;
-					if($b > $a)
-					{
-						$a=$b;
-					}
+					$rout->fri = 0;
+				}
+				else
+				{
 
-			}
-			echo $a;
-			redirect_to("add_routine_exercise.php?id=$a");
+					$rout->fri = 1;
+				}
+
+	         	if(empty($saturday))
+				{
+
+					$rout->sat = 0;
+				}
+				else
+				{
+
+					$rout->sat = 1;
+				}
+
+	         	if(empty($sunday))
+				{
+
+					$rout->sun = 0;
+				}
+				else
+				{
+
+					$rout->sun = 1;
+				}
+	         	$database->query("INSERT INTO `wb_routine`(`user_id`, name, description, `mon`, `tues`, `wed`, `thurs`, `fri`, `sat`, `sun`) VALUES ($rout->user_id,'$rout->name','$rout->description',$rout->mon,$rout->tues,$rout->wed,$rout->thurs,$rout->fri,$rout->sat,$rout->sun)");
+				 /*$routine1=$database->query("SELECT * FROM wb_routine ORDER BY id DESC LIMIT 1");*/
+				 /*$exercises_added=$user->exercises_added();*/
+				 $total_routines=$user->find_last_routine();
+				 /*foreach ($exercises_added as $exercise_row)*/
+				 $a=0;
+
+				 foreach ($total_routines as $routine_number)
+				 {
+
+						$b=$routine_number->id;
+						if($b > $a)
+						{
+							$a=$b;
+						}
+
+				}
+				echo $a;
+				redirect_to("add_routine_exercise.php?id=$a");
+            }
+
+
+
 }
 ?>
 
