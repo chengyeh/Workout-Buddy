@@ -3,4 +3,5 @@
 3. In add_exercise_set.php and add_exercise.php are combined in add_exercise_set.php
 4. In edit_exercise.php the going back and update feature are fixed
 5. In edit_exercise.php forces the user to fill in every blank
-6. In add_exercise_set forces the user to fill in every blank
+6. In add_exercise_set.php forces the user to fill in every blank
+7. In add_routine.php forces user input for all blanks
