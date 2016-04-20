@@ -65,7 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	echo "<br>";
          	echo $new_set->routine_id;
          	*/
-         	$database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
+         	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
+         	{
+         		echo "***Fields Missing***";
+         	}
+         	else
+         	{
+         		$database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
 
 			 $total_exercises=$user->find_last_exercise($addexercise->id);
 
@@ -85,6 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
 			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
 			 redirect_to("add_routine_exercise.php?id=$a");
+         	}
+
 			 /*
 			 $total_routines=$user->find_last_routine();
 			 $a=0;
