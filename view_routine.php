@@ -165,6 +165,7 @@ if(!$rout_show){
 					echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$rout_show->id' role='button'>Add Exercise</a></p>"
 
     	?>
+			<p><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
     	<p><a class="btn btn-default" href="profile.php" role="button">Go Back to Home</a></p>
 
    </div> <!-- /container -->
