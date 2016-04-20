@@ -5,6 +5,9 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
+//Set default time zone to central standard time
+date_default_timezone_set("America/Chicago");
+
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
 ?>
@@ -97,13 +100,78 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $rout->create();
                
     if ($database->affected_rows() == 1) {
-        echo 'Routine created';
+        //Routine created
+        //Add calendar events
+		for ($i = strtotime($rout->start_date); $i <= strtotime($rout->end_date); $i = strtotime('+1 day', $i)) {
+			
+			if ($rout->mon==1 && date('N', $i) == 1){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+		      	$event->name = $rout->name;
+				$event->description = $rout->description;
+		      	$event->event_date= date('Y-m-d', $i);
+		      	$event->create();
+			}
+				
+			if ($rout->tues==1 && date('N', $i) == 2){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->wed==1 && date('N', $i) == 3){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->thurs==1 && date('N', $i) == 4){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->fri==1 && date('N', $i) == 5){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->sat==1 && date('N', $i) == 6){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->sun==1 && date('N', $i) == 7){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+		}
         redirect_to("add_routine_exercise.php?id=".$database->insert_id());
     }
     else { // If it did not run OK.
         echo 'Routine not created';
     }
-           
 }
 ?>
 
