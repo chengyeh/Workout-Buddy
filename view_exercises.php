@@ -1,6 +1,6 @@
 <?php
 /**
- * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ * When User clicks on an exercise, display number of sets, reps, and weight of it 
  *
  */
 error_reporting(E_ALL);
@@ -12,13 +12,13 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
 
-//If the ID field is empty return the user to profile page
+//If the id field is empty return the user to profile page
 if (empty($_GET['id'])){
 	$session->message("No group ID was provided.");
 	redirect_to('profile.php');
 }
 
-//Create Exercise object from ID in the URL
+//Create Exercise object from id in the URL
 $rout_obj = Routine::find_by_id($_GET['rout_id']);
 $ex_obj = Exercises::find_by_id($_GET['id']);
 if(!$rout_obj){
@@ -44,7 +44,7 @@ if(!$rout_obj){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title><?php echo $exercise1->x_description; ?></title>
+    <title></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">

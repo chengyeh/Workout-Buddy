@@ -23,6 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");
 		}
 	}
+	
+	if(!empty($_POST['delete_routine']))
+	{
+		foreach($_POST['delete_routine'] as $routine_id)
+		{
+			$routine = Routine::find_by_id($routine_id);
+			$routine->delete();
+			$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $routine_id . "'");
+			$database->query("DELETE FROM wb_exercise_set WHERE routine_id = '" . $routine_id . "'");
+		}
+	}
 
 }
 ?>
@@ -148,13 +159,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		}
 	?>
 	</form>
-
+	
 	<h2>Groups Joined</h2>
 	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
 	<?php
 		if(!empty($groups_joined))
 		{
-			echo "<table class='table'><tr><th>Name</th><th class='text-center'>Status</th></tr>";
+			echo "<table class='table'><tr><th>Name</th><th></th><th class='text-center'>Status</th></tr>";
 			foreach ($groups_joined as $group_member_row){
 				$same_group = false;
 				//Check if the joined group is the one this user owns
@@ -170,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				{
 					$group_joined = Group::find_by_id($group_member_row->group_id);
 					echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
-					echo "<td class='text-center'>{$group_joined->group_status}</td>";
+					echo "<td></td><td class='text-center'>{$group_joined->group_status}</td></tr>";
 				}
 			}
 			echo "</table>";
@@ -182,21 +193,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   <br>
 	<h2>Exercise Routines</h2>
 	<p><a class="btn btn-default" href="add_routine.php" role="button">Add Routine</a></p>
+	<form action="#" method="post">
 	<?php	
 		$user_routine_objects = $user->exercise_routines_added();
 		
 		if(!empty($user_routine_objects))
 		{
-			echo "<table class='table'><tr><th>Routine</th>";
+			echo "<table class='table'><tr><th>Routine</th><th></th><th class='text-center'>Delete</th></tr>";
 			
 			foreach ($user_routine_objects as $routine_object){
-				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
+				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td>";
+				echo "<td></td><td style='text-align:center'><input type='checkbox' name='delete_routine[]' value='" . $routine_object->id . "'></td></tr>";
 			}
-			echo "</table>";
+			echo "<tr><td></td><td></td><td class='text-center'><button type='submit' class='btn btn-default' name ='delete'>Delete</button></td></tr></table>";
 		}else{
 			echo  "<p>No Routines</p>";
 		}
 	?>
+	</form>
+	
     </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript
