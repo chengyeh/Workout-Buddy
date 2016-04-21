@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="Kuei Chu" >
+    <meta name="author" content="" >
     <link rel="icon" href="../../favicon.ico">
 
     <title>Home - <?php echo $user->full_name()?></title>
@@ -96,15 +96,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           </ul>
 
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span ><a href="inbox.php">Inbox </a>&nbsp
+            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
+            <li>
+            	<span>
+	            <?php
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+	            	$number_messages = $database->num_rows($result_set);
+	            	echo "<span class='badge'>{$number_messages}</span>";
+	            ?>
+	            <a href="inbox.php">Inbox</a>
+	            </span>&nbsp&nbsp
+            </li>
 
-            <?php
-            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
-            	$number_messages = $database->num_rows($result_set);
-            	echo "<span class='badge'>{$number_messages}</span>";
-            ?>
-
-            &nbsp &nbsp &nbsp &nbsp<span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
+            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
+         </ul>
 
         </div><!--/.nav-collapse -->
       </div>
@@ -127,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<?php
 		$groups_owned = $user->find_groups();
 		$groups_joined = $user->groups_joined();
-		$exercises_added=$user->exercises_added();
+		$exercises_added=$user->exercise_routines_added();
 		if(!empty($groups_owned)){
 			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
 				//List all the groups this user owns
@@ -159,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 						$same_group = true;
 					}
 				}
-				//If it's not owned by this user, list its info
+				//List all the groups this user joined but doesn't own
 				if($same_group == false)
 				{
 					$group_joined = Group::find_by_id($group_member_row->group_id);
@@ -173,24 +179,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		}
 	?>
 
-	<br>
-	<h2>Exercises</h2>
-	<p><a class="btn btn-default" href="add_exercise.php" role="button">Add Exercise</a></p>
-	<?php
-		if(!empty($exercises_added))
+  <br>
+	<h2>Exercise Routines</h2>
+	<p><a class="btn btn-default" href="add_routine.php" role="button">Add Routine</a></p>
+	<?php	
+		$user_routine_objects = $user->exercise_routines_added();
+		
+		if(!empty($user_routine_objects))
 		{
-			echo "<table class='table'><tr><th>Exercise</th><th class='text-center'>Type</th></tr>";
-			foreach ($exercises_added as $exercise_row){
-
-
-
-					echo "<tr><td>".$exercise_row->x_description."</a></td>";
-					echo "<td class='text-center'>{$exercise_row->x_type}</td>";
-
+			echo "<table class='table'><tr><th>Routine</th>";
+			
+			foreach ($user_routine_objects as $routine_object){
+				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
 			}
 			echo "</table>";
 		}else{
-			echo  "No groups<br/>";
+			echo  "<p>No Routines</p>";
 		}
 	?>
     </div> <!-- /container -->

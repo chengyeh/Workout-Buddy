@@ -25,10 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $exer->x_description = $trimmed['x_description'];
          	$exer->x_type = $trimmed['type'];
          	$exer->reps = $trimmed['reps'];
+         	$challenge=isset($_POST['chlng_check']);
+         	if(empty($challenge))
+			{
 
-         	$exer->trigger = 0;
+				$exer->trigger = 0;
+			}
+			else
+			{
 
-            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',0,$exer->reps)");
+				$exer->trigger = 1;
+			}
+
+
+            $database->query("INSERT INTO `wb_exercises`(`x_user_id`, x_description, x_type, `trigger`, `reps`) VALUES ($exer->x_user_id,'$exer->x_description','$exer->x_type',$exer->trigger,$exer->reps)");
+			if($exer->trigger==1)
+			{
+				redirect_to('add_goal.php');
+			}
 }
 ?>
 
@@ -126,6 +140,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	echo "<br>";
 	echo "<input type='text' name='x_description'>";
 	echo "<br>";
+	echo "<label>Make Challenge</label>";
+	echo "<input type='checkbox' name='chlng_check' value='0'>";
+	echo "<br>";
+
    	echo "<button type='submit' name='submit' class='btn btn-default'>Submit</button>";
    	echo "</form>";
    	?>

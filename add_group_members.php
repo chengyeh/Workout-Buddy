@@ -109,9 +109,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </li>
           </ul>
           
-          <ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
-        </div><!--/.nav-collapse -->
+<ul class="nav navbar-nav navbar-right" id="navbar-status">
+            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
+            <li>
+            	<span>
+	            <?php
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+	            	$number_messages = $database->num_rows($result_set);
+	            	echo "<span class='badge'>{$number_messages}</span>";
+	            ?>
+	            <a href="inbox.php">Inbox</a>
+	            </span>&nbsp&nbsp
+            </li>
+
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
+            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
+         </ul>
+         
+         </div><!--/.nav-collapse -->
       </div>
       
     </nav>
@@ -189,77 +204,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <html>
-    <head>
-        <title><?php echo $group->group_name ?></title>
-    </head>
-    <body>
-        <h1>Add Members to Group</h1>
-        <p><a href="profile.php">Profile</a>|<a href="view_group.php?id=<?php echo $group->id ?>">View Group</a>|<a href="logout.php">logout</a></p>
-        <h2>User Info</h2>
-        <?php 
-            echo "<p>User Name: ". $user->full_name() . "<br/>";
-            echo "<p>User Id: " . $session->user_id . "</p>";
-        ?>
-        
-        <h2>User Group Info</h2>
-        <?php 
-            echo "<p>Grop Name: ". $group->group_name . "<br/>";
-            echo "<p>Grop Id: ". $group->id . "<br/>";
-        ?>
-        
-        <h2>User Group Add Members</h2>
-        <?php
-        	//Get all existing users into array  
-            $users = User::find_all();
-			//Get all group members id
-            $group_member_id_array = $group->get_member_id_array();
-            if(!empty($users)){
-                echo "<form action='#' method='post'><table>";
-                foreach ($users as $user){
-                		//Do not display current user
-                        if($user->id != $session->user_id)
-                        {
-                            $id_exist = false;
-							//If the user is already in the group, do not display his/her name
-                            for($i = 0; $i < count($group_member_id_array); $i++)
-                            {
-                                if($user->id == $group_member_id_array[$i]['member_id'])
-                                {
-                                    $id_exist = true;
-                                }
-                            }
-							//Display the user who is not in the group
-                            if($id_exist == false)
-                            {
-                                echo "<tr><td><input type='checkbox' name='user_id_array[]' value='{$user->id}'></td>";
-                                echo "<td><a href='view_profile.php?id={$user->id}'>".  $user->full_name() ."</a></td></tr>";
-                            } 
-                        }   
-                }
-                echo "</table>";
-                echo "<button type='submit' name='add_members'>Add Member(s)</button></form>";
-            }else{
-                echo  "No users<br/>";
-            }   
-        ?>
-    </body>
-</html> -->
