@@ -19,7 +19,7 @@ $user = User::find_by_id($session->user_id);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="Kuei Chu" >
+    <meta name="author" content="" >
     <link rel="icon" href="../../favicon.ico">
 
     <title>Home - <?php echo $user->full_name()?></title>
@@ -110,7 +110,12 @@ $user = User::find_by_id($session->user_id);
 			<div id="overlay">
 				<div id="events"></div>
 			</div>
+			&nbsp&nbsp
+			<div>
+				<p><a class="btn btn-default" href="add_calendar_event.php" role="button">Add Event</a></p>
+			</div>
 		</div>
+		
     </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript

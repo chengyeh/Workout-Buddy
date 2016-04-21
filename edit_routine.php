@@ -10,17 +10,31 @@ date_default_timezone_set("America/Chicago");
 
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
+
+//If the ID field is empty return the user to profile page
+if (empty($_GET['rout_id'])){
+	$session->message("No group ID was provided.");
+	redirect_to('profile.php');
+}
+
+//Create Routine object from ID in the URL
+$rout = Routine::find_by_id($_GET['rout_id']);
+if(!$rout){
+	$session->message("Unable to be find routine.");
+	redirect_to('profile.php');
+}
 ?>
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $errors = array();
    
+    $database->query("DELETE FROM wb_event_calendar WHERE user_id='{$user->id}' AND name='{$rout->name}'");
+    
     //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
    
     // Add routine to database:
-    $rout = new Routine();
-    $rout->user_id = $user->id;
     $rout->name = $database->escape_value($trimmed['routine_name']);
     $rout->description = $database->escape_value($trimmed['routine_description']);
    
@@ -97,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $rout->start_date = $database->escape_value($trimmed['start_date']);
     $rout->end_date = $database->escape_value($trimmed['end_date']);
    
-    $rout->create();
+    $rout->update();
                
     if ($database->affected_rows() == 1) {
         //Routine created
@@ -200,16 +214,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="assets/js/ie-emulation-modes-warning.js"></script>
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-   
+    
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
   </head>
- 
+
   <body>
 
     <!-- Fixed navbar -->
@@ -245,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </li>
           </ul>
 
-      <ul class="nav navbar-nav navbar-right" id="navbar-status">
+		<ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
             <li>
                 <span>
@@ -261,7 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
             <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
          </ul>
-        
+         
          </div><!--/.nav-collapse -->
       </div>
 
@@ -270,57 +284,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h2>Add Routine</h2>
-       <form form action="add_routine.php" method="POST">
+    <h2>Edit Routine</h2>
+       <form form action="edit_routine.php?rout_id=<?php echo $_GET['rout_id']; ?>" method="POST">
       <div class="form-group">
         <label for="exampleInputEmail1">Name</label>
-        <input type="text" name="routine_name" class="form-control" id="exampleInputEmail1" placeholder="Routine Name" required autofocus>
+        <input type="text" name="routine_name" class="form-control" id="exampleInputEmail1" placeholder="Routine Name" value="<?php echo $rout->name; ?>" required autofocus>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Description</label>
-        <textarea name="routine_description" class="form-control" rows="3" placeholder="Routine Description"></textarea>
+        <textarea name="routine_description" class="form-control" rows="3" placeholder="Routine Description"><?php echo $rout->description; ?></textarea>
       </div>
       <div class="panel panel-default">
       <div class="panel-body">
           <label>Select day(s) for routine</label>
           <div class="checkbox">
             <label>
-                <input type="checkbox" name="sun" value="0">
+                <input type="checkbox" name="sun" value="0" <?php if($rout->sun == 1) echo "checked"; ?>>
                 Sunday
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="mon" value="0">
+                <input type="checkbox" name="mon" value="0" <?php if($rout->mon == 1) echo "checked"; ?>>
                 Monday
             </label>
         </div>
         <div class="checkbox">
             <label>   
-                <input type="checkbox" name="tues" value="0">
+                <input type="checkbox" name="tues" value="0" <?php if($rout->tues == 1) echo "checked"; ?>>
                 Tuesday
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="wed" value="0">
+                <input type="checkbox" name="wed" value="0" <?php if($rout->wed == 1) echo "checked"; ?>>
                 Wednesday
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="thurs" value="0">
+                <input type="checkbox" name="thurs" value="0" <?php if($rout->thurs == 1) echo "checked"; ?>>
                 Thursday
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="fri" value="0">
+                <input type="checkbox" name="fri" value="0" <?php if($rout->fri == 1) echo "checked"; ?>>
                 Friday
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="sat" value="0">
+                <input type="checkbox" name="sat" value="0" <?php if($rout->sat == 1) echo "checked"; ?>>
                 Saturday
             </label>
         </div>
@@ -335,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <div class="form-group">
             <label for="exampleInputPassword1">Start Date</label>
                 <div class="input-group">
-                <input type="text" id="datepicker1" class="form-control" name="start_date">
+                <input type="text" id="datepicker1" class="form-control" name="start_date" value="<?php echo $rout->start_date; ?>">
                  <div class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
                 </div>
         </div>
@@ -343,7 +357,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <div class="form-group">
             <label for="exampleInputPassword1">End Date</label>
                 <div class="input-group">
-                <input type="text" id="datepicker2" class="form-control" name="end_date">
+                <input type="text" id="datepicker2" class="form-control" name="end_date" value="<?php echo $rout->end_date; ?>">
                  <div class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
                 </div>
         </div>
@@ -351,10 +365,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         </div>
         </div>
        
-        <button type="submit" id="add_routine" class="btn btn-default">Add Routine</button>
+        <button type="submit" id="add_routine" class="btn btn-default">Update Routine</button>
     </form>
-      
+    
     </div> <!-- /container -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -365,29 +380,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
- 
-  <script>
-  $(function() {
-    $( "#datepicker1" ).datepicker({
-          dateFormat: "yy-mm-dd"
-    });
-  });
-  $(function() {
-        $( "#datepicker2" ).datepicker({
-              dateFormat: "yy-mm-dd"
-        });
-    });
- 
-  $('#add_routine').click(function() {
-      checked = $("input[type=checkbox]:checked").length;
-
-      if(!checked) {
-        alert("You must check at least one checkbox.");
-        return false;
-      }
-
-  });
-  </script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	 
+	 <script>
+	  $(function() {
+	    $( "#datepicker1" ).datepicker({
+	          dateFormat: "yy-mm-dd"
+	    });
+	  });
+	  $(function() {
+	        $( "#datepicker2" ).datepicker({
+	              dateFormat: "yy-mm-dd"
+	        });
+	    });
+	 
+	  $('#add_routine').click(function() {
+	      checked = $("input[type=checkbox]:checked").length;
+	
+	      if(!checked) {
+	        alert("You must check at least one checkbox.");
+	        return false;
+	      }
+	
+	  });
+	 </script>
   </body>
 </html>

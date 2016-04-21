@@ -14,16 +14,20 @@ $user = User::find_by_id($session->user_id);
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
-	if(!empty($_POST['delete_group']))
-	{
-		foreach($_POST['delete_group'] as $group_id)
-		{
-			$group = Group::find_by_id($group_id);
-			$group->delete();
-			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");
-		}
-	}
+  // Trim all the incoming data:
+	$trimmed = array_map('trim', $_POST);
 
+		// Add the group to the database:
+		$event = new Event_Calendar();
+		$event->user_id = $database->escape_value($trimmed['user_id']);
+      	$event->name = $database->escape_value($trimmed['event_name']);
+		$event->description = $database->escape_value($trimmed['event_name']);
+      	$event->event_date= $database->escape_value($trimmed['event_date'])." ". $database->escape_value($trimmed['event_time']);
+      	
+      	$event->create();
+
+      	//Redirect to profile page
+      	redirect_to("show_calendar.php");
 }
 ?>
 
@@ -48,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- Custom styles for this template -->
     <link href="dist/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="dist/css/calendar.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -58,6 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+  	<link href="dist/css/calendar.css" rel="stylesheet" type="text/css" media="all">
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  	<link rel="stylesheet" type="text/css" href="dist/css/jquery.timepicker.css">
   </head>
 
   <body>
@@ -95,12 +103,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </li>
           </ul>
 
-          <ul class="nav navbar-nav navbar-right" id="navbar-status">
+		<ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
             <li>
             	<span>
 	            <?php
-	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$session->user_id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
 	            ?>
@@ -118,85 +126,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
 
     <div class="container">
-
-    <!-- Main component for a primary marketing message or call to action -->
-	<h1>Profile Page</h1>
-
-	<h2>User Info</h2>
-	<?php
-		echo "<p>" . $user->full_name() . "</p>";
-	?>
-
-	<h2>Groups Owns</h2>
-	<p><a class="btn btn-default" href="add_group.php" role="button">Add Group</a></p>
-	<form action="#" method="post">
-	<?php
-		$groups_owned = $user->find_groups();
-		$groups_joined = $user->groups_joined();
-		$exercises_added=$user->exercise_routines_added();
-		if(!empty($groups_owned)){
-			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
-				//List all the groups this user owns
-				foreach ($groups_owned as $group){
-					echo "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td>";
-					echo "<td>{$group->group_status}</td>";
-					echo "<td style='text-align:center'><input type='checkbox' name='delete_group[]' value='" . $group->id . "'></td></tr>";
-				}
-			echo "<tr><td></td><td></td><td class='text-center'><button type='submit' class='btn btn-default' name ='delete'>Delete</button></td></tr></table>";
-		}else{
-			echo  "No groups<br/>";
-		}
-	?>
+	<div class="col-xs-12 col-sm-6 col-md-8">
+	<h2>Add Event</h2>
+	<form action="#" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
+	
+		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Event Name</label>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Event Name" name="event_name" required autofocus>
+		</fieldset>
+  		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Event Discription</label>
+		   <textarea name="event_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Discription"rows="4" cols="50" required></textarea>
+		</fieldset>
+		<div class="panel panel-default">
+  		<div class="panel-body">
+		<fieldset class="form-group">
+		    <div class="form-inline">
+			<div class="form-group">
+			    <label for="exampleInputPassword1">Event Date</label>
+			    	<div class="input-group">
+			    	<input type="text" id="datepicker" class="form-control" name="event_date">
+			    	 <div class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
+			    	</div>
+			</div>
+			&nbsp&nbsp
+			<div class="form-group">
+			    <label for="exampleInputPassword1">Event Time</label>
+			    	<div class="input-group col-sm-6">
+			    		<input class="hasDatepicker form-control" name="event_time" id="datetimepicker" data-time-format="H:i:s" type="text">
+			    	 <div class="input-group-addon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></div>
+			    	</div>
+			</div>
+			</div>
+		</fieldset>
+		</div>
+		</div>
+		<button type="submit" name="submit" class="btn btn-default">Add Event</button>
 	</form>
-
-	<h2>Groups Joined</h2>
-	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
-	<?php
-		if(!empty($groups_joined))
-		{
-			echo "<table class='table'><tr><th>Name</th><th class='text-center'>Status</th></tr>";
-			foreach ($groups_joined as $group_member_row){
-				$same_group = false;
-				//Check if the joined group is the one this user owns
-				for($i = 0; $i < count($groups_owned); $i++)
-				{
-					if($group_member_row->group_id == $groups_owned[$i]->id)
-					{
-						$same_group = true;
-					}
-				}
-				//List all the groups this user joined but doesn't own
-				if($same_group == false)
-				{
-					$group_joined = Group::find_by_id($group_member_row->group_id);
-					echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
-					echo "<td class='text-center'>{$group_joined->group_status}</td>";
-				}
-			}
-			echo "</table>";
-		}else{
-			echo  "No groups<br/>";
-		}
-	?>
-
-  <br>
-	<h2>Exercise Routines</h2>
-	<p><a class="btn btn-default" href="add_routine.php" role="button">Add Routine</a></p>
-	<?php	
-		$user_routine_objects = $user->exercise_routines_added();
+	
+	</div>
 		
-		if(!empty($user_routine_objects))
-		{
-			echo "<table class='table'><tr><th>Routine</th>";
-			
-			foreach ($user_routine_objects as $routine_object){
-				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
-			}
-			echo "</table>";
-		}else{
-			echo  "<p>No Routines</p>";
-		}
-	?>
     </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript
@@ -207,5 +177,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="js/jquery.timepicker.js"></script>
+    <script>
+		  $(function() {
+		    $( "#datepicker" ).datepicker({
+		    	  dateFormat: "yy-mm-dd"
+		    });
+		  });
+		  $(function() {
+			  $('#datetimepicker').timepicker();
+		  });
+	</script>
 	</body>
 </html>

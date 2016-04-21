@@ -43,7 +43,7 @@ if(!$rout_show){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title><?php echo $exercise1->x_description; ?></title>
+
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -161,9 +161,11 @@ if(!$rout_show){
 			 }
 			 		//redirect_to("add_routine_exercise.php?id=$a");
 					//echo("<button onclick=\"location.href='add_routine_exercise.php?id'\">Back to Home</button>");
+					echo "<p><a class='btn btn-default' href='edit_routine.php?rout_id={$rout_show->id}' role='button'>Edit Routine</a></p>";
 					echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$rout_show->id' role='button'>Add Exercise</a></p>"
+
     	?>
-    	<p><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
+			<p><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
     	<p><a class="btn btn-default" href="profile.php" role="button">Go Back to Home</a></p>
 
    </div> <!-- /container -->

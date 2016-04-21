@@ -1,30 +1,48 @@
 <?php
+/**
+ * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ * 
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-
-$number_messages=0;
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+//Create User object for current session user
 $user = User::find_by_id($session->user_id);
+
+//If the ID field is empty return the user to profile page
+if (empty($_GET['id'])){
+	$session->message("No event ID was provided.");
+	redirect_to('show_calendar.php');
+}
+
+//Create Group object from ID in the URL 
+$event = Event_Calendar::find_by_id($_GET['id']);
+if(!$event){
+	$session->message("Unable to be find event.");
+	redirect_to('show_calendar.php');
+}
+	
 ?>
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
+/**
+ * Query the database and obtain an array containin all members of the group. 
+ * 
 
-	if(!empty($_POST['delete_group']))
-	{
-		foreach($_POST['delete_group'] as $group_id)
-		{
-			$group = Group::find_by_id($group_id);
-			$group->delete();
-			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");
-		}
-	}
+ */
+// if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+//   $errors = array();
 
-}
+//     if(!empty($_POST['delete_group_member']))
+//     {
+//         foreach($_POST['delete_group_member'] as $member_id)
+//         {
+//             $database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group->id . "' AND member_id='" . $member_id . "'");  
+//         } 
+//     }               
+// }
 ?>
 
 <!DOCTYPE html>
@@ -35,10 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="" >
+    <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Home - <?php echo $user->full_name()?></title>
+    <title><?php echo $event->name; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -94,8 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
               </ul>
             </li>
           </ul>
-
-          <ul class="nav navbar-nav navbar-right" id="navbar-status">
+          
+		<ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
             <li>
             	<span>
@@ -110,94 +128,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
             <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
-         </ul>
-
-        </div><!--/.nav-collapse -->
+         </ul>        
+         
+         </div><!--/.nav-collapse -->
       </div>
-
+      
     </nav>
 
     <div class="container">
+    	
+    	<h2>Group Info</h2>
+    	<?php 
+    	/**
+        * Print out all the details of the event. 
+        * 
+        *
+        */
+    		echo "<p>Event Name : ". $event->name . "<br/>";
+			echo "<p>Event Description : ". $event->description . "<br/>";
+			echo "<p>Event Date/Time : ". $event->event_date . "<br/>";
+    	?>
+	<p><a class='btn btn-default' href='delete_cevent_calendar.php?id=<?php echo $event->id;?>' role='button'>Delete Event</a></p>
+   </div> <!-- /container -->
 
-    <!-- Main component for a primary marketing message or call to action -->
-	<h1>Profile Page</h1>
-
-	<h2>User Info</h2>
-	<?php
-		echo "<p>" . $user->full_name() . "</p>";
-	?>
-
-	<h2>Groups Owns</h2>
-	<p><a class="btn btn-default" href="add_group.php" role="button">Add Group</a></p>
-	<form action="#" method="post">
-	<?php
-		$groups_owned = $user->find_groups();
-		$groups_joined = $user->groups_joined();
-		$exercises_added=$user->exercise_routines_added();
-		if(!empty($groups_owned)){
-			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
-				//List all the groups this user owns
-				foreach ($groups_owned as $group){
-					echo "<tr><td><a href='view_group.php?id={$group->id}'>".$group->group_name."</a></td>";
-					echo "<td>{$group->group_status}</td>";
-					echo "<td style='text-align:center'><input type='checkbox' name='delete_group[]' value='" . $group->id . "'></td></tr>";
-				}
-			echo "<tr><td></td><td></td><td class='text-center'><button type='submit' class='btn btn-default' name ='delete'>Delete</button></td></tr></table>";
-		}else{
-			echo  "No groups<br/>";
-		}
-	?>
-	</form>
-
-	<h2>Groups Joined</h2>
-	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
-	<?php
-		if(!empty($groups_joined))
-		{
-			echo "<table class='table'><tr><th>Name</th><th class='text-center'>Status</th></tr>";
-			foreach ($groups_joined as $group_member_row){
-				$same_group = false;
-				//Check if the joined group is the one this user owns
-				for($i = 0; $i < count($groups_owned); $i++)
-				{
-					if($group_member_row->group_id == $groups_owned[$i]->id)
-					{
-						$same_group = true;
-					}
-				}
-				//List all the groups this user joined but doesn't own
-				if($same_group == false)
-				{
-					$group_joined = Group::find_by_id($group_member_row->group_id);
-					echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
-					echo "<td class='text-center'>{$group_joined->group_status}</td>";
-				}
-			}
-			echo "</table>";
-		}else{
-			echo  "No groups<br/>";
-		}
-	?>
-
-  <br>
-	<h2>Exercise Routines</h2>
-	<p><a class="btn btn-default" href="add_routine.php" role="button">Add Routine</a></p>
-	<?php	
-		$user_routine_objects = $user->exercise_routines_added();
-		
-		if(!empty($user_routine_objects))
-		{
-			echo "<table class='table'><tr><th>Routine</th>";
-			
-			foreach ($user_routine_objects as $routine_object){
-				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
-			}
-			echo "</table>";
-		}else{
-			echo  "<p>No Routines</p>";
-		}
-	?>
-    </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -207,5 +160,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
-	</body>
+  </body>
 </html>
