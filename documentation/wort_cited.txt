@@ -1,4 +1,14 @@
 Dilesh
+php code based on course take at lynda.com
+PHP with MySQL Essential Training with Kevin Skoglund 
+http://www.lynda.com/
+
+free logo site for logo
+http://logotypemaker.com/
+
+styling with boothstrap and free themes from bootstrap
+http://getbootstrap.com/
+
 Calendar functionality
 Php Calendar 
 https://www.youtube.com/playlist?list=PLC3FA336653950084
@@ -12,3 +22,6 @@ http://stackoverflow.com/questions/7061802/php-function-for-get-all-mondays-with
 time picker
 jonthornton/jquery-timepicker
 https://github.com/jonthornton/jquery-timepicker
+
+excersie images and names of exercises
+workoutlabs.com
