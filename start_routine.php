@@ -78,13 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     <!-- temp style -->
     <style type="text/css">
-    table, td{
+    /*table, td{
     	border: 1px solid black;
     	text-align: center;
-    }
+    }*/
     
     input{
-        width: 30%;
+        width: 35%;
     }
 	</style>
 
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             echo "<input type='hidden' name='exercise_id' value='{$exercise->id}'>";
             echo "<input type='hidden' name='exercise_type' value='{$type->id}'>";
             echo "<input type='hidden' name='sets_length' value='{$sets_length}'>";
-    		echo "<table><tr><td></td><td>Name</td><td>Set</td><td>Reps</td><td>Weight</td></tr><tr><td rowspan='3'><img src='images/{$type->image_filename}' width='30%' height='30%'></td><td rowspan='3'>{$type->name}</td>";        		
+    		echo "<table class='table table-bordered'><tr><th></th><th>Name</th><th>Set</th><th>Reps</th><th>Weight</th></tr><tr><td rowspan='3'><img src='images/{$type->image_filename}' width='50%' height='50%'></td><td rowspan='3'>{$type->name}</td>";        		
     		foreach($sets as $set)
     		{
     		    echo "<input type='hidden' name='set{$set_number}_id' value='{$set->id}'>";
