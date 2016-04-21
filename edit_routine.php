@@ -1,12 +1,12 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-
-
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
+
+//Set default time zone to central standard time
+date_default_timezone_set("America/Chicago");
 
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
@@ -17,159 +17,175 @@ if (empty($_GET['rout_id'])){
 	redirect_to('profile.php');
 }
 
-//Create Exercise object from ID in the URL
-$rout_obj_id = Routine::find_by_id($_GET['rout_id']);
-if(!$rout_obj_id){
-	$session->message("Unable to be find group.");
+//Create Routine object from ID in the URL
+$rout = Routine::find_by_id($_GET['rout_id']);
+if(!$rout){
+	$session->message("Unable to be find routine.");
 	redirect_to('profile.php');
 }
-
 ?>
+
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
-
-  //Trim all the incoming data:
+    $errors = array();
+   
+    $database->query("DELETE FROM wb_event_calendar WHERE user_id='{$user->id}' AND name='{$rout->name}'");
+    
+    //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
-
-
-            // Add the group member to the database:
-
-            $name=$_POST['routine_name'];
-            $desc=$_POST['routine_description'];
-            $monday=isset($_POST['mon']);
-            $tuesday=isset($_POST['tues']);
-            $wednesday=isset($_POST['wed']);
-            $thursday=isset($_POST['thurs']);
-            $friday=isset($_POST['fri']);
-            $saturday=isset($_POST['sat']);
-            $sunday=isset($_POST['sun']);
-            if(empty($name) || empty($desc) || (empty($monday) && empty($tuesday) && empty($wednesday) && empty($thursday) && empty($friday) && empty($saturday) && empty($sunday)))
-            {
-            	echo "***Fields Missing***";
-            	if(empty($name))
-            	{
-            		echo "***Fill in Name***";
-            	}
-
-            	if(empty($desc))
-            	{
-            		echo "***Fill in Description***";
-            	}
-
-            	if(empty($monday) && empty($tuesday) && empty($wednesday) && empty($thursday) && empty($friday) && empty($saturday) && empty($sunday))
-            	{
-            		echo "***Fill in Day(s) to Work out***";
-            	}
-            }
-            else
-            {
-	            $rout = new Routine();
-	            $rout->user_id = $user->id;
-	            $rout->name = $trimmed['routine_name'];
-	            $rout->description = $trimmed['routine_description'];
-	            if(empty($monday))
-				{
-
-					$rout->mon = 0;
-				}
-				else
-				{
-
-					$rout->mon = 1;
-				}
-
-	         	if(empty($tuesday))
-				{
-
-					$rout->tues = 0;
-				}
-				else
-				{
-
-					$rout->tues = 1;
-				}
-
-	         	if(empty($wednesday))
-				{
-
-					$rout->wed = 0;
-				}
-				else
-				{
-
-					$rout->wed = 1;
-				}
-
-	         	if(empty($thursday))
-				{
-
-					$rout->thurs = 0;
-				}
-				else
-				{
-
-					$rout->thurs = 1;
-				}
-
-	         	if(empty($friday))
-				{
-
-					$rout->fri = 0;
-				}
-				else
-				{
-
-					$rout->fri = 1;
-				}
-
-	         	if(empty($saturday))
-				{
-
-					$rout->sat = 0;
-				}
-				else
-				{
-
-					$rout->sat = 1;
-				}
-
-	         	if(empty($sunday))
-				{
-
-					$rout->sun = 0;
-				}
-				else
-				{
-
-					$rout->sun = 1;
-				}
-
-				//$database->query("UPDATE `wb_exercise_set` SET `reps`=$set1_reps, `weight`=$set1_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$a." AND routine_id=".$new_set->routine_id);
-				$database->query("UPDATE `wb_routine` SET `name`='$rout->name', `description`='$rout->description', `mon`=$rout->mon, `tues`=$rout->tues, `wed`=$rout->wed, `thurs`=$rout->thurs, `fri`=$rout->fri, `sat`=$rout->sat, `sun`=$rout->sun WHERE id=".$rout_obj_id->id." AND user_id=".$rout->user_id);
-	         	//$database->query("INSERT INTO `wb_routine`(`user_id`, name, description, `mon`, `tues`, `wed`, `thurs`, `fri`, `sat`, `sun`) VALUES ($rout->user_id,'$rout->name','$rout->description',$rout->mon,$rout->tues,$rout->wed,$rout->thurs,$rout->fri,$rout->sat,$rout->sun)");
-				 /*$routine1=$database->query("SELECT * FROM wb_routine ORDER BY id DESC LIMIT 1");*/
-				 /*$exercises_added=$user->exercises_added();*/
-				 $total_routines=$user->find_last_routine();
-				 /*foreach ($exercises_added as $exercise_row)*/
-				 $a=0;
-
-				 foreach ($total_routines as $routine_number)
-				 {
-
-						$b=$routine_number->id;
-						if($b > $a)
-						{
-							$a=$b;
-						}
-
-				}
-				//echo $a;
-				redirect_to("view_routine.php?id=$rout_obj_id->id");
-            }
-
-
-
+   
+    // Add routine to database:
+    $rout->name = $database->escape_value($trimmed['routine_name']);
+    $rout->description = $database->escape_value($trimmed['routine_description']);
+   
+    $monday=isset($_POST['mon']);
+    if(empty($monday))
+    {
+        $rout->mon = 0;
+    }
+    else
+    {
+        $rout->mon = 1;
+    }
+   
+    $tuesday=isset($_POST['tues']);
+    if(empty($tuesday))
+    {
+        $rout->tues = 0;
+    }
+    else
+    {
+        $rout->tues = 1;
+    }
+   
+    $wednesday=isset($_POST['wed']);
+    if(empty($wednesday))
+    {
+        $rout->wed = 0;
+    }
+    else
+    {
+        $rout->wed = 1;
+    }
+   
+    $thursday=isset($_POST['thurs']);
+    if(empty($thursday))
+    {
+        $rout->thurs = 0;
+    }
+    else
+    {
+        $rout->thurs = 1;
+    }
+   
+    $friday=isset($_POST['fri']);
+    if(empty($friday))
+    {
+        $rout->fri = 0;
+    }
+    else
+    {
+        $rout->fri = 1;
+    }
+   
+    $saturday=isset($_POST['sat']);
+    if(empty($saturday))
+    {
+        $rout->sat = 0;
+    }
+    else
+    {
+        $rout->sat = 1;
+    }
+   
+    $sunday=isset($_POST['sun']);
+    if(empty($sunday))
+    {
+        $rout->sun = 0;
+    }
+    else
+    {
+        $rout->sun = 1;
+    }
+   
+    $rout->start_date = $database->escape_value($trimmed['start_date']);
+    $rout->end_date = $database->escape_value($trimmed['end_date']);
+   
+    $rout->update();
+               
+    if ($database->affected_rows() == 1) {
+        //Routine created
+        //Add calendar events
+		for ($i = strtotime($rout->start_date); $i <= strtotime($rout->end_date); $i = strtotime('+1 day', $i)) {
+			
+			if ($rout->mon==1 && date('N', $i) == 1){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+		      	$event->name = $rout->name;
+				$event->description = $rout->description;
+		      	$event->event_date= date('Y-m-d', $i);
+		      	$event->create();
+			}
+				
+			if ($rout->tues==1 && date('N', $i) == 2){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->wed==1 && date('N', $i) == 3){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->thurs==1 && date('N', $i) == 4){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->fri==1 && date('N', $i) == 5){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->sat==1 && date('N', $i) == 6){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+			
+			if ($rout->sun==1 && date('N', $i) == 7){
+				$event = new Event_Calendar();
+				$event->user_id = $rout->user_id;
+				$event->name = $rout->name;
+				$event->description = $rout->description;
+				$event->event_date= date('Y-m-d', $i);
+				$event->create();
+			}
+		}
+        redirect_to("add_routine_exercise.php?id=".$database->insert_id());
+    }
+    else { // If it did not run OK.
+        echo 'Routine not created';
+    }
 }
 ?>
 
@@ -204,6 +220,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   </head>
 
   <body>
@@ -241,15 +259,114 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </li>
           </ul>
 
-          <ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
-        </div><!--/.nav-collapse -->
+		<ul class="nav navbar-nav navbar-right" id="navbar-status">
+            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
+            <li>
+                <span>
+                <?php
+                    $result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+                    $number_messages = $database->num_rows($result_set);
+                    echo "<span class='badge'>{$number_messages}</span>";
+                ?>
+                <a href="inbox.php">Inbox</a>
+                </span>&nbsp&nbsp
+            </li>
+
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
+            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
+         </ul>
+         
+         </div><!--/.nav-collapse -->
       </div>
 
     </nav>
 
     <div class="container">
 
+    <!-- Main component for a primary marketing message or call to action -->
+    <h2>Edit Routine</h2>
+       <form form action="edit_routine.php?rout_id=<?php echo $_GET['rout_id']; ?>" method="POST">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Name</label>
+        <input type="text" name="routine_name" class="form-control" id="exampleInputEmail1" placeholder="Routine Name" value="<?php echo $rout->name; ?>" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Description</label>
+        <textarea name="routine_description" class="form-control" rows="3" placeholder="Routine Description"><?php echo $rout->description; ?></textarea>
+      </div>
+      <div class="panel panel-default">
+      <div class="panel-body">
+          <label>Select day(s) for routine</label>
+          <div class="checkbox">
+            <label>
+                <input type="checkbox" name="sun" value="0" <?php if($rout->sun == 1) echo "checked"; ?>>
+                Sunday
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="mon" value="0" <?php if($rout->mon == 1) echo "checked"; ?>>
+                Monday
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>   
+                <input type="checkbox" name="tues" value="0" <?php if($rout->tues == 1) echo "checked"; ?>>
+                Tuesday
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="wed" value="0" <?php if($rout->wed == 1) echo "checked"; ?>>
+                Wednesday
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="thurs" value="0" <?php if($rout->thurs == 1) echo "checked"; ?>>
+                Thursday
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="fri" value="0" <?php if($rout->fri == 1) echo "checked"; ?>>
+                Friday
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="sat" value="0" <?php if($rout->sat == 1) echo "checked"; ?>>
+                Saturday
+            </label>
+        </div>
+       
+        </div>
+        </div>
+       
+        <div class="panel panel-default">
+      <div class="panel-body">
+     
+        <div class="form-inline">
+        <div class="form-group">
+            <label for="exampleInputPassword1">Start Date</label>
+                <div class="input-group">
+                <input type="text" id="datepicker1" class="form-control" name="start_date" value="<?php echo $rout->start_date; ?>">
+                 <div class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
+                </div>
+        </div>
+        &nbsp&nbsp
+        <div class="form-group">
+            <label for="exampleInputPassword1">End Date</label>
+                <div class="input-group">
+                <input type="text" id="datepicker2" class="form-control" name="end_date" value="<?php echo $rout->end_date; ?>">
+                 <div class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+       
+        <button type="submit" id="add_routine" class="btn btn-default">Update Routine</button>
+    </form>
     <!-- Main component for a primary marketing message or call to action -->
     <h2>Exercises</h2>
    	<?php
@@ -303,5 +420,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	 
+	 <script>
+	  $(function() {
+	    $( "#datepicker1" ).datepicker({
+	          dateFormat: "yy-mm-dd"
+	    });
+	  });
+	  $(function() {
+	        $( "#datepicker2" ).datepicker({
+	              dateFormat: "yy-mm-dd"
+	        });
+	    });
+	 
+	  $('#add_routine').click(function() {
+	      checked = $("input[type=checkbox]:checked").length;
+	
+	      if(!checked) {
+	        alert("You must check at least one checkbox.");
+	        return false;
+	      }
+	
+	  });
+	 </script>
   </body>
 </html>
