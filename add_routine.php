@@ -98,7 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $rout->end_date = $database->escape_value($trimmed['end_date']);
    
     $rout->create();
-               
+	$redirect_id = $database->insert_id();
+	           
     if ($database->affected_rows() == 1) {
         //Routine created
         //Add calendar events
@@ -167,11 +168,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$event->create();
 			}
 		}
-        redirect_to("add_routine_exercise.php?id=".$database->insert_id());
+        redirect_to("add_routine_exercise.php?id=".$redirect_id);
     }
     else { // If it did not run OK.
         echo 'Routine not created';
     }
+	
 }
 ?>
 

@@ -15,7 +15,7 @@ require_once(LIB_PATH.DS."functions.php");
 require_once(LIB_PATH.DS."session.php");
 require_once(LIB_PATH.DS."database.php");
 require_once(LIB_PATH.DS."database_object.php");
-require_once(LIB_PATH.DS."pagination.php");
+// require_once(LIB_PATH.DS."pagination.php");
 // require_once(LIB_PATH.DS."PHPMailer".DS."class.phpmailer.php");
 // require_once(LIB_PATH.DS."PHPMailer".DS."class.smtp.php");
 // require_once(LIB_PATH.DS."PHPMailer".DS."language".DS."phpmailer.lang-es.php");

@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$event->create();
 			}
 		}
-        redirect_to("add_routine_exercise.php?id=".$database->insert_id());
+        redirect_to("view_routine.php?id=".$rout->id);
     }
     else { // If it did not run OK.
         echo 'Routine not created';
