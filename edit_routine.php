@@ -367,48 +367,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
        
         <button type="submit" id="add_routine" class="btn btn-default">Update Routine</button>
     </form>
-    <!-- Main component for a primary marketing message or call to action -->
-    <h2>Exercises</h2>
-   	<?php
-   	echo "<form action='#' method='POST'>";
-	echo "<br>";
-	echo "<label>Name:</label>";
-	echo "<br>";
-	echo "<input type='text' name='routine_name'>";
-	echo "<br>";
-	echo "<label>Description</label>";
-	echo "<br>";
-	echo "<input type='text' name='routine_description'>";
-	echo "<br>";
-	echo "<label>Monday</label>";
-	echo "<input type='checkbox' name='mon' value='0'>";
-	echo "<br>";
-	echo "<label>Tuesday</label>";
-	echo "<input type='checkbox' name='tues' value='0'>";
-	echo "<br>";
-	echo "<label>Wednesday</label>";
-	echo "<input type='checkbox' name='wed' value='0'>";
-	echo "<br>";
-	echo "<label>Thursday</label>";
-	echo "<input type='checkbox' name='thurs' value='0'>";
-	echo "<br>";
-	echo "<label>Friday</label>";
-	echo "<input type='checkbox' name='fri' value='0'>";
-	echo "<br>";
-	echo "<label>Saturday</label>";
-	echo "<input type='checkbox' name='sat' value='0'>";
-	echo "<br>";
-	echo "<label>Sunday</label>";
-	echo "<input type='checkbox' name='sun' value='0'>";
-	echo "<br>";
-
-   	echo "<button type='submit' name='submit' class='btn btn-default'>Update Routine</button>";
-   	echo "</form>";
-   	?>
-
-
-
-
+    
     </div> <!-- /container -->
 
 
