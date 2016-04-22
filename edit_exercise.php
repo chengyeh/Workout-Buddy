@@ -48,11 +48,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	$set1_weight=$_POST['set1_weight'];
          	$set2_weight=$_POST['set2_weight'];
          	$set3_weight=$_POST['set3_weight'];
+			$trigger_query=0;
 
-         	/*
-         	echo $set1_reps;
-         	echo "<br>";
-         	echo $set2_reps;
+         	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
+         	{
+         		if(empty($set1_reps))
+         		{
+         			$set1_reps=0;
+         		}
+         		if(empty($set2_reps))
+         		{
+         			$set2_reps=0;
+         		}
+         		if(empty($set3_reps))
+         		{
+         			$set3_reps=0;
+         		}
+         		if(empty($set1_weight))
+         		{
+         			$set1_weight=0;
+         		}
+         		if(empty($set2_weight))
+         		{
+         			$set2_weight=0;
+         		}
+         		if(empty($set3_weight))
+         		{
+         			$set3_weight=0;
+         		}
+         		$trigger_query=1;
+
+         	}
+         	else
+         	{
+         		$trigger_query=1;
+         	}
+         	if(((!empty($set2_reps)) && (!is_numeric($set2_reps))) || ((!empty($set1_reps)) && (!is_numeric($set1_reps))) || ((!empty($set3_reps)) && (!is_numeric($set3_reps))))
+         	{
+         		$trigger_query=0;
+
+         	}
+
+         	if(((!empty($set2_weight)) && (!is_numeric($set2_weight))) || ((!empty($set1_weight)) && (!is_numeric($set1_weight))) || ((!empty($set3_weight)) && (!is_numeric($set3_weight))))
+         	{
+         		$trigger_query=0;
+
+         	}
+
+         	if($trigger_query==1)
+         	{
+		         	$a=1;
+		         	$b=2;
+		         	$c=3;
+		         	/*
+					echo $set1_reps;
+         				echo "<br>";
+         			echo $set2_reps;
          	echo "<br>";
          	echo $set3_reps;
          	echo "<br>";
@@ -60,40 +111,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	echo "<br>";
          	echo $set2_weight;
          	echo "<br>";
-         	echo $set3_weight;
-         	echo "<br>";
-         	echo $new_set->exercise_id;
-         	echo "<br>";
-         	echo $new_set->routine_id;
-         	*/
-         	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
-         	{
-         		echo "Please fill out every blank";
+         	echo $set3_weight;*/
+		         	$database->query("UPDATE `wb_exercise_set` SET `reps`=$set1_reps, `weight`=$set1_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$a." AND routine_id=".$new_set->routine_id);
+					$database->query("UPDATE `wb_exercise_set` SET `reps`=$set2_reps, `weight`=$set2_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$b." AND routine_id=".$new_set->routine_id);
+					$database->query("UPDATE `wb_exercise_set` SET `reps`=$set3_reps, `weight`=$set3_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$c." AND routine_id=".$new_set->routine_id);
+					redirect_to("view_exercises.php?id=$addtype->id&rout_id=$addexercise->id");
          	}
          	else
          	{
-         	$a=1;
-         	$b=2;
-         	$c=3;
-
-         	$database->query("UPDATE `wb_exercise_set` SET `reps`=$set1_reps, `weight`=$set1_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$a." AND routine_id=".$new_set->routine_id);
-			$database->query("UPDATE `wb_exercise_set` SET `reps`=$set2_reps, `weight`=$set2_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$b." AND routine_id=".$new_set->routine_id);
-			$database->query("UPDATE `wb_exercise_set` SET `reps`=$set3_reps, `weight`=$set3_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$c." AND routine_id=".$new_set->routine_id);
-			 redirect_to("view_exercises.php?id=$addtype->id&rout_id=$addexercise->id");
+         		echo "***Please give valid fields****";
          	}
 
-			 /*
-			 $total_routines=$user->find_last_routine();
-			 $a=0;
-			 foreach ($total_routines as $routine_number)
-			 {
-					$b=$routine_number->id;
-					if($b > $a)
-					{
-						$a=$b;
-					}
-			  }
-			echo $a;	*/
+
 
 
 }
@@ -211,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "Reps <input type='text' name='set3_reps'>";
 				echo "Weight <input type='text' name='set3_weight'>";
 				echo "<br>";
-				
+
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-default'>Update Agenda</button>";
 		   	echo "</form>";

@@ -48,63 +48,87 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	$set1_weight=$_POST['set1_weight'];
          	$set2_weight=$_POST['set2_weight'];
          	$set3_weight=$_POST['set3_weight'];
-         	/*
-         	echo $set1_reps;
-         	echo "<br>";
-         	echo $set2_reps;
-         	echo "<br>";
-         	echo $set3_reps;
-         	echo "<br>";
-         	echo $set1_weight;
-         	echo "<br>";
-         	echo $set2_weight;
-         	echo "<br>";
-         	echo $set3_weight;
-         	echo "<br>";
-         	echo $new_set->exercise_id;
-         	echo "<br>";
-         	echo $new_set->routine_id;
-         	*/
+         	$trigger_query=0;
+
          	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
          	{
-         		echo "***Fields Missing***";
+         		if(empty($set1_reps))
+         		{
+         			$set1_reps=0;
+         		}
+         		if(empty($set2_reps))
+         		{
+         			$set2_reps=0;
+         		}
+         		if(empty($set3_reps))
+         		{
+         			$set3_reps=0;
+         		}
+         		if(empty($set1_weight))
+         		{
+         			$set1_weight=0;
+         		}
+         		if(empty($set2_weight))
+         		{
+         			$set2_weight=0;
+         		}
+         		if(empty($set3_weight))
+         		{
+         			$set3_weight=0;
+         		}
+         		$trigger_query=1;
+
          	}
          	else
          	{
-         		$database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
-
-			 $total_exercises=$user->find_last_exercise($addexercise->id);
-
-			 $q=0;
-			 foreach ($total_exercises as $exercise_number)
-			 {
-			 		echo $q;
-					$b=$exercise_number->id;
-					if($b > $q)
-					{
-						$q=$b;
-					}
-
-			}
-
-         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,1,$set1_reps,$set1_weight)");
-			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
-			 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
-			 redirect_to("add_routine_exercise.php?id=$a");
+         		$trigger_query=1;
          	}
 
-			 /*
-			 $total_routines=$user->find_last_routine();
-			 $a=0;
-			 foreach ($total_routines as $routine_number)
-			 {
-					$b=$routine_number->id;
-					if($b > $a)
-					{
-						$a=$b;
-					}
-			  }
-			echo $a;	*/
+         	if(((!empty($set2_reps)) && (!is_numeric($set2_reps))) || ((!empty($set1_reps)) && (!is_numeric($set1_reps))) || ((!empty($set3_reps)) && (!is_numeric($set3_reps))))
+         	{
+         		$trigger_query=0;
+
+         	}
+
+         	if(((!empty($set2_weight)) && (!is_numeric($set2_weight))) || ((!empty($set1_weight)) && (!is_numeric($set1_weight))) || ((!empty($set3_weight)) && (!is_numeric($set3_weight))))
+         	{
+         		$trigger_query=0;
+
+         	}
+
+         	if($trigger_query==1)
+         	{
+						         	$a=1;
+						         	$b=2;
+						         	$c=3;
+						         	$database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
+
+							 $total_exercises=$user->find_last_exercise($addexercise->id);
+
+							 $q=0;
+							 foreach ($total_exercises as $exercise_number)
+							 {
+
+									$b=$exercise_number->id;
+									if($b > $q)
+									{
+										$q=$b;
+									}
+
+							}
+
+				         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,1,$set1_reps,$set1_weight)");
+							 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
+							 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
+							 redirect_to("add_routine_exercise.php?id=$a");
+				}
+				else
+				{
+						echo "***Please give valid fields****";
+				}
+
+
+
 
 
 }
