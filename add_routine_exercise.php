@@ -1,6 +1,6 @@
 <?php
 /**
- * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ * When User clicks on Add Exercise, all exercise types are queried from he database and printed in a drop-down list.
  *
  */
 error_reporting(E_ALL);
@@ -17,7 +17,7 @@ if (empty($_GET['id'])){
 
 }
 
-//Create Exercise object from ID in the URL
+//Create Exercise object from id in the URL
 $addexercise = Routine::find_by_id($_GET['id']);
 $var_types = Types::find_by_id(1);
 if(!$addexercise)

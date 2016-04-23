@@ -17,14 +17,14 @@ if (empty($_GET['rout_id'])){
 
 }
 
-//Create Exercise object from ID in the URL
-$addexercise = Routine::find_by_id($_GET['rout_id']);
+//Create Exercise object from id in the URL
+$routine = Routine::find_by_id($_GET['rout_id']);
 $addtype = $_GET['type_id'];
 
 /*$var_types = Types::find_by_id(1);*/
-if(!$addexercise)
+if(!$routine)
 {
-	$session->message("Unable to be find group.");
+	$session->message("Unable to be find routine.");
 	redirect_to('login.php');
 }
 
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $trimmed = array_map('trim', $_POST);
 
 			$new_set = new Set();
-           	$new_set->routine_id = $addexercise->id;
+           	$new_set->routine_id = $routine->id;
            	$a=$new_set->routine_id;
          	$monday=isset($_POST['mon']);
          	$set1_reps=$_POST['set1_reps'];
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 						         	$c=3;
 						         	$database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
 
-							 $total_exercises=$user->find_last_exercise($addexercise->id);
+							 $total_exercises=$user->find_last_exercise($routine->id);
 
 							 $q=0;
 							 foreach ($total_exercises as $exercise_number)
@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,1,$set1_reps,$set1_weight)");
 							 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
 							 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
-							 redirect_to("add_routine_exercise.php?id=$a");
+							 redirect_to("add_routine_exercise.php?id={$routine->id}");
 				}
 				else
 				{
@@ -214,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- Main component for a primary marketing message or call to action -->
     <h2>Exercise Agenda</h2>
    	<?php
-   			echo "<p>Workout: ". $addexercise->name . "<br/>";
+   			echo "<p>Workout: ". $routine->name . "<br/>";
    			//echo $addtype->type."<br>";
 
    			$actual_name=Types::find_by_id($addtype);
@@ -250,10 +250,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Agenda</button>";
 		   	echo "</form>";
-   			echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$addexercise->id' role='button'>Back to Exercise</a></p>";
+   			echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$routine->id' role='button'>Back to Exercise</a></p>";
    			/*
-			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
-			echo "<p>ID: ". $addexercise->id . "<br/>";
+			echo "<p>Descripiton: ". $routine->description . "<br/>";
+			echo "<p>ID: ". $routine->id . "<br/>";
 			echo "<p>exercise Name: ". $addtype->id . "<br/>";
 			echo "<p>Descripiton: ". $addtype->routine_id . "<br/>";
 			echo "<p>ID: ". $addtype->type . "<br/>";
