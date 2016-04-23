@@ -6,6 +6,8 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+$number_messages=0;
+
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
@@ -14,7 +16,7 @@ $user = User::find_by_id($session->user_id);
 
 //If the id field is empty return the user to profile page
 if (empty($_GET['id'])){
-	$session->message("No group ID was provided.");
+	$session->message("No routine ID was provided.");
 	redirect_to('profile.php');
 }
 
@@ -28,13 +30,51 @@ if(!$routine){
 //Create User object for routine owner
 $routine_owner = User::find_by_id($routine->user_id);
 
-$routine_exercises = $routine->get_exercises();
+//Redirect to profile page if current user is not the owner of this routine
+if($user->id != $routine_owner->id){
+    $session->message("Unable to be find routine.");
+    redirect_to('profile.php');
+}
+
+//get the current page number
+$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+
+//records per page
+$per_page = 1;
+
+//total record count 
+//$total_count =  Exercises::count_all();
+
+$sql = "SELECT COUNT(*) FROM wb_exercise WHERE routine_id=".$routine->id;
+$result_set = $database->query($sql);
+$row = $database->fetch_array($result_set);
+$total_count = array_shift($row);
+
+if($total_count == 0){
+    $session->message("No exercise in routine.");
+    redirect_to("view_routine.php?id={$routine->id}");
+}
+
+$pagination = new Pagination($page, $per_page, $total_count);
+
+$sql = "SELECT * FROM wb_exercise WHERE routine_id=".$routine->id." ORDER BY id ASC ";
+$sql .= "LIMIT {$per_page} ";
+$sql .= "OFFSET {$pagination->offset()}";
+        
+$exercises = $database->query($sql);
+
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     $errors = array();
 
+    if ($_POST['action'] == 'END WITHOUT SAVE')
+    {
+        //Redirect to view routine page
+        redirect_to("view_routine.php?id={$routine->id}");
+    }
+    
     //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
     
@@ -58,8 +98,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $log->create();
     }
  
-    //Redirect to profile page
-    // redirect_to("view_routine.php?id={$routine->id}");   
+    if ($_POST['action'] == 'END')
+    {
+        //Redirect to view routine page
+        redirect_to("view_routine.php?id={$routine->id}");
+    }
+    else if($_POST['action'] == 'NEXT')
+    {
+        //Redirect to next exercise
+        redirect_to("start_routine.php?id={$routine->id}&page={$pagination->next_page()}"); 
+    }
+    else 
+    {
+        //Redirect to view routine page
+        redirect_to("view_routine.php?id={$routine->id}"); 
+    } 
 }
 ?>
 
@@ -74,17 +127,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <title><?php echo $routine->name; ?></title>
     
     <!-- temp style -->
     <style type="text/css">
-    /*table, td{
-    	border: 1px solid black;
-    	text-align: center;
-    }*/
     
     input{
-        width: 35%;
+        width: 10%;
+    }
+    
+    #button{
+        width: 200px;
+        height: 40px;
     }
 	</style>
 
@@ -155,37 +209,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- Main component for a primary marketing message or call to action -->
     
   	<?php
-      	$exercise_number = 1;
-      	foreach($routine_exercises as $exercise)
-    	{      	    
-    		$type = Types::find_by_id($exercise->type);
-    		$sets = $exercise->get_sets();
+        while ($row = mysqli_fetch_array($exercises)) 
+        {
+            $exercise = Exercises::find_by_id($row['id']);
+            $type = Types::find_by_id($exercise->type);
+            $sets = $exercise->get_sets();
             $sets_length = count($sets);
             $set_number = 1;
-
-    		echo "<form action='#' method='POST'>";
+            
+            echo "<h1>".$type->name."</h1><br/>";
+            echo "<form action='#' method='POST'>";
             echo "<input type='hidden' name='exercise_id' value='{$exercise->id}'>";
             echo "<input type='hidden' name='exercise_type' value='{$type->id}'>";
             echo "<input type='hidden' name='sets_length' value='{$sets_length}'>";
-    		echo "<table class='table table-bordered'><tr><th></th><th>Name</th><th>Set</th><th>Reps</th><th>Weight</th></tr><tr><td rowspan='3'><img src='images/{$type->image_filename}' width='50%' height='50%'></td><td rowspan='3'>{$type->name}</td>";        		
-    		foreach($sets as $set)
-    		{
-    		    echo "<input type='hidden' name='set{$set_number}_id' value='{$set->id}'>";
-    			if($set->order == 1)
-    			{
-    				echo "<td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'>/{$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'>/{$set->weight}</td></tr>";
-    			}
-    			else{
-    				echo "<tr><td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'>/{$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'>/{$set->weight}</td></tr>";
-    			}
-    			
-                $set_number++;
-    		}
-    		echo "</table>";
-    		echo "<button type='submit' name='next' class='btn btn-primary'>NEXT</button></form><br>";
             
-            $exercise_number++;
-    	}	
+            echo "<table><tr><td><img src='images/{$type->image_filename}' width='50%' height='50%'></td></tr></table><br>";
+            echo "<table class='table table-bordered'><tr><th>SET#</th><th>REPS</th><th>WEIGHT</th></tr>";
+            foreach($sets as $set)
+            {
+                echo "<input type='hidden' name='set{$set_number}_id' value='{$set->id}'>";
+                if($set->order == 1)
+                {
+                    echo "<td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'> / {$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'> / {$set->weight}</td></tr>";
+                }
+                else 
+                {
+                    echo "<tr><td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'> / {$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'> / {$set->weight}</td></tr>";
+                }
+
+                $set_number++;   
+            }
+            echo "</table>";
+            
+            if($pagination->total_pages() > 0)
+            {
+                if($pagination->has_next_page())
+                {
+                    echo "<table class='table'><tr><td><input type='submit' id='button' class='btn btn-warning' name='action' value='END WITHOUT SAVE' /></td><td class='text-center'><input type='submit' id='button' class='btn btn-danger' name='action' value='END' /></td>";
+                    echo "<td class='text-right'><input type='submit' id='button' id='button' class='btn btn-primary' name='action' value='NEXT' /></td></tr></table></form>";
+                }
+                else 
+                {
+                    echo "<table class='table'><tr><td><input type='submit' id='button' class='btn btn-warning' name='action' value='END WITHOUT SAVE' /></td>";
+                    echo "<td class='text-right'><input type='submit' id='button' class='btn btn-success' name='action' value=\"YOU'VE DONE IT!\" /></td></tr></table></form>";
+                }
+            }     
+        } 
+  	
   	?>
   	
   	

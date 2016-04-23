@@ -157,7 +157,7 @@ if(!$rout_show){
                             $exercise_type = Types::find_by_id($exercise->type);
             
                             echo "<tr><th class='tableName' colspan='10'><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>$exercise_type->name</a></th></tr>";
-                            echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />Sets</td><td class='tableReps'>";
+                            echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />SETS</td><td class='tableReps'>";
                             foreach($sets as $set)
                             {
                                 if($set_number != $sets_length) 
@@ -175,11 +175,11 @@ if(!$rout_show){
                                 {
                                     if($set->reps <= 0)
                                     {
-                                        echo "--<br />Reps</td>";
+                                        echo "--<br />REPS</td>";
                                     }
                                     else
                                     {
-                                        echo "{$set->reps}<br />Reps</td>"; 
+                                        echo "{$set->reps}<br />REPS</td>"; 
                                     }
                                 } 
                                 $set_number++;
@@ -204,11 +204,11 @@ if(!$rout_show){
                                 {
                                     if($set->weight <= 0)
                                     {
-                                        echo "--<br />Lbs</td>";
+                                        echo "--<br />LBS</td>";
                                     }
                                     else
                                     {
-                                        echo "{$set->weight}<br />Lbs</td>";
+                                        echo "{$set->weight}<br />LBS</td>";
                                     }                                  
                                 } 
                                 $set_number++; 
@@ -220,10 +220,13 @@ if(!$rout_show){
             </div>
         </div>
         <br>
-        <p><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></p>
-        
-        <p><a class="btn btn-success" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
-        
+        <table class='table'>
+            <tr>
+                <td><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
+                <td class='text-right'><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START ROUTINE</a></td>
+            </tr>
+        </table>
+
    </div> <!-- /container -->
 
 
