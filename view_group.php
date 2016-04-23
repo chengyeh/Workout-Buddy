@@ -156,8 +156,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     	<h2>Group Members</h2>
     	<?php 
 		/**
-                * Get all members of the group utilizin the get_members function from group. Restrict permissions to delete or add to owner only and display all users in a table along with the option to delete them if desired. If there are no members in the group, print no members.
-                */
+         * Get all members of the group utilizin the get_members function from group. Restrict permissions to delete or add to owner only and display all users in a table along with the option to delete them if desired. If there are no members in the group, print no members.
+         */
 			$group_members = $group->get_members();
 			//Restrict only the group owner can add or delete the group members
 			if($user->id == $group->group_owner)

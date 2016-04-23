@@ -12,16 +12,16 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
 
-//If the ID field is empty return the user to profile page
+//If the id field is empty return the user to profile page
 if (empty($_GET['id'])){
     $session->message("No group ID was provided.");
     redirect_to('profile.php');
 }
 
-//Create Exercise object from ID in the URL
+//Create Routine object from id in the URL
 $rout_show = Routine::find_by_id($_GET['id']);
 if(!$rout_show){
-    $session->message("Unable to be find group.");
+    $session->message("Unable to be find routine.");
     redirect_to('profile.php');
 }
 
@@ -37,8 +37,10 @@ if(!$rout_show){
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
+    
+    <title><?php echo $rout_show->name; ?></title>
+    
     <link href="css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
-
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -139,93 +141,177 @@ if(!$rout_show){
             }
             
             $routine_exercises = $rout_show->get_exercises();
-        ?>
-        
-        <p><a class='btn btn-default' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
-
-        <div class="boxContainerDiv">
-            <div>
-                <br><br>
-                <table class="tableExercise">
-                    <?php
-                        foreach ($routine_exercises as $exercise_number)
-                        {
-                            $exercise = Exercises::find_by_id($exercise_number->id);
-                            $sets = $exercise->get_sets();
-                            $sets_length = count($sets);
-                            $set_number = 1;
-                            $exercise_type = Types::find_by_id($exercise->type);
             
-                            echo "<tr><th class='tableName' colspan='10'><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>$exercise_type->name</a></th></tr>";
-                            echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />SETS</td><td class='tableReps'>";
-                            foreach($sets as $set)
+        //Restrict only the routine owner can edit and start routine
+        if($user->id == $rout_show->user_id)
+        {
+        ?> 
+            <p><a class='btn btn-default' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
+            <div class="boxContainerDiv">
+                <div>
+                    <br><br>
+                    <table class="tableExercise">
+                        <?php
+                            foreach ($routine_exercises as $exercise_number)
                             {
-                                if($set_number != $sets_length) 
+                                $exercise = Exercises::find_by_id($exercise_number->id);
+                                $sets = $exercise->get_sets();
+                                $sets_length = count($sets);
+                                $set_number = 1;
+                                $exercise_type = Types::find_by_id($exercise->type);
+                
+                                echo "<tr><th class='tableName' colspan='10'><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>$exercise_type->name</a></th></tr>";
+                                echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />SETS</td><td class='tableReps'>";
+                                foreach($sets as $set)
                                 {
-                                    if($set->reps <= 0)
+                                    if($set_number != $sets_length) 
                                     {
-                                        echo "--,";
+                                        if($set->reps <= 0)
+                                        {
+                                            echo "--,";
+                                        }
+                                        else 
+                                        {
+                                            echo "{$set->reps},";
+                                        }
                                     }
                                     else 
                                     {
-                                        echo "{$set->reps},";
-                                    }
+                                        if($set->reps <= 0)
+                                        {
+                                            echo "--<br />REPS</td>";
+                                        }
+                                        else
+                                        {
+                                            echo "{$set->reps}<br />REPS</td>"; 
+                                        }
+                                    } 
+                                    $set_number++;
                                 }
-                                else 
+                                
+                                echo "<td class='tableReps'>";
+                                $set_number = 1;
+                                foreach($sets as $set)
                                 {
-                                    if($set->reps <= 0)
+                                    if($set_number != $sets_length) 
                                     {
-                                        echo "--<br />REPS</td>";
-                                    }
-                                    else
-                                    {
-                                        echo "{$set->reps}<br />REPS</td>"; 
-                                    }
-                                } 
-                                $set_number++;
-                            }
-                            
-                            echo "<td class='tableReps'>";
-                            $set_number = 1;
-                            foreach($sets as $set)
-                            {
-                                if($set_number != $sets_length) 
-                                {
-                                    if($set->weight <= 0)
-                                    {
-                                        echo "--,";
+                                        if($set->weight <= 0)
+                                        {
+                                            echo "--,";
+                                        }
+                                        else 
+                                        {
+                                            echo "{$set->weight},";
+                                        }                                   
                                     }
                                     else 
                                     {
-                                        echo "{$set->weight},";
-                                    }                                   
+                                        if($set->weight <= 0)
+                                        {
+                                            echo "--<br />LBS</td>";
+                                        }
+                                        else
+                                        {
+                                            echo "{$set->weight}<br />LBS</td>";
+                                        }                                  
+                                    } 
+                                    $set_number++; 
                                 }
-                                else 
-                                {
-                                    if($set->weight <= 0)
-                                    {
-                                        echo "--<br />LBS</td>";
-                                    }
-                                    else
-                                    {
-                                        echo "{$set->weight}<br />LBS</td>";
-                                    }                                  
-                                } 
-                                $set_number++; 
-                            }
-                            echo "</tr>";   
-                        }   
-                    ?>
-                </table>
+                                echo "</tr>";   
+                            }   
+                        ?>
+                    </table>
+                </div>
             </div>
-        </div>
-        <br>
-        <table class='table'>
-            <tr>
-                <td><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
-                <td class='text-right'><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START ROUTINE</a></td>
-            </tr>
-        </table>
+            <br>
+            <table class='table'>
+                <tr>
+                    <td><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
+                    <td class='text-right'><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START WORKOUT</a></td>
+                </tr>
+            </table> 
+        <?php 
+        } 
+        else
+        {
+        ?>
+            <div class="boxContainerDiv">
+                <div>
+                    <br><br>
+                    <table class="tableExercise">
+                        <?php
+                            foreach ($routine_exercises as $exercise_number)
+                            {
+                                $exercise = Exercises::find_by_id($exercise_number->id);
+                                $sets = $exercise->get_sets();
+                                $sets_length = count($sets);
+                                $set_number = 1;
+                                $exercise_type = Types::find_by_id($exercise->type);
+                
+                                echo "<tr><th class='tableName' colspan='10'>$exercise_type->name</th></tr>";
+                                echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />SETS</td><td class='tableReps'>";
+                                foreach($sets as $set)
+                                {
+                                    if($set_number != $sets_length) 
+                                    {
+                                        if($set->reps <= 0)
+                                        {
+                                            echo "--,";
+                                        }
+                                        else 
+                                        {
+                                            echo "{$set->reps},";
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        if($set->reps <= 0)
+                                        {
+                                            echo "--<br />REPS</td>";
+                                        }
+                                        else
+                                        {
+                                            echo "{$set->reps}<br />REPS</td>"; 
+                                        }
+                                    } 
+                                    $set_number++;
+                                }
+                                
+                                echo "<td class='tableReps'>";
+                                $set_number = 1;
+                                foreach($sets as $set)
+                                {
+                                    if($set_number != $sets_length) 
+                                    {
+                                        if($set->weight <= 0)
+                                        {
+                                            echo "--,";
+                                        }
+                                        else 
+                                        {
+                                            echo "{$set->weight},";
+                                        }                                   
+                                    }
+                                    else 
+                                    {
+                                        if($set->weight <= 0)
+                                        {
+                                            echo "--<br />LBS</td>";
+                                        }
+                                        else
+                                        {
+                                            echo "{$set->weight}<br />LBS</td>";
+                                        }                                  
+                                    } 
+                                    $set_number++; 
+                                }
+                                echo "</tr>";   
+                            }   
+                        ?>
+                    </table>
+                </div>
+            </div>  <?php } ?>            
+        
 
    </div> <!-- /container -->
 

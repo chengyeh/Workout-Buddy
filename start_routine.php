@@ -27,11 +27,8 @@ if(!$routine){
 	redirect_to('profile.php');
 }
 
-//Create User object for routine owner
-$routine_owner = User::find_by_id($routine->user_id);
-
 //Redirect to profile page if current user is not the owner of this routine
-if($user->id != $routine_owner->id){
+if($user->id != $routine->user_id){
     $session->message("Unable to be find routine.");
     redirect_to('profile.php');
 }
@@ -224,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             echo "<input type='hidden' name='sets_length' value='{$sets_length}'>";
             
             echo "<table><tr><td><img src='images/{$type->image_filename}' width='50%' height='50%'></td></tr></table><br>";
-            echo "<table class='table table-bordered'><tr><th>SET#</th><th>REPS</th><th>WEIGHT</th></tr>";
+            echo "<table class='table table-bordered'><tr><th>SET #</th><th>REPS</th><th>LBS</th></tr>";
             foreach($sets as $set)
             {
                 echo "<input type='hidden' name='set{$set_number}_id' value='{$set->id}'>";
