@@ -1,6 +1,6 @@
 <?php
 /**
- * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
+ * When User clicks on a routine, all exercise of the routine and the sets are queried from he database and printed in a table.
  *
  */
 error_reporting(E_ALL);
@@ -14,21 +14,16 @@ $user = User::find_by_id($session->user_id);
 
 //If the ID field is empty return the user to profile page
 if (empty($_GET['id'])){
-	$session->message("No group ID was provided.");
-	redirect_to('profile.php');
+    $session->message("No group ID was provided.");
+    redirect_to('profile.php');
 }
 
 //Create Exercise object from ID in the URL
 $rout_show = Routine::find_by_id($_GET['id']);
 if(!$rout_show){
-	$session->message("Unable to be find group.");
-	redirect_to('profile.php');
+    $session->message("Unable to be find group.");
+    redirect_to('profile.php');
 }
-
-
-?>
-<?php
-
 
 ?>
 
@@ -42,7 +37,7 @@ if(!$rout_show){
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
-
+    <link href="css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
 
 
     <!-- Bootstrap core CSS -->
@@ -109,65 +104,126 @@ if(!$rout_show){
 
     <div class="container">
 
-    	<h2>Workout Info</h2>
-    	<?php
-    		echo "<p>Name: ". $rout_show->name . "<br/>";
-			echo "<p>Description: ". $rout_show->description . "<br/>";
-			echo "This workout is done on: "."<br>";
-			if($rout_show->mon==1)
-			{
-				echo "Monday"."<br>";
-			}
-			if($rout_show->tues==1)
-			{
-				echo "Tuesday"."<br>";
-			}
-			if($rout_show->wed==1)
-			{
-				echo "Wednesday"."<br>";
-			}
-			if($rout_show->thurs==1)
-			{
-				echo "Thursday"."<br>";
-			}
-			if($rout_show->fri==1)
-			{
-				echo "Friday"."<br>";
-			}
-			if($rout_show->sat==1)
-			{
-				echo "Saturday"."<br>";
-			}
-			if($rout_show->sun==1)
-			{
-				echo "Sunday"."<br>";
-			}
+        <h2>Routine Info</h2>
+        <?php
+            echo "<p>Name: ". $rout_show->name . "<br/>";
+            echo "<p>Description: ". $rout_show->description . "<br/>";
+            echo "<p>This workout is done on: "."<br>";
+            if($rout_show->mon==1)
+            {
+                echo "Monday"."<br>";
+            }
+            if($rout_show->tues==1)
+            {
+                echo "Tuesday"."<br>";
+            }
+            if($rout_show->wed==1)
+            {
+                echo "Wednesday"."<br>";
+            }
+            if($rout_show->thurs==1)
+            {
+                echo "Thursday"."<br>";
+            }
+            if($rout_show->fri==1)
+            {
+                echo "Friday"."<br>";
+            }
+            if($rout_show->sat==1)
+            {
+                echo "Saturday"."<br>";
+            }
+            if($rout_show->sun==1)
+            {
+                echo "Sunday"."<br>";
+            }
+            
+            $routine_exercises = $rout_show->get_exercises();
+        ?>
+        
+        <p><a class='btn btn-default' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
 
-			 $total_exercises=$user->find_last_exercise($rout_show->id);
-
-			 foreach ($total_exercises as $exercise_number)
-			 {
-			 		//echo $rout_show->id;
-			 		$temp_ex=Exercises::find_by_id($exercise_number->id);
-			 		//echo $temp_ex->type;
-			 		//echo $exercise_number->type;
-			 		$display_type = Types::find_by_id($temp_ex->type);
-
-
-					//echo $display_type->id;
-
-					echo "<tr><td><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>".$display_type->name."</a></td><br>";
-
-			 }
-			 		//redirect_to("add_routine_exercise.php?id=$a");
-					//echo("<button onclick=\"location.href='add_routine_exercise.php?id'\">Back to Home</button>");
-					echo "<p><a class='btn btn-default' href='edit_routine.php?rout_id={$rout_show->id}' role='button'>Edit Routine</a></p>";
-					echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$rout_show->id' role='button'>Add Exercise</a></p>"
-
-    	?>
-			<p><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
-    	<p><a class="btn btn-default" href="profile.php" role="button">Go Back to Home</a></p>
-
+        <div class="boxContainerDiv">
+            <div>
+                <br><br>
+                <table class="tableExercise">
+                    <?php
+                        foreach ($routine_exercises as $exercise_number)
+                        {
+                            $exercise = Exercises::find_by_id($exercise_number->id);
+                            $sets = $exercise->get_sets();
+                            $sets_length = count($sets);
+                            $set_number = 1;
+                            $exercise_type = Types::find_by_id($exercise->type);
+            
+                            echo "<tr><th class='tableName' colspan='10'><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>$exercise_type->name</a></th></tr>";
+                            echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />Sets</td><td class='tableReps'>";
+                            foreach($sets as $set)
+                            {
+                                if($set_number != $sets_length) 
+                                {
+                                    if($set->reps <= 0)
+                                    {
+                                        echo "--,";
+                                    }
+                                    else 
+                                    {
+                                        echo "{$set->reps},";
+                                    }
+                                }
+                                else 
+                                {
+                                    if($set->reps <= 0)
+                                    {
+                                        echo "--<br />Reps</td>";
+                                    }
+                                    else
+                                    {
+                                        echo "{$set->reps}<br />Reps</td>"; 
+                                    }
+                                } 
+                                $set_number++;
+                            }
+                            
+                            echo "<td class='tableReps'>";
+                            $set_number = 1;
+                            foreach($sets as $set)
+                            {
+                                if($set_number != $sets_length) 
+                                {
+                                    if($set->weight <= 0)
+                                    {
+                                        echo "--,";
+                                    }
+                                    else 
+                                    {
+                                        echo "{$set->weight},";
+                                    }                                   
+                                }
+                                else 
+                                {
+                                    if($set->weight <= 0)
+                                    {
+                                        echo "--<br />Lbs</td>";
+                                    }
+                                    else
+                                    {
+                                        echo "{$set->weight}<br />Lbs</td>";
+                                    }                                  
+                                } 
+                                $set_number++; 
+                            }
+                            echo "</tr>";   
+                        }   
+                    ?>
+                </table>
+            </div>
+        </div>
+        <br>
+        <p><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></p>
+        
+        <p><a class="btn btn-success" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START</a></p>
+        
    </div> <!-- /container -->
 
 
