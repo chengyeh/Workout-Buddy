@@ -29,9 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		foreach($_POST['delete_routine'] as $routine_id)
 		{
 			$routine = Routine::find_by_id($routine_id);
-			$routine->delete();
+			
 			$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $routine_id . "'");
 			$database->query("DELETE FROM wb_exercise_set WHERE routine_id = '" . $routine_id . "'");
+            $database->query("DELETE FROM wb_event_calendar WHERE user_id = '" . $user->id . "' AND name = '". $routine->name . "'");
+            
+            $routine->delete();
 		}
 	}
 
