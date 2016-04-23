@@ -1,5 +1,4 @@
-.boxContainerDiv {border-top: #689941 1px dotted;}
-.boxContainerDiv table {padding: 0; margin: 0; width: 1140px;}
+.boxContainerDiv table {padding: 0; margin: 0; width: 100%; max-width: 100%;}
 .boxContainerDiv th {width: 95px; height: 35px;}
 .tableName {color: #305293; font-weight: bold; font-size: small; padding: 10px 10px 5px 10px; border-top:  #d9d9d9 1px dotted;}
 .tableImage {width: 280px; height: 180px;}

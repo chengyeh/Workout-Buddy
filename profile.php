@@ -202,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		
 		if(!empty($user_routine_objects))
 		{
-			echo "<table class='table'><tr><th>Routine</th><th></th><th class='text-center'>Delete</th></tr>";
+			echo "<table class='table'><tr><th>Name</th><th></th><th class='text-center'>Delete</th></tr>";
 			
 			foreach ($user_routine_objects as $routine_object){
 				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td>";

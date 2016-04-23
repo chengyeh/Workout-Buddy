@@ -149,7 +149,7 @@ if(!$rout_show){
             <p><a class='btn btn-default' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
             <div class="boxContainerDiv">
                 <div>
-                    <br><br>
+                    <br>
                     <table class="tableExercise">
                         <?php
                             foreach ($routine_exercises as $exercise_number)
@@ -223,7 +223,7 @@ if(!$rout_show){
                     </table>
                 </div>
             </div>
-            <br>
+            
             <table class='table'>
                 <tr>
                     <td><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
@@ -237,7 +237,7 @@ if(!$rout_show){
         ?>
             <div class="boxContainerDiv">
                 <div>
-                    <br><br>
+                    <br>
                     <table class="tableExercise">
                         <?php
                             foreach ($routine_exercises as $exercise_number)

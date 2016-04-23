@@ -130,11 +130,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <style type="text/css">
     
     input{
-        width: 10%;
+        width: 15%;
     }
     
     #button{
-        width: 200px;
+        width: 100%; 
+        max-width: 100%;
         height: 40px;
     }
 	</style>
@@ -243,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 if($pagination->has_next_page())
                 {
                     echo "<table class='table'><tr><td><input type='submit' id='button' class='btn btn-warning' name='action' value='END WITHOUT SAVE' /></td><td class='text-center'><input type='submit' id='button' class='btn btn-danger' name='action' value='END' /></td>";
-                    echo "<td class='text-right'><input type='submit' id='button' id='button' class='btn btn-primary' name='action' value='NEXT' /></td></tr></table></form>";
+                    echo "<td class='text-right'><input type='submit' id='button' class='btn btn-primary' name='action' value='NEXT' /></td></tr></table></form>";
                 }
                 else 
                 {

@@ -149,6 +149,24 @@ if(!$view_user){
 			echo "No groups<br/>";
 		}
 	?>
+	
+	<br>
+    <h2>User Routines</h2>
+    <?php   
+        $user_routine_objects = $view_user->exercise_routines_added();
+        
+        if(!empty($user_routine_objects))
+        {
+            echo "<table class='table'><tr><th>Name</th></tr>";
+            
+            foreach ($user_routine_objects as $routine_object){
+                echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
+            }
+            echo "</table>";
+        }else{
+            echo  "<p>No Routines</p>";
+        }
+    ?>
 
     </div> <!-- /container -->
 
