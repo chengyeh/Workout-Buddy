@@ -31,7 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $challenge->bench_press = $trimmed['challenge_BP_lbs'];
   $challenge->pull_ups = $trimmed['challenge_PU_num'];
   $challenge->treadmill_mileage = $trimmed['challenge_TMM'];
-  $challenge->create();
+
+  $sql = "SELECT id FROM challenge WHERE who =".$trimmed['user_id']."";
+  global $database;
+  $result = $database->query($sql);
+  if($result){
+    $sql_u = "UPDATE challenge SET name='".$trimmed['challenge_name']."', bench_press='".$trimmed['challenge_BP_lbs']."', pull_ups='".$trimmed['challenge_PU_num']."', treadmill_mileage='".$trimmed['challenge_TMM']."' where who = ".$trimmed['user_id']."; ";
+    $database->query($sql_u);
+  }
+  else {
+    $challenge->create();
+  }
+  $result->close();
 
   //Redirect to profile page
   redirect_to("view_group.php?id={$database->insert_id()}");
@@ -106,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
               </ul>
             </li>
           </ul>
-          
+
 		<ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
             <li>
@@ -123,10 +134,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
             <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
          </ul>
-         
+
          </div><!--/.nav-collapse -->
       </div>
-      
+
     </nav>
 
     <div class="container">
@@ -134,14 +145,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- Main component for a primary marketing message or call to action -->
     <div class="col-xs-12 col-sm-6 col-md-8">
     <h1>Add accomplished challenge</h1>
-    
+
     <h2>Update your accomplished challenge!</h2>
     <form action="#" method="post" enctype="multipart/form-data">
         <input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
-        
+
         <fieldset class="form-group">
            <label for="formGroupExampleInput">Your name:</label>
-           <input type="text" class="form-control" id="formGroupExampleInput" name="challenge_name" required autofocus />
+           <?php
+           global $database;
+           $sql = "SELECT first_name, last_name FROM wb_users WHERE id ='".$session->user_id."';";
+           $result = $database->query($sql);
+           $row = $result->fetch_assoc();
+           echo "<font size=5 color=purple>". $row["first_name"]. "</font> ";
+           echo "<font size=5 color=purple>". $row["last_name"]. "</font> ";
+           $result->close();
+           ?>
         </fieldset>
         <fieldset class="form-group">
             <label for="formGroupExampleInput2">Bench Press (lbs):</label>
@@ -157,17 +176,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         </fieldset>
         <button type="submit" name="submit" class="btn btn-default">Update challenge! WooHoo</button>
     </form>
-    
+
     </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
     </div> <!-- /container -->
 
 
