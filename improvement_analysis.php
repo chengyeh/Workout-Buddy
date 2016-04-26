@@ -38,7 +38,7 @@ $user = $user->id;
 
     $result_1 = $database->query($sql_1);
 
-    echo "<table><tr><td> You have done the following:   </td><td>Your strengh is growing at:   </td><td>Between:    </td></tr>";
+    echo "<table><tr><td> You have done the following:   </td><td>Your Max:</td><td>Your worst:</td><td>Your strengh is growing at:   </td><td>Between:    </td></tr>";
     while($row_1 = $result_1->fetch_assoc()){
 
       echo "<tr>";
@@ -60,7 +60,8 @@ $user = $user->id;
       $row_31 = $result_31->fetch_assoc();
       $min_weight = $row_3["MIN(weight)"];
 
-      $d1 = $row_31["date"];
+
+      $d1 = $row_31["MIN(date)"];
       $d1 = str_replace('-', '/', $d1); // change format
       $d1 = strtotime($d1);
 
@@ -73,8 +74,10 @@ $user = $user->id;
       $row_4 = $result_4->fetch_assoc();
       $row_41 = $result_41->fetch_assoc();
       $max_weight = $row_4["MAX(weight)"];
+      echo "<td>".$max_weight." lb </td><td>".$min_weight." lb</td>";
 
-      $d2 = $row_41["date"];
+
+      $d2 = $row_41["MAX(date)"];
       $d2 = str_replace('-', '/', $d2);
       $d2 = strtotime($d2);
 
