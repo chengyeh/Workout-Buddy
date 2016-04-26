@@ -1,31 +1,16 @@
 <?php
-/**
- * Each User has a profile page based on their give information, the groups they have created, the groups they are a part of and other constants appearing on all parts of the websites. The $user variable is associated with the
- *
- */
-
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+
+$number_messages=0;
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object for current session user
+//Create User object
 $user = User::find_by_id($session->user_id);
-
-//If the ID field is empty return the user to profile page
-if (empty($_GET['id'])){
-	$session->message("No group ID was provided.");
-	redirect_to('profile.php');
-}
-
-//Create User object from ID in the URL
-$view_user = User::find_by_id($_GET['id']);
-if(!$view_user){
-	$session->message("Unable to be find group.");
-	redirect_to('profile.php');
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,7 +22,7 @@ if(!$view_user){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title><?php echo $view_user->full_name()?></title>
+    <title>Workout Buddy - About</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,6 +32,9 @@ if(!$view_user){
 
     <!-- Custom styles for this template -->
     <link href="dist/css/navbar-fixed-top.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <!-- <link href="dist/css/jumbotron-narrow.css" rel="stylesheet" -->>
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -93,80 +81,53 @@ if(!$view_user){
               </ul>
             </li>
           </ul>
-
-		<ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
-            <li>
-            	<span>
-	            <?php
-	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
-	            	$number_messages = $database->num_rows($result_set);
-	            	echo "<span class='badge'>{$number_messages}</span>";
-	            ?>
-	            <a href="inbox.php">Inbox</a>
-	            </span>&nbsp&nbsp
-            </li>
-
-            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
-            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
-         </ul>        
-         
-         </div><!--/.nav-collapse -->
+          
+          <ul class="nav navbar-nav navbar-right" id="navbar-status">
+            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
+        </div><!--/.nav-collapse -->
       </div>
-
+      
     </nav>
 
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h1>Profile Page</h1>
+  	
+ 	  <div class="header clearfix">
+      </div>
 
-	<h2>User Info</h2>
-	<?php
-		echo "<p>Name: ". $view_user->full_name() . "<br/>";
-		if($view_user->id != $user->id)
-		{
-			echo "<p><a class='btn btn-default' href='personal_msg.php?id={$view_user->id}' role='button'>Send Message</a></p>";
-		}
-	?>
+      <div class="jumbotron">
+        <h1>Workout Buddy</h1>
+        <p class="lead">WorkoutBuddy is dedicated to making it easy for individuals and groups to interact with each other, primarily through sport and recreational activities. Finding a workout partner is as signing up with Workout Buddy.</p>
+      </div>
 
-	<h2>User Groups</h2>
-	<?php
-		//Find all the groups from this user and add into array
-		$groups_joined = $view_user->groups_joined();
-		if(!empty($groups_joined))
-		{
-			echo "<table class='table'><tr><th>Name</th><th>Status</th></tr>";
-			//List all the groups
-			foreach ($groups_joined as $group_member_row){
-				$group_joined = Group::find_by_id($group_member_row->group_id);
-				echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
-				echo "<td>{$group_joined->group_status}</td>";
-			}
-			echo "</table>";
+      <div class="row marketing">
+        <div class="col-lg-6">
+          <h4>Connect with People.</h4>
+          <p>Online website to connect people all over the nation who want to meet new people, achieve their health goals, and get out and exercise.</p>
 
-		}else{
-			echo "No groups<br/>";
-		}
-	?>
-	
-	<br>
-    <h2>User Routines</h2>
-    <?php   
-        $user_routine_objects = $view_user->exercise_routines_added();
-        
-        if(!empty($user_routine_objects))
-        {
-            echo "<table class='table'><tr><th>Name</th></tr>";
-            
-            foreach ($user_routine_objects as $routine_object){
-                echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
-            }
-            echo "</table>";
-        }else{
-            echo  "<p>No Routines</p>";
-        }
-    ?>
+          <h4>Motivated Through Sharing.</h4>
+          <p> Many people use Workout Buddy to form exercise groups, or just stay motivated through sharing and meeting new people.</p>
+
+          <h4>Meet Health Goals.</h4>
+          <p>Studies show that people are happier and meet their health goals when they have a friend or group to motivate them.</p>
+        </div>
+
+        <div class="col-lg-6">
+          <h4>Take Control.</h4>
+          <p>If you have failed to workout on your own, this is an opportunity to approch this in a different method.</p>
+
+          <h4>Something for Everyone.</h4>
+          <p>You can find anything from a local runing group to meet-ups for exercising with your pets!</p>
+
+          <h4>Are You Ready?</h4>
+          <p> Whether you're looking for someone with similar goals, a fitness buddy to work out with, or a person with a committed attitude, there are a number of ways to find a buddy right here on Workout Buddy.</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>&copy; 2016 Workout Buddy, Inc.</p>
+      </footer>
 
     </div> <!-- /container -->
 

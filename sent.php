@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Workout Buddy: Messages Sent</title>
+    <title>Workout Buddy - Drafts</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="profile.php">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="about_page.php">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More Actions<span class="caret"></span></a>
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h2>Messages Sent</h2>
+    <h2>Drafts</h2>
 
 	<?php
 		$message_array=$user->get_messages();
