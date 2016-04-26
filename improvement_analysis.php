@@ -25,7 +25,7 @@ $user = $user->id;
 <html>
   <head></head>
   <body>
-    haha!<br>
+    <br>
     <?php
     global $database;
 
@@ -53,21 +53,28 @@ $user = $user->id;
 
       //pull out the minimum weight (weakest workout) record
       $sql_3 = "SELECT MIN(weight), date FROM `wb_user_log` WHERE (exercise_type_id = '". $exercise_id . "' ) AND (user_id = '". $user ."');";
+      $sql_31 = "SELECT MIN(date), date FROM `wb_user_log` WHERE (exercise_type_id = '". $exercise_id . "' ) AND (user_id = '". $user ."');";
       $result_3 = $database->query($sql_3);
+      $result_31 = $database->query($sql_31);
       $row_3 = $result_3->fetch_assoc();
+      $row_31 = $result_31->fetch_assoc();
       $min_weight = $row_3["MIN(weight)"];
 
-      //pull out the maximum weight (weakest workout) record
-      $sql_4 = "SELECT MAX(weight), date FROM `wb_user_log` WHERE (exercise_type_id = '". $exercise_id . "' ) AND (user_id = '". $user ."');";
-      $result_4 = $database->query($sql_4);
-      $row_4 = $result_4->fetch_assoc();
-      $max_weight = $row_4["MAX(weight)"];
-
-      $d1 = $row_3["date"];
+      $d1 = $row_31["date"];
       $d1 = str_replace('-', '/', $d1); // change format
       $d1 = strtotime($d1);
 
-      $d2 = $row_4["date"];
+
+      //pull out the maximum weight (weakest workout) record
+      $sql_4 = "SELECT MAX(weight), date FROM `wb_user_log` WHERE (exercise_type_id = '". $exercise_id . "' ) AND (user_id = '". $user ."');";
+      $sql_41 = "SELECT MAX(date), date FROM `wb_user_log` WHERE (exercise_type_id = '". $exercise_id . "' ) AND (user_id = '". $user ."');";
+      $result_4 = $database->query($sql_4);
+      $result_41 = $database->query($sql_41);
+      $row_4 = $result_4->fetch_assoc();
+      $row_41 = $result_41->fetch_assoc();
+      $max_weight = $row_4["MAX(weight)"];
+
+      $d2 = $row_41["date"];
       $d2 = str_replace('-', '/', $d2);
       $d2 = strtotime($d2);
 
@@ -84,7 +91,7 @@ $user = $user->id;
         echo "<td>" . $rate . " lbs/day</td>";
       }
       //date
-      echo "<td>From: ".$row_3["date"]."<br>To: ".$row_4["date"]."</td>";
+      echo "<td>From: ".$row_31["MIN(date)"]."<br>To: ".$row_41["MAX(date)"]."</td>";
 
     }
 
