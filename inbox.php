@@ -6,7 +6,7 @@ require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 //Create User object
 $user = User::find_by_id($session->user_id);
-$database->query("UPDATE `wb_messages` SET `read`=1 WHERE `receiver`=".$user->id);
+$database->query("UPDATE `wb_messages` SET `read_message`=1 WHERE `receiver`=".$user->id);
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   $errors = array();
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             <li>
             	<span>
 	            <?php
-	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
 	            ?>

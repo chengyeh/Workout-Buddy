@@ -173,12 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
         <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" name="confirm_password" required>
-        
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
+
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Sign up</button>
       </form>
 

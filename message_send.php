@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	 $mess5->Time = $dt->format('H:i:s');
          	 $mess5->del_receive = 0;
          	 $mess5->del_sent = 0;
-         	 $mess5->read = 0;
+         	 $mess5->read_message = 0;
             $mess5->create();
         }
      }
