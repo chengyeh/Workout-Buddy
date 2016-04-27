@@ -9,28 +9,35 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object
 $user = User::find_by_id($session->user_id);
+
+//Set default time zone to central standard time
+date_default_timezone_set("America/Chicago");
+
+//Today's date year/month
+$today = date("Y-m-d H:i:s");
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
-
-  // Trim all the incoming data:
+	// Trim all the incoming data:
 	$trimmed = array_map('trim', $_POST);
-
-		// Add the group to the database:
-		$event = new Event_Calendar();
-		$event->user_id = $database->escape_value($trimmed['user_id']);
-      	$event->name = $database->escape_value($trimmed['event_name']);
-		$event->description = $database->escape_value($trimmed['event_name']);
-      	$event->event_date= $database->escape_value($trimmed['event_date'])." ". $database->escape_value($trimmed['event_time']);
-      	
-      	$event->create();
-
-      	//Redirect to profile page
-      	redirect_to("show_calendar.php");
+	
+	$user_id 			= $database->escape_value($trimmed['user_id']);
+	$contact_datetime 	= $database->escape_value($trimmed['contact_datetime']);
+	$contact_name 		= $database->escape_value($trimmed['contact_name']);
+	$contact_subject 	= $database->escape_value($trimmed['contact_subject']);
+	$contact_message 	= $database->escape_value($trimmed['contact_message']);
+	
+// 	$sql  = "INSERT INTO table_name ";
+// 	$sql .=	"(column1, column2, column3,...) ";
+// 	$sql .=	"VALUES ";
+// 	$sql .=	"(value1, value2, value3,...)";
+   		
+//    	$database->query($sql);
+	
+// 	//Redirect to profile page
+// 	redirect_to("view_group.php?id={$database->insert_id()}");
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -39,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="" >
+    <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Home - <?php echo $user->full_name()?></title>
+    <title>Fixed Top Navbar Example for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- Custom styles for this template -->
     <link href="dist/css/navbar-fixed-top.css" rel="stylesheet">
-    <link href="dist/css/calendar.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -63,9 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  	<link href="dist/css/calendar.css" rel="stylesheet" type="text/css" media="all">
-  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  	<link rel="stylesheet" type="text/css" href="dist/css/jquery.timepicker.css">
   </head>
 
   <body>
@@ -127,48 +130,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
 
     <div class="container">
-	<div class="col-xs-12 col-sm-6 col-md-8">
-	<h2>Add Event</h2>
+
+ 	<div class="col-xs-12 col-sm-6 col-md-8">
+	<h2>Contact Us</h2>
 	<form action="#" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
-	
+		<input type="hidden" name="contact_datetime" value='<?php echo $today; ?>'>
+		
 		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Event Name</label>
-		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Event Name" name="event_name" required autofocus>
+		   <label for="formGroupExampleInput">Your Name</label>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" name="contact_name" value="<?php echo $user->full_name(); ?>" required readonly autofocus>
+		</fieldset>
+		<fieldset class="form-group">
+		   <label for="formGroupExampleInput">Subject</label>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Subject" name="contact_subject" required>
 		</fieldset>
   		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Event Discription</label>
-		   <textarea name="event_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Discription"rows="4" cols="50" required></textarea>
+		   <label for="formGroupExampleInput">Message</label>
+		   <textarea name="contact_message" class="form-control" id="formGroupExampleInput" placeholder="Message"rows="4" cols="50" required></textarea>
 		</fieldset>
-		<div class="panel panel-default">
-  		<div class="panel-body">
-		<fieldset class="form-group">
-		    <div class="form-inline">
-			<div class="form-group">
-			    <label for="exampleInputPassword1">Event Date</label>
-			    	<div class="input-group">
-			    	<input type="text" id="datepicker" class="form-control" name="event_date">
-			    	 <div class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
-			    	</div>
-			</div>
-			&nbsp&nbsp
-			<div class="form-group">
-			    <label for="exampleInputPassword1">Event Time</label>
-			    	<div class="input-group col-sm-6">
-			    		<input class="hasDatepicker form-control" name="event_time" id="datetimepicker" data-time-format="H:i:s" type="text">
-			    	 <div class="input-group-addon"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></div>
-			    	</div>
-			</div>
-			</div>
-		</fieldset>
-		</div>
-		</div>
-		<button type="submit" name="submit" class="btn btn-default">Add Event</button>
+		
+		<button type="submit" name="submit" class="btn btn-default">Send</button>
 	</form>
 	
 	</div>
-		
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
     </div> <!-- /container -->
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -178,18 +175,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="js/jquery.timepicker.js"></script>
-    <script>
-		  $(function() {
-		    $( "#datepicker" ).datepicker({
-		    	  dateFormat: "yy-mm-dd"
-		    });
-		  });
-		  $(function() {
-			  $('#datetimepicker').timepicker();
-		  });
-	</script>
-	</body>
+  </body>
 </html>
