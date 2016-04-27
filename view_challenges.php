@@ -11,6 +11,7 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 $user = User::find_by_id($session->user_id);
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

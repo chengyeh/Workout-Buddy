@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		echo "<p>" . $user->full_name() . "</p>";
 	?>
 
-	<h2>Groups Owns</h2>
+	<h2>Groups Added</h2>
 	<p><a class="btn btn-default" href="add_group.php" role="button">Add Group</a></p>
 	<form action="#" method="post">
 	<?php

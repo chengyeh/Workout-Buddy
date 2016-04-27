@@ -42,4 +42,5 @@ class challenge extends DatabaseObject {
 
 }
 
+
 ?>
