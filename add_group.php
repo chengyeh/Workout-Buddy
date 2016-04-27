@@ -5,6 +5,9 @@ ini_set("display_errors", 1);
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
+//Create User object
+$user = User::find_by_id($session->user_id);
+
 //Get all the group activity to popluate the 
 //select box in form
 $group_activity = Group::get_activity();
