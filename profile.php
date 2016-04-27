@@ -23,17 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group_id . "'");
 		}
 	}
-	
+
 	if(!empty($_POST['delete_routine']))
 	{
 		foreach($_POST['delete_routine'] as $routine_id)
 		{
 			$routine = Routine::find_by_id($routine_id);
-			
+
 			$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $routine_id . "'");
 			$database->query("DELETE FROM wb_exercise_set WHERE routine_id = '" . $routine_id . "'");
             $database->query("DELETE FROM wb_event_calendar WHERE user_id = '" . $user->id . "' AND name = '". $routine->name . "'");
-            
+
             $routine->delete();
 		}
 	}
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="profile.php">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="about_page.php">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More Actions<span class="caret"></span></a>
@@ -102,7 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <li><a href="find_user.php">Find User</a></li>
                 <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
+                <li class="dropdown-header">Progress</li>
+                <li><a href="view_log.php">View Log</a></li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
                 <li><a href="view_challenges.php">View Challenge</a></li>
               </ul>
@@ -162,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		}
 	?>
 	</form>
-	
+
 	<h2>Groups Joined</h2>
 	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
 	<?php
@@ -197,14 +198,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<h2>Exercise Routines</h2>
 	<p><a class="btn btn-default" href="add_routine.php" role="button">Add Routine</a></p>
 	<form action="#" method="post">
-	<?php	
+	<?php
 		$user_routine_objects = $user->exercise_routines_added();
-		
+
 		if(!empty($user_routine_objects))
 		{
 			echo "<table class='table'><tr><th>Name</th><th></th><th class='text-center'>Delete</th></tr>";
-			
-			foreach ($user_routine_objects as $routine_object){
+
+			foreach ($user_routine_objects as $routine_object)
+			{
 				echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td>";
 				echo "<td></td><td style='text-align:center'><input type='checkbox' name='delete_routine[]' value='" . $routine_object->id . "'></td></tr>";
 			}
@@ -214,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		}
 	?>
 	</form>
-	
+
     </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript

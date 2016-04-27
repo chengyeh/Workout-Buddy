@@ -1,9 +1,8 @@
 <?php
 /**
- * Each User has a profile page based on their give information, the groups they have created, the groups they are a part of and other constants appearing on all parts of the websites. The $user variable is associated with the
+ * When User clicks on a routine, all exercise of the routine and the sets are queried from he database and printed in a table.
  *
  */
-
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -12,20 +11,15 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object for current session user
 $user = User::find_by_id($session->user_id);
+$log_obj = Category::find_by_id($_GET['id']);
+//If the id field is empty return the user to profile page
 
-//If the ID field is empty return the user to profile page
-if (empty($_GET['id'])){
-	$session->message("No group ID was provided.");
-	redirect_to('profile.php');
-}
 
-//Create User object from ID in the URL
-$view_user = User::find_by_id($_GET['id']);
-if(!$view_user){
-	$session->message("Unable to be find group.");
-	redirect_to('profile.php');
-}
+//Create Routine object from id in the URL
+
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,7 +31,9 @@ if(!$view_user){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title><?php echo $view_user->full_name()?></title>
+    <title><?php echo $rout_show->name; ?></title>
+
+    <link href="css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -94,81 +90,91 @@ if(!$view_user){
             </li>
           </ul>
 
-		<ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
-            <li>
-            	<span>
-	            <?php
-	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
-	            	$number_messages = $database->num_rows($result_set);
-	            	echo "<span class='badge'>{$number_messages}</span>";
-	            ?>
-	            <a href="inbox.php">Inbox</a>
-	            </span>&nbsp&nbsp
-            </li>
-
-            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
-            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
-         </ul>        
-         
-         </div><!--/.nav-collapse -->
+          <ul class="nav navbar-nav navbar-right" id="navbar-status">
+            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
+        </div><!--/.nav-collapse -->
       </div>
 
     </nav>
 
     <div class="container">
+		<?php
+			$exercise_name=Exercises::find_by_id($log_obj->exercise_id);
+			$type_name=Types::find_by_id($exercise_name->type);
+		?>
 
-    <!-- Main component for a primary marketing message or call to action -->
-    <h1>Profile Page</h1>
+        <h2>Log History for <?php echo $type_name->name ?> </h2>
+       	<?php
+       		$log_ex_array=$log_obj->log_exercises1();
+       		$a=1;
+       		echo "<table class='table'><tr><th>Set</th><th>Actual Reps</th><th>Target Reps</th><th>Actual Weight</th><th>Target Weight</th>";
+			while($log_ex_disp = $log_ex_array->fetch_assoc())
+			{
+				$log_name=Log::find_by_id($log_ex_disp['id']);
+				$log_transfer=$log_name->set_log_helper($a);
+				$actual_reps=0;
+				$actual_weight=0;
+				while($log_array = $log_transfer->fetch_assoc())
+				{
+					$set_array=Set::find_by_id($log_array['id']);
+					//echo $set_array->id;
+					//echo "<br>";
+					//echo $set_array->reps;
+					$actual_reps=$set_array->reps;
+					//echo "<br>";
+					//echo $set_array->weight;
+					$actual_weight=$set_array->weight;
+					//echo "<br>";
+				}
 
-	<h2>User Info</h2>
-	<?php
-		echo "<p>Name: ". $view_user->full_name() . "<br/>";
-		if($view_user->id != $user->id)
-		{
-			echo "<p><a class='btn btn-default' href='personal_msg.php?id={$view_user->id}' role='button'>Send Message</a></p>";
-		}
-	?>
+					/*
+					echo $actual_reps;
+					echo "<br>";
+					echo $actual_weight;
+					echo "<br>";*/
+				echo "<tr>";
+				echo "<td>" . "<b>".$a. "</td>";
 
-	<h2>User Groups</h2>
-	<?php
-		//Find all the groups from this user and add into array
-		$groups_joined = $view_user->groups_joined();
-		if(!empty($groups_joined))
-		{
-			echo "<table class='table'><tr><th>Name</th><th>Status</th></tr>";
-			//List all the groups
-			foreach ($groups_joined as $group_member_row){
-				$group_joined = Group::find_by_id($group_member_row->group_id);
-				echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
-				echo "<td>{$group_joined->group_status}</td>";
+				echo "<td>" . $log_name->reps . "</td>";
+				echo "<td>" . $actual_reps . "</td>";
+				echo "<td>" . $log_name->weight . "</td>";
+				echo "<td>" . $actual_weight . "</td>";
+
+
+				$a=$a+1;
+
+				//echo "<td>" . $type_log->name."</td>";
+
+
+				echo "</tr>";
 			}
 			echo "</table>";
 
-		}else{
-			echo "No groups<br/>";
-		}
-	?>
-	
-	<br>
-    <h2>User Routines</h2>
-    <?php   
-        $user_routine_objects = $view_user->exercise_routines_added();
-        
-        if(!empty($user_routine_objects))
-        {
-            echo "<table class='table'><tr><th>Name</th></tr>";
-            
-            foreach ($user_routine_objects as $routine_object){
-                echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
-            }
-            echo "</table>";
-        }else{
-            echo  "<p>No Routines</p>";
-        }
-    ?>
 
-    </div> <!-- /container -->
+       	/*
+       		//echo $user->id;
+       		$a=1;
+       		//$log_array=$user->display_log();
+       		echo "<table class='table'><tr><th>Date</th><th>Time</th><th>Routine</th><th>Exercise</th><th>Date</th><th class='text-center'>Delete</th></tr>";
+
+				$routine_name=Routine::find_by_id($log_obj->routine_id);
+				$exercise_obj=Exercises::find_by_id($log_obj->exercise_id);
+				$type_log=Types::find_by_id($exercise_obj->type);
+				echo "<tr>";
+
+				$a=$a+1;
+
+				echo "<td>" . $routine_name->name."</td>";
+				echo "<td>" . $type_log->name."</td>";
+				echo "</tr>";
+
+			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-default' name ='submit' value='Go Back'></td></tr>";
+			echo "</table>";
+		*/
+       	?>
+
+
+   </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript

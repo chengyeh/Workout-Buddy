@@ -6,6 +6,7 @@ defined('SITE_ROOT') ? null :
 
 define('SITE_ROOT', DS.'home'.DS.'dfernand'.DS.'public_html'.DS.'eecs448'.DS.'EECS448_Project3');
 
+
 defined('LIB_PATH') ? null :
 define('LIB_PATH', SITE_ROOT .DS. 'includes');
 
@@ -29,6 +30,7 @@ require_once(LIB_PATH.DS."challenge.php");
 require_once(LIB_PATH.DS."exercises.php");
 require_once(LIB_PATH.DS."goals.php");
 require_once(LIB_PATH.DS."routine.php");
+require_once(LIB_PATH.DS."log_category.php");
 require_once(LIB_PATH.DS."set.php");
 require_once(LIB_PATH.DS."types.php");
 require_once(LIB_PATH.DS."exercises.php");

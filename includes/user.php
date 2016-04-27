@@ -57,6 +57,16 @@ class User extends DatabaseObject {
         }
     }
 
+	public function display_log()
+	{
+		global $database;
+    	$sql = "SELECT * FROM wb_log_category WHERE user_id=".$this->id;
+    	$log_array = $database->query($sql);
+    	return $log_array;
+	}
+
+
+
     public function find_groups(){
     	$sql = "SELECT * FROM wb_group WHERE group_owner=".$this->id. " ORDER BY group_name ASC, group_status DESC";
     	$groups_object_array = Group::find_by_sql($sql);

@@ -48,7 +48,7 @@ if(isset($search_string) && empty($message)){
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Workout Buddy: Find User</title>
+    <title>Workout Buddy - Find User</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -88,7 +88,7 @@ if(isset($search_string) && empty($message)){
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="profile.php">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="about_page.php">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More Actions<span class="caret"></span></a>

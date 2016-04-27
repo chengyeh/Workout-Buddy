@@ -20,7 +20,7 @@ $user = User::find_by_id($session->user_id);
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Workout Buddy: Messages</title>
+    <title>Workout Buddy - Messages</title>
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -60,7 +60,7 @@ $user = User::find_by_id($session->user_id);
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="profile.php">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="about_page.php">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More Actions<span class="caret"></span></a>
@@ -107,7 +107,7 @@ $user = User::find_by_id($session->user_id);
   	
   	<p><a class="btn btn-default" href="inbox.php" role="button">Inbox</a></p>
     <hr>
-	<p><a class="btn btn-default" href="sent.php" role="button">Messages Sent</a></p>
+	<p><a class="btn btn-default" href="sent.php" role="button">Drafts</a></p>
     <hr>
     <p><a class="btn btn-default" href="find_user.php" role="button">Find User</a></p>
 
