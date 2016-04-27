@@ -1,7 +1,7 @@
 <?php
 /**
  * When User clicks start, all exercises of the routine and the sets belong to it are queried from the database and printed in a table.
- * 
+ *
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -20,7 +20,7 @@ if (empty($_GET['id'])){
 	redirect_to('profile.php');
 }
 
-//Create Routine object from id in the URL 
+//Create Routine object from id in the URL
 $routine = Routine::find_by_id($_GET['id']);
 if(!$routine){
 	$session->message("Unable to be find routine.");
@@ -39,7 +39,7 @@ $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 //records per page
 $per_page = 1;
 
-//total record count 
+//total record count
 //$total_count =  Exercises::count_all();
 
 $sql = "SELECT COUNT(*) FROM wb_exercise WHERE routine_id=".$routine->id;
@@ -57,13 +57,13 @@ $pagination = new Pagination($page, $per_page, $total_count);
 $sql = "SELECT * FROM wb_exercise WHERE routine_id=".$routine->id." ORDER BY id ASC ";
 $sql .= "LIMIT {$per_page} ";
 $sql .= "OFFSET {$pagination->offset()}";
-        
+
 $exercises = $database->query($sql);
 
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    
+
     $errors = array();
 
     if ($_POST['action'] == 'END WITHOUT SAVE')
@@ -71,16 +71,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         //Redirect to view routine page
         redirect_to("view_routine.php?id={$routine->id}");
     }
-    
+
     //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
-    
+
     date_default_timezone_set('America/Chicago');
     $dt = new DateTime();
     $tz = new DateTimeZone('America/Chicago');
-    
+
+    $category1 = new Category();
+		    $category1->user_id=$user->id;
+		    $category1->routine_id=$routine->id;;
+		    $category1->exercise_id = $trimmed['exercise_id'];
+		    $category1->Date = $dt->format('m-d-Y');
+		    $category1->Time = $dt->format('H:i:s');
+		    $category1->create();
+
+
     for($i = 1; $i <= $trimmed['sets_length']; $i++)
     {
+
+
+
+
         $log = new Log();
         $log->user_id = $user->id;
         $log->routine_id = $routine->id;
@@ -91,10 +104,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $log->weight = $trimmed['set'.$i.'_weight'];
         $log->date = $dt->format('m-d-Y');
         $log->time = $dt->format('H:i:s');
-        
+        $log->category_id = $category1->id;
         $log->create();
     }
- 
+
     if ($_POST['action'] == 'END')
     {
         //Redirect to view routine page
@@ -103,13 +116,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     else if($_POST['action'] == 'NEXT')
     {
         //Redirect to next exercise
-        redirect_to("start_routine.php?id={$routine->id}&page={$pagination->next_page()}"); 
+        redirect_to("start_routine.php?id={$routine->id}&page={$pagination->next_page()}");
     }
-    else 
+    else
     {
         //Redirect to view routine page
-        redirect_to("view_routine.php?id={$routine->id}"); 
-    } 
+        redirect_to("view_routine.php?id={$routine->id}");
+    }
+
 }
 ?>
 
@@ -125,16 +139,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <link rel="icon" href="../../favicon.ico">
 
     <title><?php echo $routine->name; ?></title>
-    
+
     <!-- temp style -->
     <style type="text/css">
-    
+
     input{
         width: 15%;
     }
-    
+
     #button{
-        width: 100%; 
+        width: 100%;
         max-width: 100%;
         height: 40px;
     }
@@ -194,33 +208,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
               </ul>
             </li>
           </ul>
-          
+
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
             <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
         </div><!--/.nav-collapse -->
       </div>
-      
+
     </nav>
 
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    
+
   	<?php
-        while ($row = mysqli_fetch_array($exercises)) 
+        while ($row = mysqli_fetch_array($exercises))
         {
             $exercise = Exercises::find_by_id($row['id']);
             $type = Types::find_by_id($exercise->type);
             $sets = $exercise->get_sets();
             $sets_length = count($sets);
             $set_number = 1;
-            
+
             echo "<h1>".$type->name."</h1><br/>";
             echo "<form action='#' method='POST'>";
             echo "<input type='hidden' name='exercise_id' value='{$exercise->id}'>";
             echo "<input type='hidden' name='exercise_type' value='{$type->id}'>";
             echo "<input type='hidden' name='sets_length' value='{$sets_length}'>";
-            
+
             echo "<table style='width: 100%; max-width: 100%;'><tr><td><img src='images/{$type->image_filename}' width='50%' height='50%'></td></tr></table><br>";
             echo "<table class='table table-bordered'><tr><th>SET #</th><th>REPS</th><th>LBS</th></tr>";
             foreach($sets as $set)
@@ -230,15 +244,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 {
                     echo "<td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'> / {$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'> / {$set->weight}</td></tr>";
                 }
-                else 
+                else
                 {
                     echo "<tr><td>{$set->order}</td><td><input type='number' name='set{$set_number}_rep' min='0'> / {$set->reps}</td><td><input type='number' name='set{$set_number}_weight' min='0'> / {$set->weight}</td></tr>";
                 }
 
-                $set_number++;   
+                $set_number++;
             }
             echo "</table>";
-            
+
             if($pagination->total_pages() > 0)
             {
                 if($pagination->has_next_page())
@@ -246,17 +260,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                     echo "<table class='table'><tr><td><input type='submit' id='button' class='btn btn-warning' name='action' value='END WITHOUT SAVE' /></td><td class='text-center'><input type='submit' id='button' class='btn btn-danger' name='action' value='END' /></td>";
                     echo "<td class='text-right'><input type='submit' id='button' class='btn btn-primary' name='action' value='NEXT' /></td></tr></table></form>";
                 }
-                else 
+                else
                 {
                     echo "<table class='table'><tr><td><input type='submit' id='button' class='btn btn-warning' name='action' value='END WITHOUT SAVE' /></td>";
                     echo "<td class='text-right'><input type='submit' id='button' class='btn btn-success' name='action' value=\"YOU'VE DONE IT!\" /></td></tr></table></form>";
                 }
-            }     
-        } 
-  	
+            }
+        }
+
   	?>
-  	
-  	
+
+
 
     </div> <!-- /container -->
 
