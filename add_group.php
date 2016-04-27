@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="container">
     
 	<div class="col-xs-12 col-sm-6 col-md-8">
-	<h2>Group Add</h2>
+	<h2>Add Group</h2>
 	<form action="#" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
 	

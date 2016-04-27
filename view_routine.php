@@ -243,7 +243,12 @@ if(!$rout_show){
             <table class='table'>
                 <tr>
                     <td><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
-                    <td class='text-right'><a class="btn btn-default" href="start_routine.php?id=<?php echo $rout_show->id ?>" role="button">START WORKOUT</a></td>
+					<?php
+						if((count($routine_exercises)) > 0)
+						{
+							echo "<td class='text-right'><a class='btn btn-default' href='start_routine.php?id={$rout_show->id}' role='button'>Start Routine</a></td>";
+						}
+					?>                   
                 </tr>
             </table> 
         <?php 

@@ -147,8 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         * 
         *
         */
-    		echo "<p>Group Name: ". $group->group_name . "<br/>";
-			echo "<p>Owner: ". $group_owner->full_name() . "<br/>";
+    		echo "<p>Name: ". $group->group_name . "<br/>";
+			echo "<p>Owner: <a href='view_profile.php?id={$group_owner->id}'>". $group_owner->full_name() . "</a><br/>";
 			echo "<p>Status: ". $group->group_status . "<br/>";
 			echo "<p>Activity: ". $group->group_activity . "<br/>";
             echo "<p>Description: ". $group->group_discription . "<br/>";
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if($user->id == $group->group_owner)
 			{
 				echo "<p><a class='btn btn-default' href='add_group_members.php?id={$group->id}' role='button'>Add Members</a></p>";
-				if(($group_members->num_rows) > 0)
+				if(($group_members->num_rows) > 1)
 				{
 					echo "<form action='#' method='post'>";
 					echo "<table class='table'><tr><th>Name</th><th class='text-center'>Remove</th></tr>";
@@ -172,17 +172,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         			while($row = $group_members->fetch_assoc())
         			{
         				$user = User::find_by_id($row["member_id"]);
-
-        				echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td>";
+						
 						//Display check box to delete the group members
 						if($row["member_id"] != $session->user_id)
 						{
+							echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td>";
 							echo "<td style='text-align:center'><input type='checkbox' name='delete_group_member[]' value='" . $row["member_id"] . "'></td></tr>";
 						}
-						else
-						{
-							echo "<td style='text-align:center'>Owner</td></tr>";
-						}	
         			}	
                     echo "<tr><td></td><td class='text-center'><button type='submit' class='btn btn-default' name ='remove'>Remove</button></td></tr></table></form>";	
 				}
@@ -241,14 +237,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 					}
 				}
 				
-				if(($group_members->num_rows) > 0)
+				if(($group_members->num_rows) > 1)
 				{
 					//List all the members from this group
 					echo "<table class='table'><tr><th>Name</th></tr>";
         			while($row = $group_members->fetch_assoc())
         			{
         				$user = User::find_by_id($row["member_id"]);
-        				echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td></tr>";
+						if($user->id != $group->group_owner)
+						{
+							echo "<tr><td><a href='view_profile.php?id={$row["member_id"]}'>" . $user->full_name() . "</a></td></tr>";							
+						}
         			}	
                     echo "</table>";
 				}
