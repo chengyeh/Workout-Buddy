@@ -99,7 +99,7 @@ $log_obj = Category::find_by_id($_GET['id']);
 
     <div class="container">
 		<?php
-			$exercise_name=Exercises::find_by_id($log_obj->id);
+			$exercise_name=Exercises::find_by_id($log_obj->exercise_id);
 			$type_name=Types::find_by_id($exercise_name->type);
 		?>
 
