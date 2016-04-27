@@ -82,7 +82,7 @@ $ex_type_obj = Types::find_by_id($ex_obj->type);
           <ul class="nav navbar-nav">
             <li class="active"><a href="profile.php">Home</a></li>
             <li><a href="about_page.php">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="contact.php">Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More Actions<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -91,7 +91,8 @@ $ex_type_obj = Types::find_by_id($ex_obj->type);
                 <li><a href="find_user.php">Find User</a></li>
                 <li><a href="message_menu.php">Messages</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
+                <li class="dropdown-header">Progress</li>
+                <li><a href="view_log.php">View Log</a></li>
                 <li><a href="addChallenges.php">Add Challenge</a></li>
                 <li><a href="view_challenges.php">View Challenge</a></li>
               </ul>
@@ -99,7 +100,22 @@ $ex_type_obj = Types::find_by_id($ex_obj->type);
           </ul>
 
           <ul class="nav navbar-nav navbar-right" id="navbar-status">
-            <li><span ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp Hi <?php echo $session->user_name; ?>!&nbsp &nbsp<a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>
+            <li><span class="glyphicon glyphicon-calendar"><a href="show_calendar">Calendar</a></span>&nbsp&nbsp</li>
+            <li>
+            	<span>
+	            <?php
+	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
+	            	$number_messages = $database->num_rows($result_set);
+	            	echo "<span class='badge'>{$number_messages}</span>";
+	            ?>
+	            <a href="inbox.php">Inbox</a>
+	            </span>&nbsp&nbsp
+            </li>
+
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
+            <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
+         </ul>
+
         </div><!--/.nav-collapse -->
       </div>
 
