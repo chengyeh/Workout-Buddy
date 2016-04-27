@@ -216,14 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
    			echo $actual_name->name;
 
    			echo "<form action='#' method='POST'>";
-		   		echo "<select name='select_set'>";
 
-
-				for($i=1; $i <=5; $i++)
-				{
-					echo '<option value="'.$i.'">'.$i.'</option>';
-
-				}
 				echo "</select>";
 				echo "<br><label>Set 1:  </label>";
 				echo "<br>";
