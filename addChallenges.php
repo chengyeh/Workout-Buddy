@@ -14,38 +14,40 @@ $user = User::find_by_id($session->user_id);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
-
+  $trimmed = array_map('trim', $_POST);
   // Trim all the string in _POST (incoming data):
   /*array_map trims down all the strings in an array and retrun an
     array (hash table?) that does not include any white space*/
-  $trimmed = array_map('trim', $_POST);
+
 
   //if id exists in the challenge -- update, otherwise, create  ----(update it later)
   //global $database;
   //$query_check = "SELECT * FROM challenge WHERE who=".
   //$id_obj = challenge::find_by_id()
   //so _GET gets id?
-  $challenge = new challenge();
-  $challenge->who = $trimmed['user_id'];
-  $challenge->name = $trimmed['challenge_name'];
-  $challenge->bench_press = $trimmed['challenge_BP_lbs'];
-  $challenge->pull_ups = $trimmed['challenge_PU_num'];
-  $challenge->treadmill_mileage = $trimmed['challenge_TMM'];
-
-  $sql = "SELECT id FROM challenge WHERE who =".$trimmed['user_id']."";
+  $uu = $user->id;
+  $sql = "SELECT who FROM challenge WHERE who =".$uu.";";
   global $database;
-  $result = $database->query($sql);
-  if($result){
+
+
+  if($result = $database->query($sql)){
     $sql_u = "UPDATE challenge SET name='".$trimmed['challenge_name']."', bench_press='".$trimmed['challenge_BP_lbs']."', pull_ups='".$trimmed['challenge_PU_num']."', treadmill_mileage='".$trimmed['challenge_TMM']."' where who = ".$trimmed['user_id']."; ";
     $database->query($sql_u);
+    $result->free();
   }
   else {
+    $challenge = new challenge();
+    $challenge->who = $trimmed['user_id'];
+    $challenge->name = $trimmed['challenge_name'];
+    $challenge->bench_press = $trimmed['challenge_BP_lbs'];
+    $challenge->pull_ups = $trimmed['challenge_PU_num'];
+    $challenge->treadmill_mileage = $trimmed['challenge_TMM'];
     $challenge->create();
   }
-  $result->close();
 
-  //Redirect to profile page
-  redirect_to("view_group.php?id={$database->insert_id()}");
+
+  //Redirect
+  redirect_to("view_challenges.php");
 }//end if
 
 ?>
@@ -150,19 +152,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h2>Update your accomplished challenge!</h2>
     <form action="#" method="post" enctype="multipart/form-data">
         <input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
+        <input type="hidden" name="challenge_name" value='<?php echo $user->full_name(); ?>'>
+
 
         <fieldset class="form-group">
-           <label for="formGroupExampleInput">Your name:</label>
-           <?php
-           global $database;
-           $sql = "SELECT first_name, last_name FROM wb_users WHERE id ='".$session->user_id."';";
-           $result = $database->query($sql);
-           $row = $result->fetch_assoc();
-           echo "<font size=5 color=purple>". $row["first_name"]. "</font> ";
-           echo "<font size=5 color=purple>". $row["last_name"]. "</font> ";
-           $result->close();
-           ?>
-        </fieldset>
+    		   <label for="formGroupExampleInput1">Your Name</label>
+    		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" name="contact_name" value="<?php echo $user->full_name(); ?>" required readonly autofocus>
+    		</fieldset>
+
+
         <fieldset class="form-group">
             <label for="formGroupExampleInput2">Bench Press (lbs):</label>
             <input type="text" class="form-control" id="formGroupExampleInput2" name="challenge_BP_lbs" required />
