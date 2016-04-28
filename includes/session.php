@@ -5,7 +5,6 @@ class Session {
     private $logged_in=false;
     public $user_id;
     public $user_name;
-    public $user_lastname;
     public $message;
 
     function __construct(){
@@ -27,7 +26,6 @@ class Session {
         if($user){
             $_SESSION['user_id'] = $user->id;
             $_SESSION['user_name'] = $user->first_name;
-            $_SESSION['user_lastname'] = $user->$last_name;
             $this->user_id = $user->id;
             $this->user_name = $user->first_name;
 
@@ -38,7 +36,6 @@ class Session {
     public function logout(){
         unset($_SESSION['user_id']);
         unset($_SESSION['user_name']);
-        unset(  $_SESSION['user_lastname']);
         unset($this->user_id);
         unset($this->user_name);
         $this->logged_in = false;
