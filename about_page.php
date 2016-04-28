@@ -48,7 +48,6 @@ $user = User::find_by_id($session->user_id);
   </head>
 
   <body>
-
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">

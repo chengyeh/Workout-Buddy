@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
 	  <a href="index.html"><img alt="workout buddy logo" src="images/Workout_Buddy_Logo.png" class="center-block"></a>
       <form class="form-signin" action="login.php" method="post" enctype="multipart/form-data">
-        <h2 class="form-signin-heading">Please Sign In</h2>
+        <h2 class="form-signin-heading">Sign In</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
