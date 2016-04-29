@@ -108,7 +108,7 @@ $user = User::find_by_id($session->user_id);
   	
   	<p><a class="btn btn-default" href="inbox.php" role="button">Inbox</a></p>
     <hr>
-	<p><a class="btn btn-default" href="sent.php" role="button">Drafts</a></p>
+	<p><a class="btn btn-default" href="sent.php" role="button">Sent</a></p>
     <hr>
     <p><a class="btn btn-default" href="find_user.php" role="button">Find User</a></p>
 
