@@ -2,9 +2,10 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-$number_messages=0;
-
+// Include initialization file
 require_once('includes/initialize.php');
+
+//If user is not logon redirect to login page
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object
@@ -15,27 +16,34 @@ date_default_timezone_set("America/Chicago");
 
 //Today's date year/month
 $today = date("Y-m-d H:i:s");
+
+//Store messages
+$message;
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	// Trim all the incoming data:
 	$trimmed = array_map('trim', $_POST);
 	
+	//Escape the values and ready for database insert
 	$user_id 			= $database->escape_value($trimmed['user_id']);
 	$contact_datetime 	= $database->escape_value($trimmed['contact_datetime']);
 	$contact_name 		= $database->escape_value($trimmed['contact_name']);
 	$contact_subject 	= $database->escape_value($trimmed['contact_subject']);
 	$contact_message 	= $database->escape_value($trimmed['contact_message']);
 	
-// 	$sql  = "INSERT INTO table_name ";
-// 	$sql .=	"(column1, column2, column3,...) ";
-// 	$sql .=	"VALUES ";
-// 	$sql .=	"(value1, value2, value3,...)";
-   		
-//    	$database->query($sql);
-	
-// 	//Redirect to profile page
-// 	redirect_to("view_group.php?id={$database->insert_id()}");
+	//Construct the sql statement
+	$sql  = "INSERT INTO wb_contact ";
+	$sql .=	"(user_id,message_datetime,subject,message) ";
+	$sql .=	"VALUES ";
+	$sql .=	"({$user_id},'{$contact_datetime}','{$contact_subject}','{$contact_message}')";
+
+	//Insert to database and print message to user
+	if ($database->query($sql) === TRUE) {
+		$message = "Your message was successfully sent to Administrator.";
+	} else {
+		$message = "Your message was not sent.";
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -130,9 +138,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
 
     <div class="container">
+    
+    
 
  	<div class="col-xs-12 col-sm-6 col-md-8">
 	<h2>Contact Us</h2>
+	<?php 
+		if(isset($message)){
+			echo "<div class='alert alert-danger' role='alert'>".$message."</div>";
+		}
+	 ?>
 	<form action="#" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
 		<input type="hidden" name="contact_datetime" value='<?php echo $today; ?>'>
