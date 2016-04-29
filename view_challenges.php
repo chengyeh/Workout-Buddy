@@ -110,16 +110,15 @@ $user = User::find_by_id($session->user_id);
     <hr>
       <!---Display current leader board--->
       <center>
-      <table>
+      <table class='table'>
       <?php
 
           if($result = challenge::bp_top3()){
-              echo "<tr><td><h5>BENCH PRESS</h5></td><td><h5>TOP 3</h5></td><tr>";
-              echo "<tr><td></td><td>lbs</td>";
+              echo "<tr><th>BENCH PRESS</th><th>TOP 3</th><tr>";
               while($row = $result->fetch_assoc()){
                 echo "<tr>";
                 echo "<td>" .$row["name"]  . "</td>";
-                echo "<td>" .$row["bench_press"] . "</td>";
+                echo "<td>" .$row["bench_press"] . " lbs</td>";
                 echo "</tr>";
             }
             $result->free();
@@ -127,14 +126,13 @@ $user = User::find_by_id($session->user_id);
           else{
             echo "Looks like no one bench press more than 200lbs";
           }
-          echo "<tr><td>---------------------------</td><td>-----------------</td></td>";
+          echo "<tr><td>                 </td><td>                 </td></td>";
           if($result = challenge::pu_top3()){
-              echo "<tr><td><h5>PULL UPs</h5></td><td><h5>TOP 3</h5><td><tr>";
-              echo "<tr><td></td><td>numbers</td>";
+              echo "<tr><th>PULL UPs</th><th>TOP 3<th><tr>";
               while($row = $result->fetch_assoc()){
                 echo "<tr>";
-                echo "<td>" .$row["name"]  . "</td>";
-                echo "<td>" .$row["pull_ups"] . "</td>";
+                echo "<td>" .$row["name"]  . " </td>";
+                echo "<td>" .$row["pull_ups"] . " pull ups in a row</td>";
                 echo "</tr>";
             }
             $result->free();
@@ -142,14 +140,13 @@ $user = User::find_by_id($session->user_id);
           else{
             echo "Looks like no one bench press more than 200lbs";
           }
-          echo "<tr><td>---------------------------</td><td>-----------------</td></td>";
+          echo "<tr><td>              </td><td>          </td></td>";
           if($result = challenge::tm_top3()){
-              echo "<tr><td><h5>Treadmill</h5></td><td><h5>TOP 3</h5><td><tr>";
-              echo "<tr><td></td><td>miles</td>";
+              echo "<tr><th>Treadmill</th><th>TOP 3</th><tr>";
               while($row = $result->fetch_assoc()){
                 echo "<tr>";
                 echo "<td>" .$row["name"]  . "</td>";
-                echo "<td>" .$row["treadmill_mileage"] . "</td>";
+                echo "<td>" .$row["treadmill_mileage"] . " miles</td>";
                 echo "</tr>";
             }
             $result->free();
