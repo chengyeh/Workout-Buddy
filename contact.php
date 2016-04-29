@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
  	<div class="col-xs-12 col-sm-6 col-md-8">
 	<h2>Contact Us</h2>
 	<?php 
-		if(isset($message)){
+		if(isset($message) && !empty($message)){
 			echo "<div class='alert alert-danger' role='alert'>".$message."</div>";
 		}
 	 ?>
