@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
-    <h2>Drafts</h2>
+    <h2>Sent</h2>
 
 	<?php
 		$message_array=$user->get_messages();
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			while($message1 = $message_array->fetch_assoc())
 			{
 				$t=User::find_by_id($message1['receiver']);
-				
+
 				echo "<tr>";
 				echo "<td>" . $a ."</td>";
 				$a=$a+1;
@@ -146,14 +146,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			echo "</table>";
 		}
 		echo "</form>";
-		
+
 		if($a==1)
 		{
 			echo "<p>" . "No Messages" . "</p>";
 		}
   	?>
-  	
-  	
+
+
     </div> <!-- /container -->
 
 
