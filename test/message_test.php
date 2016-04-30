@@ -354,7 +354,7 @@ include('header.html');
 
 
        //The del_sent id will be triggered in order to remove the viewing from the front end.
-       //The default value for del_sent is 0. If the user doesn't want to view this they trigger the checkbox and the del_receive value is 1.
+       //The default value for del_sent is 0. If the user doesn't want to view this they trigger the checkbox and the del_sent value is 1.
        //Therefore, only messages that have a del_sent value of 0 can be viewed. However the data is still in the database
        //The messages are still in the database phpMyAdmin, so this is a creative way to delete messages apart from traditionally using a delete sql keyword
        //This is also backend execution of the function
@@ -419,6 +419,115 @@ include('header.html');
 			echo "<strong>Failed</strong>";
 		}
 
+
+	?>
+	</div>
+
+
+
+
+
+
+
+		<h3 class="sub-header">Test for Message Icon Trigger</h3>
+<p>This test will test how to trigger symbol on the navigation bar to display and not display when the user views messages in the Inbox .</p>
+&nbsp;
+<p>Following code displays the functionality to trigger this symbol and display the number of messages that need to be viewed in the inbox:</p>
+<div class="well">
+	<xmp>
+	  //The following functionality is found in inbox.php
+	  //This is viewed to show the
+		$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
+	    $number_messages = $database->num_rows($result_set);
+
+
+       //The del_sent id will be triggered in order to remove the viewing from the front end.
+       //The default value for del_sent is 0. If the user doesn't want to view this they trigger the checkbox and the del_receive value is 1.
+       //Therefore, only messages that have a del_sent value of 0 can be viewed. However the data is still in the database
+       //The messages are still in the database phpMyAdmin, so this is a creative way to delete messages apart from traditionally using a delete sql keyword
+       //This is also backend execution of the function
+		$database->query("UPDATE `wb_messages` SET `read_message`=1 WHERE `receiver`=".$user->id);
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+		global $database;
+    	$sql = "SELECT * FROM wb_messages WHERE id=".$pm->id;
+    	$group_member_array = $database->query($sql);
+	    while($log_array = $group_member_array->fetch_assoc())
+		{
+				if($log_array['id']==$pm->id)
+				{
+					$set_array=Message::find_by_id($log_array['id']);
+					echo "<strong>The read_message value is: </strong>";
+					echo $set_array->read_message;
+					echo "<br>";
+				}
+		}
+		global $database;
+		$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND id=".$pm->id);
+	    $number_messages = $database->num_rows($result_set);
+
+
+		echo "<strong>Number of messages visible on the icon before trigger: </strong>";
+		echo $number_messages;
+		echo "<br>";
+
+		echo "<br>";
+		$database->query("UPDATE `wb_messages` SET `read_message`=1 WHERE `id`=".$pm->id);
+		echo "<strong>The icon is triggered</strong>";
+		echo "<br>";
+		echo "<br>";
+		global $database;
+    	$sql = "SELECT * FROM wb_messages WHERE id=".$pm->id;
+    	$group_member_array = $database->query($sql);
+	    while($log_array = $group_member_array->fetch_assoc())
+		{
+				if($log_array['id']==$pm->id)
+				{
+					$set_array=Message::find_by_id($log_array['id']);
+					echo "<strong>The read_message value is: </strong>";
+					echo $set_array->read_message;
+					echo "<br>";
+				}
+		}
+
+		global $database;
+		$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND id=".$pm->id);
+	    $number_messages = $database->num_rows($result_set);
+		echo "<strong>Number of messages visible on the icon after trigger: </strong>";
+		echo $number_messages;
+		echo "<br>";
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+		$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND id=".$pm->id);
+	    $number_messages = $database->num_rows($result_set);
+
+	    global $database;
+    	$sql = "SELECT * FROM wb_messages WHERE id=".$pm->id;
+    	$group_member_array = $database->query($sql);
+	    while($log_array = $group_member_array->fetch_assoc())
+		{
+				if($log_array['id']==$pm->id)
+				{
+					$set_array=Message::find_by_id($log_array['id']);
+					if(($set_array->read_message)==1)
+					{
+						echo "<strong>Passed</strong>";
+					}
+					else
+					{
+						echo "<strong>Passed</strong>";
+					}
+				}
+		}
 
 	?>
 	</div>
