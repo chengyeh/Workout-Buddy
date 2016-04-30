@@ -12,7 +12,7 @@ include('header.html');
 <p>This test will test to demonstrate how a user can create a routine.<br>The routine will include a user_id of 19. <br> The routine name is "Test Routine". <br>
 The description is "This Routine is for Testing Purposes". <br> The days that the routine will occur will be on Monday, Wednesday and Friday. <br> The start date is May 1, 2016. <br> The end date is May 31, 2016</p>
 &nbsp;
-<p>Following code will test whether it can query the type for a designated routine.</p>
+<p>Following code will test whether it can query the type for a routine.</p>
 <div class="well">
 <xmp>
 
