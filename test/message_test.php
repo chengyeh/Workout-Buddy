@@ -245,6 +245,184 @@ include('header.html');
 	?>
 	</div>
 
+	<h3 class="sub-header">Test for deleting messages from inbox</h3>
+<p>This test will test how a message can no longer be viewed from the inbox.</p>
+&nbsp;
+<p>Following code will test how a user can delete a message from their inbox:</p>
+<div class="well">
+	<xmp>
+	  //The following functionality is found in inbox.php
+	  //This functionality is used more for front end, in which the array checkbox delete_message[] is triggered to delete
+
+	  //The same message sent from the previous test will be observed here
+	 $t=User::find_by_id($message1['user']);
+
+				echo "<td>" . $t->full_name()."</td>";
+				echo "<td>" . $message1['message'] . "</td>";
+				echo "<td>" . $message1['Time'] . "</td>";
+				echo "<td>" . $message1['Date'] . "</td>";
+				echo "<td class='text-center'><input type='checkbox' name='delete_message[]' value='" . $message1["id"] . "'></td>";
+
+
+       //The del_receive id will be triggered in order to remove the viewing from the front end.
+       //The default value for del_receive is 0. If the user doesn't want to view this they trigger the checkbox and the del_receive value is 1.
+       //Therefore, only messages that have a del_receive value of 0 can be viewed. However the data is still in the database
+       //The messages are still in the database phpMyAdmin, so this is a creative way to delete messages apart from traditionally using a delete sql keyword
+       //This is also backend execution of the function
+		if(!empty($_POST['delete_message']))
+    {
+        foreach($_POST['delete_message'] as $message_id)
+        {
+        	$value=1;
+            $database->query("UPDATE wb_messages SET del_receive = 1 WHERE id = ".$message_id);
+        }
+    }
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+		global $database;
+		$database->query("UPDATE wb_messages SET del_receive = 1 WHERE id = ".$pm->id);
+
+    	echo "<strong>The del_receive value is: </strong>";
+
+		global $database;
+    	$sql = "SELECT * FROM wb_messages WHERE receiver=".$pm->receiver;
+    	$group_member_array = $database->query($sql);
+    	$del_rec_trans;
+    	while($log_array = $group_member_array->fetch_assoc())
+		{
+				if($log_array['id']==$pm->id)
+				{
+					$set_array=Message::find_by_id($log_array['id']);
+					$del_rec_trans=$set_array->del_receive;
+					echo $set_array->del_receive;
+				}
+
+		}
+
+		echo "<br>";
+		if(($del_rec_trans)==1)
+		{
+			echo "<strong>Since the del_receive value is 1, the user can no longer view it </strong>";
+		}
+		else
+		{
+			echo "<strong>The del_receive value is still 0, the message is not deleted </strong>";
+		}
+
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+
+    	if(($del_rec_trans)==1)
+		{
+			echo "<strong>Passed </strong>";
+		}
+		else
+		{
+			echo "<strong>Failed</strong>";
+		}
+
+
+	?>
+	</div>
+
+	<h3 class="sub-header">Test for deleting messages from Sent box</h3>
+<p>This test will test how a message can no longer be viewed from the Sent box.</p>
+&nbsp;
+<p>Following code will test how a user can delete a message from their Sent box:</p>
+<div class="well">
+	<xmp>
+	  //The following functionality is found in sent.php
+	  //This functionality is used more for front end, in which the array checkbox delete_message[] is triggered to delete
+
+	  //The same message sent from the previous test will be observed here
+	 $t=User::find_by_id($message1['user']);
+
+				echo "<td>" . $t->full_name()."</td>";
+				echo "<td>" . $message1['message'] . "</td>";
+				echo "<td>" . $message1['Time'] . "</td>";
+				echo "<td>" . $message1['Date'] . "</td>";
+				echo "<td class='text-center'><input type='checkbox' name='delete_message[]' value='" . $message1["id"] . "'></td>";
+
+
+       //The del_sent id will be triggered in order to remove the viewing from the front end.
+       //The default value for del_sent is 0. If the user doesn't want to view this they trigger the checkbox and the del_receive value is 1.
+       //Therefore, only messages that have a del_sent value of 0 can be viewed. However the data is still in the database
+       //The messages are still in the database phpMyAdmin, so this is a creative way to delete messages apart from traditionally using a delete sql keyword
+       //This is also backend execution of the function
+		if(!empty($_POST['delete_message']))
+    {
+        foreach($_POST['delete_message'] as $message_id)
+        {
+        	$value=1;
+            $database->query("UPDATE wb_messages SET del_sent = 1 WHERE id = ".$message_id);
+        }
+    }
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+		global $database;
+		$database->query("UPDATE wb_messages SET del_sent = 1 WHERE id = ".$pm->id);
+
+    	echo "<strong>The del_sent value is: </strong>";
+
+		global $database;
+    	$sql = "SELECT * FROM wb_messages WHERE receiver=".$pm->receiver;
+    	$group_member_array = $database->query($sql);
+    	$del_sent_trans;
+    	while($log_array = $group_member_array->fetch_assoc())
+		{
+				if($log_array['id']==$pm->id)
+				{
+					$set_array=Message::find_by_id($log_array['id']);
+					$del_sent_trans=$set_array->del_sent;
+					echo $set_array->del_sent;
+				}
+
+		}
+
+		echo "<br>";
+		if(($del_sent_trans)==1)
+		{
+			echo "<strong>Since the del_sent value is 1, the sender can no longer view it </strong>";
+		}
+		else
+		{
+			echo "<strong>The del_sent value is still 0, the sentmessage is not deleted </strong>";
+		}
+
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+
+    	if(($del_sent_trans)==1)
+		{
+			echo "<strong>Passed </strong>";
+		}
+		else
+		{
+			echo "<strong>Failed</strong>";
+		}
+
+
+	?>
+	</div>
+
 <?php
 include('footer.html');
 ?>
