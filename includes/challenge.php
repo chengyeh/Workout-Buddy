@@ -32,12 +32,40 @@ class challenge extends DatabaseObject {
       return $tm_top3;
     }
 
-    public static function get_BP200(){
-      global $database;
-    	$sql = "SELECT name, bench_press FROM challenge WHERE bench_press > 200;";
-      $bp200 = $database->query($sql);
-      return $bp200;
+    //testing part
+    public static function show_num_bptop3(){
+        global $database;
+        $sql_1 = "SELECT COUNT(*) FROM challenge ORDER BY bench_press DESC LIMIT 3;";
+        $result_1 = $database->query($sql_1);
+
+        $r1 = $result_1->fetch_assoc();
+        $n1 = $r1["COUNT(*)"];
+
+        return $n1;
     }
+    public static function show_num_putop3(){
+        global $database;
+        $sql_2 = "SELECT COUNT(*) FROM challenge ORDER BY pull_ups DESC LIMIT 3;";
+        $result_2 = $database->query($sql_2);
+
+        $r2 = $result_2->fetch_assoc();
+        $n2 = $r2["COUNT(*)"];
+        $result_2->free();
+
+        return $n2;
+    }
+    public static function show_num_tmtop3(){
+        global $database;
+        $sql_3 = "SELECT COUNT(*) FROM challenge ORDER BY treadmill_mileage DESC LIMIT 3;";
+        $result_3 = $database->query($sql_3);
+
+        $r3 = $result_3->fetch_assoc();
+        $n3 = $r3["COUNT(*)"];
+        $result_3->free();
+
+        return $n3;
+    }
+
 
 
 }
