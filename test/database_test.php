@@ -13,8 +13,12 @@ include('header.html');
 <h3 class="sub-header">Test close_connection()</h3>
 <h3 class="sub-header">Test query($sql)</h3>
 <?php 
+//Create instance of MySQLDatabase class
 $database3 = new MySQLDatabase();
+
+//Call query method
 $result = $database3->query("SELECT * FROM wb_users");
+
 if($result){
 	echo "<div class='well' style='background-color: #b3ffcc'>";
 	echo "Test query(\$sql) PASSED";
@@ -58,7 +62,59 @@ unset($database4);
 ?>
 
 <h3 class="sub-header">Test fetch_array($result_set)</h3>
+<?php 
+//Create instance of MySQLDatabase class
+$database5 = new MySQLDatabase();
+
+//Call query method
+$result_set = $database5->query("SELECT * FROM wb_contact");
+
+$result_array = $database5->fetch_array($result_set);
+
+//Check result_array has more than zero elements
+if (count($result_array) > 0) {
+	//
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+	echo "Test fetch_array(\$result_set) PASSED";
+	echo "</div>";
+
+}else{
+	//
+	echo "<div class='well' style='background-color: #ffd6cc'>";
+	echo "Test fetch_array(\$result_set) FAILED";
+	echo "</div>";
+}
+
+//Delete MySQLDatabase object
+unset($database5);
+?>
 <h3 class="sub-header">Test num_rows($result_set)</h3>
+<?php 
+//Create instance of MySQLDatabase class
+$database6 = new MySQLDatabase();
+
+//Call query method
+$result_set = $database6->query("SELECT * FROM wb_users");
+
+$num_rows = $database6->num_rows($result_set);
+
+//Check result_array has more than zero elements
+if ($num_rows > 0) {
+	//
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+	echo "Test num_rows(\$result_set) PASSED";
+	echo "</div>";
+
+}else{
+	//
+	echo "<div class='well' style='background-color: #ffd6cc'>";
+	echo "Test num_rows(\$result_set) FAILED";
+	echo "</div>";
+}
+
+//Delete MySQLDatabase object
+unset($database6);
+?>
 <h3 class="sub-header">Test insert_id()</h3>
 <h3 class="sub-header">Test affected_rows()</h3>
 <h3 class="sub-header">Test confirm_query($result)</h3>
