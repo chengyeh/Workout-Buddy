@@ -12,7 +12,7 @@ include('header.html');
 <p>This test will test to demonstrate how a user can create a routine.<br>The routine will include a user_id of 19. <br> The routine name is "Test Routine". <br>
 The description is "This Routine is for Testing Purposes". <br> The days that the routine will occur will be on Monday, Wednesday and Friday. <br> The start date is May 1, 2016. <br> The end date is May 31, 2016</p>
 &nbsp;
-<p>Following code will test whether it can query the type for a routine.</p>
+<p>Following code will test whether it can query the type for a designated exercise.</p>
 <div class="well">
 <xmp>
 
@@ -205,7 +205,197 @@ The description is "This Routine is for Testing Purposes". <br> The days that th
 
 
 
+<h3 class="sub-header">Test for Viewing all routines</h3>
+<p>This test will demonstrate how a user can view all the routines they created.<br>The routines they created are: <br> Test Routine<br>Fun Routine <br> Weekend Routine <br> Weekend Routine and Fun Routine will not have any specifications for days of week, decription, or start_date/end_date. <br> "Test Routine" was created previously. So "Fun Routine" and "Weekend Routine" <br>
+need to be created by the user
+&nbsp;
+<p>Following code will test whether it can query all the routines by the user.</p>
+<div class="well">
+<xmp>
 
+
+	$rout1 = new Routine();
+    $rout1->user_id = 19;
+    $rout1->name = "Fun Routine";
+	$rout1->create();
+
+    $rout2 = new Routine();
+    $rout2->user_id = 19;
+    $rout2->name = "Fun Routine";
+	$rout2->create();
+
+
+	public function exercise_routines_added()
+    {
+    	$sql = "SELECT * FROM wb_routine WHERE user_id=".$this->id;
+    	$exercise_array = Routine::find_by_sql($sql);
+    	return $exercise_array;
+    }
+
+    $user=User::find_by_id(19);
+    $all_routine_array=$user->exercise_routines_added();
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+			$rout1 = new Routine();
+		    $rout1->user_id = 19;
+		    $rout1->name = "Fun Routine";
+			$rout1->create();
+
+		    $rout2 = new Routine();
+		    $rout2->user_id = 19;
+		    $rout2->name = "Weekend Routine";
+			$rout2->create();
+			$user = User::find_by_id($rout1->user_id);
+
+		    $all_routine_array=$user->exercise_routines_added();
+		    echo "<strong>The routines that the user has are: </strong>";
+		    echo "<br>";
+		    foreach ($all_routine_array as $routine_object)
+			{
+				echo $routine_object->name;
+				echo "<br>";
+			}
+
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+	    	$user = User::find_by_id($rout1->user_id);
+
+		    $all_routine_array=$user->exercise_routines_added();
+		    $a=0;
+
+		    foreach ($all_routine_array as $routine_object)
+			{
+				$a=$a+1;
+			}
+			if($a==3)
+			{
+				echo "Passed";
+			}
+			else
+			{
+				echo "Failed";
+			}
+
+	?>
+	</div>
+
+	<h3 class="sub-header">Test for Deleting Routines</h3>
+<p>This test will demonstrate how a user can delete the routines they created.<br>The routines they created are: <br> Test Routine<br>Fun Routine <br> Weekend Routine <br> Weekend Routine and Fun Routine will not have any specifications for days of week, decription, or start_date/end_date. <br> "Test Routine" was created previously. So "Fun Routine" and "Weekend Routine" <br>
+need to be created by the user.
+&nbsp;
+<p>Following code will test whether it can delete the routines through querying.</p>
+<div class="well">
+<xmp>
+
+		public function delete()
+		{
+		        global $database;
+		        $sql = "DELETE FROM ". static::$table_name;
+		        $sql .= " WHERE id=". $database->escape_value($this->id);
+		        $sql .= " LIMIT 1";
+
+		        $database->query($sql);
+		        return ($database->affected_rows() == 1) ? true : false;
+    	}
+    	$user = User::find_by_id(19);
+
+		    $all_routine_array=$user->exercise_routines_added();
+		    echo "<strong>The routines that the are remaining are: </strong>";
+		    echo "<br>";
+		    $a=0;
+		    foreach ($all_routine_array as $routine_object)
+			{
+
+				$routine_object->delete();
+
+			}
+			$all_routine_array=$user->exercise_routines_added();
+			foreach ($all_routine_array as $routine_object)
+			{
+
+				$a=$a+1;
+
+			}
+			if($a != 0)
+			{
+				echo "There are remaining routines in the database";
+			}
+			else
+			{
+				echo "There are no remaining routines in the database";
+			}
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+			$user = User::find_by_id(19);
+
+		    $all_routine_array=$user->exercise_routines_added();
+		    echo "<strong>The routines that the are remaining are: </strong>";
+		    echo "<br>";
+		    $a=0;
+		    foreach ($all_routine_array as $routine_object)
+			{
+
+				$routine_object->delete();
+
+			}
+			$all_routine_array=$user->exercise_routines_added();
+			foreach ($all_routine_array as $routine_object)
+			{
+
+				$a=$a+1;
+
+			}
+			if($a != 0)
+			{
+				echo "There are remaining routines in the database";
+			}
+			else
+			{
+				echo "There are no remaining routines in the database";
+			}
+
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+			$user = User::find_by_id(19);
+	   		$all_routine_array=$user->exercise_routines_added();
+	   		$a=0;
+			foreach ($all_routine_array as $routine_object)
+			{
+
+				$a=$a+1;
+
+			}
+			if($a == 0)
+			{
+				echo "Passed";
+			}
+			else
+			{
+				echo "Failed";
+			}
+
+	?>
+	</div>
 
 
 <?php
