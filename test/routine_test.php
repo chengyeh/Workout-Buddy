@@ -441,6 +441,209 @@ The description is "This Routine is for Testing Purposes". <br> The days that th
 	?>
 	</div>
 
+
+
+	<h3 class="sub-header">Test for Editing Routine</h3>
+<p>This test will demonstrate how a user can edit the routines they created.<br> In this situation the routine "Test Routine" will be edited. <br>
+The way in which this is done is by sending the id of test routine into an object and edit the desired fields.<br>
+The fields edited are: <br> Description will be: "This workout is going to be fun!" <br> Days of week will be: Monday, Thursday, and Saturday <br>
+The end date will be May 15, 2016.
+&nbsp;
+<p>Following code will test whether it can edit the routines through querying.</p>
+<div class="well">
+<xmp>
+
+		public function update()
+		{
+		        global $database;
+		        $attributes = $this->sanitized_attributes();
+		        $attributes_pairs = array();
+		        foreach($attributes as $key=>$value){
+		            $attributes_pairs[] = "{$key}='{$value}'";
+		        }
+		        $sql = "UPDATE ". static::$table_name ." SET ";
+		        $sql .= join(", ", $attributes_pairs);
+		        $sql .= " WHERE id=". $database->escape_value($this->id);
+		        $database->query($sql);
+		        return ($database->affected_rows() == 1) ? true : false;
+    	}
+
+		$rout2=Routine::find_by_id($rout->id);
+
+    	$rout2->description="This workout is going to be fun!";
+    	$rout2->mon=1;
+    	$rout2->thurs=1;
+    	$rout2->sat=1;
+    	$rout2->wed=0;
+    	$rout2->fri=0;
+    	$rout2->end_date='2016-05-15';
+    	$rout2->update();
+
+
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+		$rout2=Routine::find_by_id($rout->id);
+
+    	$rout2->description="This workout is going to be fun!";
+    	$rout2->mon=1;
+    	$rout2->thurs=1;
+    	$rout2->sat=1;
+    	$rout2->wed=0;
+    	$rout2->fri=0;
+    	$rout2->end_date='2016-05-15';
+    	$rout2->update();
+
+		global $database;
+	    	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
+	    	$routine_test_array = $database->query($sql);
+	    	echo "<strong>The routine that was queried to the database had: </strong>";
+
+	    	while($routine_array = $routine_test_array->fetch_assoc())
+			{
+
+						$rout_testcreate_array=Routine::find_by_id($routine_array['id']);
+
+						echo "<br>";
+						echo "<strong>Name of routine tested is: </strong>";
+						echo $rout_testcreate_array->name;
+						echo "<br>";
+						echo "<strong>Description of routine tested is: </strong>";
+						echo $rout_testcreate_array->description;
+						echo "<br>";
+						echo "<strong>Days of the week that this routine tested are on: </strong>";
+						if(($rout_testcreate_array->mon)==1)
+					    {
+
+							echo "Monday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->tues)==1)
+					    {
+
+							echo "Tuesday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->wed)==1)
+					    {
+					        echo "Wednesday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->thurs)==1)
+					    {
+
+							echo "Thursday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->fri)==1)
+					    {
+
+							echo "Friday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->sat)==1)
+					    {
+
+							echo "Saturday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->sun)==1)
+					    {
+
+							echo "Sunday";
+							echo "<br>";
+					    }
+
+						echo "<strong>Start Date of tested routine: </strong>";
+						echo $rout_testcreate_array->start_date;
+						echo "<br>";
+						echo "<strong>End Date of tested routine: </strong>";
+						echo $rout_testcreate_array->end_date;
+			}
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+			global $database;
+    	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
+    	$group_member_array = $database->query($sql);
+    	$pass_trigger=1;
+    	while($log_array = $group_member_array->fetch_assoc())
+		{
+
+					$set_array=Routine::find_by_id($log_array['id']);
+					if(($set_array->user_id)!=$rout2->user_id)
+					{
+						$pass_trigger=0;
+					}
+
+					if(($set_array->name)!=$rout->name)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->description)!=$rout2->description)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->mon)!=$rout2->mon)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->tues)!=$rout->tues)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->thurs)!=$rout2->thurs)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->wed)!=$rout2->wed)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->fri)!=$rout2->fri)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->sat)!=$rout2->sat)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->sun)!=$rout2->sun)
+					{
+						$pass_trigger=0;
+					}
+					/*
+					if(($set_array->start_date)!=$rout->start_date)
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->end_date)!=$rout->end_date)
+					{
+						$pass_trigger=0;
+					}
+					*/
+		}
+		if($pass_trigger==1)
+		{
+			echo "<strong>Passed</strong>";
+		}
+		else
+		{
+			echo "<strong>Failed</strong>";
+		}
+
+	?>
+	</div>
+
+
 	<h3 class="sub-header">Test for Deleting Routines</h3>
 <p>This test will demonstrate how a user can delete the routines they created.
 &nbsp;
