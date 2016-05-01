@@ -16,7 +16,9 @@ The description is "This Routine is for Testing Purposes". <br> The days that th
 <div class="well">
 <xmp>
 
-
+	date_default_timezone_set('America/Chicago');
+	$dt = new DateTime();
+	$tz = new DateTimeZone('America/Chicago');
 	$rout = new Routine();
     $rout->user_id = 19;
     $rout->name = "Test Routine";
@@ -31,6 +33,26 @@ The description is "This Routine is for Testing Purposes". <br> The days that th
     $rout->start_date = escape_value("2016-05-01 00:00:00");
     $rout->end_date = escape_value("2016-05-31 00:00:00");
 	$rout->create();
+
+	global $database;
+	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
+	$routine_test_array = $database->query($sql);
+
+	    	while($routine_array = $routine_test_array->fetch_assoc())
+			{
+					$rout_testcreate_array=Routine::find_by_id($routine_array['id']);
+					echo $rout_testcreate_array->id;
+					echo "<br>";
+					if($rout->id==$rout_testcreate_array->id)
+					{
+						echo "The right routine was queried in the database";
+					}
+					else
+					{
+						echo "The routine was NOT queried in the database";
+					}
+
+			}
 
 	</xmp>
 </div>
@@ -56,6 +78,223 @@ The description is "This Routine is for Testing Purposes". <br> The days that th
 		  	$rout->end_date='2016-05-31';
 			$rout->create();
 
+
+			global $database;
+	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
+	$routine_test_array = $database->query($sql);
+
+	    	while($routine_array = $routine_test_array->fetch_assoc())
+			{
+					$rout_testcreate_array=Routine::find_by_id($routine_array['id']);
+					echo "<strong>The routine id that was queried was: </strong>";
+					echo $rout_testcreate_array->id;
+					echo "<br>";
+					if($rout->id==$rout_testcreate_array->id)
+					{
+						echo "The right routine was queried in the database";
+					}
+					else
+					{
+						echo "The routine was NOT queried in the database";
+					}
+
+			}
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+	    global $database;
+	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
+	$routine_test_array = $database->query($sql);
+
+	    	while($routine_array = $routine_test_array->fetch_assoc())
+			{
+					$rout_testcreate_array=Routine::find_by_id($routine_array['id']);
+
+					echo "<br>";
+					if($rout->id==$rout_testcreate_array->id)
+					{
+						echo "<strong>Passed</strong>";
+					}
+					else
+					{
+						echo "<strong>Failed</strong>";
+					}
+
+			}
+
+
+
+	?>
+	</div>
+
+
+
+<h3 class="sub-header">Test for Viewing all routines</h3>
+<p>This test will demonstrate how a user can view all the routines they created.
+&nbsp;
+<p>Following code will test whether it can query all the routines by the user.</p>
+<div class="well">
+<xmp>
+
+
+	$rout1 = new Routine();
+    $rout1->user_id = 19;
+    $rout1->name = "Fun Routine";
+	$rout1->create();
+
+    $rout2 = new Routine();
+    $rout2->user_id = 19;
+    $rout2->name = "Fun Routine";
+	$rout2->create();
+
+
+	public function exercise_routines_added()
+    {
+    	$sql = "SELECT * FROM wb_routine WHERE user_id=".$this->id;
+    	$exercise_array = Routine::find_by_sql($sql);
+    	return $exercise_array;
+    }
+
+    $user=User::find_by_id(19);
+    $all_routine_array=$user->exercise_routines_added();
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+			$rout1 = new Routine();
+		    $rout1->user_id = 19;
+		    $rout1->name = "Fun Routine";
+			$rout1->create();
+
+		    $rout2 = new Routine();
+		    $rout2->user_id = 19;
+		    $rout2->name = "Weekend Routine";
+			$rout2->create();
+			$user = User::find_by_id($rout1->user_id);
+
+		    $all_routine_array=$user->exercise_routines_added();
+		    echo "<strong>The routines that the user has are: </strong>";
+		    echo "<br>";
+		    foreach ($all_routine_array as $routine_object)
+			{
+				echo $routine_object->name;
+				echo "<br>";
+			}
+
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+	    	$user = User::find_by_id($rout1->user_id);
+
+		    $all_routine_array=$user->exercise_routines_added();
+		    $a=0;
+
+		    foreach ($all_routine_array as $routine_object)
+			{
+				$a=$a+1;
+			}
+			if($a==3)
+			{
+				echo "<strong>Passed</strong>";
+			}
+			else
+			{
+				echo "<strong>Failed</strong>";
+			}
+
+	?>
+	</div>
+
+	<h3 class="sub-header">Test for viewing an individual routines</h3>
+<p>This test will demonstrate how a user can view the fields of an individual routine created.
+&nbsp;
+<p>Following code will test whether it can query all the routines by the user.</p>
+<div class="well">
+<xmp>
+
+
+			global $database;
+	    	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
+	    	$routine_test_array = $database->query($sql);
+	    	echo "<strong>The routine that was queried to the database had: </strong>";
+
+	    	while($routine_array = $routine_test_array->fetch_assoc())
+			{
+
+						$rout_testcreate_array=Routine::find_by_id($routine_array['id']);
+
+						echo "<br>";
+						echo "<strong>Name of routine tested is: </strong>";
+						echo $rout_testcreate_array->name;
+						echo "<br>";
+						echo "<strong>Description of routine tested is: </strong>";
+						echo $rout_testcreate_array->description;
+						echo "<br>";
+						echo "<strong>Days of the week that this routine tested are on: </strong>";
+						if(($rout_testcreate_array->mon)==1)
+					    {
+
+							echo "Monday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->tues)==1)
+					    {
+
+							echo "Tuesday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->wed)==1)
+					    {
+					        echo "Wednesday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->thurs)==1)
+					    {
+
+							echo "Thursday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->fri)==1)
+					    {
+
+							echo "Friday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->sat)==1)
+					    {
+
+							echo "Saturday";
+							echo "<br>";
+					    }
+					    if(($rout_testcreate_array->sun)==1)
+					    {
+
+							echo "Sunday";
+							echo "<br>";
+					    }
+
+						echo "<strong>Start Date of tested routine: </strong>";
+						echo $rout_testcreate_array->start_date;
+						echo "<br>";
+						echo "<strong>End Date of tested routine: </strong>";
+						echo $rout_testcreate_array->end_date;
+			}
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
 
 			global $database;
 	    	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
@@ -129,7 +368,8 @@ The description is "This Routine is for Testing Purposes". <br> The days that th
 	<p>Status:</p>
 	<div class="well" style="background-color: #e6f7ff;">
 	<?php
-	    global $database;
+
+	    	global $database;
     	$sql = "SELECT * FROM wb_routine WHERE id=".$rout->id;
     	$group_member_array = $database->query($sql);
     	$pass_trigger=1;
@@ -198,100 +438,11 @@ The description is "This Routine is for Testing Purposes". <br> The days that th
 			echo "<strong>Failed</strong>";
 		}
 
-
-
-	?>
-	</div>
-
-
-
-<h3 class="sub-header">Test for Viewing all routines</h3>
-<p>This test will demonstrate how a user can view all the routines they created.<br>The routines they created are: <br> Test Routine<br>Fun Routine <br> Weekend Routine <br> Weekend Routine and Fun Routine will not have any specifications for days of week, decription, or start_date/end_date. <br> "Test Routine" was created previously. So "Fun Routine" and "Weekend Routine" <br>
-need to be created by the user
-&nbsp;
-<p>Following code will test whether it can query all the routines by the user.</p>
-<div class="well">
-<xmp>
-
-
-	$rout1 = new Routine();
-    $rout1->user_id = 19;
-    $rout1->name = "Fun Routine";
-	$rout1->create();
-
-    $rout2 = new Routine();
-    $rout2->user_id = 19;
-    $rout2->name = "Fun Routine";
-	$rout2->create();
-
-
-	public function exercise_routines_added()
-    {
-    	$sql = "SELECT * FROM wb_routine WHERE user_id=".$this->id;
-    	$exercise_array = Routine::find_by_sql($sql);
-    	return $exercise_array;
-    }
-
-    $user=User::find_by_id(19);
-    $all_routine_array=$user->exercise_routines_added();
-
-
-	</xmp>
-</div>
-<p>Result:</p>
-<div class="well" style="background-color: #e6f7ff;">
-	<?php
-
-			$rout1 = new Routine();
-		    $rout1->user_id = 19;
-		    $rout1->name = "Fun Routine";
-			$rout1->create();
-
-		    $rout2 = new Routine();
-		    $rout2->user_id = 19;
-		    $rout2->name = "Weekend Routine";
-			$rout2->create();
-			$user = User::find_by_id($rout1->user_id);
-
-		    $all_routine_array=$user->exercise_routines_added();
-		    echo "<strong>The routines that the user has are: </strong>";
-		    echo "<br>";
-		    foreach ($all_routine_array as $routine_object)
-			{
-				echo $routine_object->name;
-				echo "<br>";
-			}
-
-	?>
-	</div>
-	<p>Status:</p>
-	<div class="well" style="background-color: #e6f7ff;">
-	<?php
-
-	    	$user = User::find_by_id($rout1->user_id);
-
-		    $all_routine_array=$user->exercise_routines_added();
-		    $a=0;
-
-		    foreach ($all_routine_array as $routine_object)
-			{
-				$a=$a+1;
-			}
-			if($a==3)
-			{
-				echo "Passed";
-			}
-			else
-			{
-				echo "Failed";
-			}
-
 	?>
 	</div>
 
 	<h3 class="sub-header">Test for Deleting Routines</h3>
-<p>This test will demonstrate how a user can delete the routines they created.<br>The routines they created are: <br> Test Routine<br>Fun Routine <br> Weekend Routine <br> Weekend Routine and Fun Routine will not have any specifications for days of week, decription, or start_date/end_date. <br> "Test Routine" was created previously. So "Fun Routine" and "Weekend Routine" <br>
-need to be created by the user.
+<p>This test will demonstrate how a user can delete the routines they created.
 &nbsp;
 <p>Following code will test whether it can delete the routines through querying.</p>
 <div class="well">
@@ -387,11 +538,11 @@ need to be created by the user.
 			}
 			if($a == 0)
 			{
-				echo "Passed";
+				echo "<strong>Passed</strong>";
 			}
 			else
 			{
-				echo "Failed";
+				echo "<strong>Failed</strong>";
 			}
 
 	?>
