@@ -25,7 +25,6 @@ include('header.html');
 			foreach($display_types as $display_feature)
 			{
 
-					echo "hi";
 					$a=$a+1;
 
 			}
@@ -71,8 +70,8 @@ include('header.html');
 	</div>
 
 
-<h3 class="sub-header">Test for Displaying the Write Name for an Exercise</h3>
-<p>This test will test if an that is being displayed is queried right from the wb_exercise_type table.</p>
+<h3 class="sub-header">Test for Displaying the Right Name for an Exercise</h3>
+<p>This test will test if the name of an exercise is being displayed by being queried right from the wb_exercise_type table.</p>
 &nbsp;
 <p>Following code will test whether it can send a query for a designated exercise.</p>
 <div class="well">
@@ -120,8 +119,10 @@ include('header.html');
 
 					if($a==10)
 					{
-						echo $display_feature->name;
+						echo "<strong>".$display_feature->name."</strong>";
+
 						$echo_display_name=$display_feature->name;
+						$reference_id=$display_feature->id;
 					}
 					$a=$a+1;
 
@@ -136,11 +137,11 @@ include('header.html');
 		$test_name="Barbell Deadlifts";
 		if(strcasecmp($echo_display_name,$test_name)==0)
 		{
-			echo "Passed";
+			echo "<strong>Passed</strong>";
 		}
 		else
 		{
-			echo "Failed";
+			echo "<strong>Failed</strong>";
 		}
 
 
@@ -148,6 +149,110 @@ include('header.html');
 	?>
 	</div>
 
+
+<h3 class="sub-header">Test for Adding an Exercise to a Routine</h3>
+<p>This test will test if an that is being displayed is queried right from the wb_exercise_type table.</p>
+&nbsp;
+<p>Following code will test whether it can send a query for a designated exercise.</p>
+<div class="well">
+	<xmp>
+
+		    $rout_ex = new Routine();
+		    $rout_ex->user_id = 19;
+		    $rout_ex->name = "Test Routine for Exercise";
+		    $rout_ex->description = "This Routine is for Testing Purposes";
+		   	$rout_ex->mon = 1;
+		    $rout_ex->start_date = '2016-05-01';
+		    $rout_ex->end_date = '2016-06-01';
+			$rout_ex->create();
+
+
+			$ex=new Exercises();
+			$ex->routine_id=$rout_ex->id;
+			$ex->type=$reference_id;
+			$ex->create();
+
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+
+		    $rout_ex = new Routine();
+		    $rout_ex->user_id = 19;
+		    $rout_ex->name = "Test Routine for Exercise";
+		    $rout_ex->description = "This Routine is for Testing Purposes";
+		   	$rout_ex->mon = 1;
+		    $rout_ex->start_date = '2016-05-01';
+		    $rout_ex->end_date = '2016-06-01';
+			$rout_ex->create();
+
+
+			$ex=new Exercises();
+			$ex->routine_id=$rout_ex->id;
+			$ex->type=$reference_id;
+			$ex->create();
+
+			global $database;
+			$sql = "SELECT * FROM wb_exercise WHERE routine_id=".$rout_ex->id;
+			$ex_rout_test_array = $database->query($sql);
+
+	    	while($ex_rout_array = $ex_rout_test_array->fetch_assoc())
+			{
+					$test_array=Exercises::find_by_id($ex_rout_array['id']);
+
+					echo "<strong>The id of the routine : </strong>";
+					echo "<br>";
+					echo $rout_ex->id;
+					echo "<br>";
+					echo "<strong>The routine_id for the exercise that was queried for the designated routine was: </strong>";
+					echo "<br>";
+					echo $test_array->routine_id;
+					echo "<br>";
+
+					if($test_array->routine_id==$rout_ex->id)
+					{
+						echo "The exercise was queried to the database with the right routine";
+					}
+					else
+					{
+						echo "The exercise was NOT queried to the database with the right routine";
+					}
+
+			}
+
+
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+		global $database;
+			$sql = "SELECT * FROM wb_exercise WHERE routine_id=".$rout_ex->id;
+			$ex_rout_test_array = $database->query($sql);
+
+	    	while($ex_rout_array = $ex_rout_test_array->fetch_assoc())
+			{
+
+
+					if($test_array->routine_id==$rout_ex->id)
+					{
+						echo "<strong>Passed</strong>";
+					}
+					else
+					{
+						echo "<strong>Failed</strong>";
+					}
+
+			}
+
+
+
+	?>
+	</div>
 
 
 
