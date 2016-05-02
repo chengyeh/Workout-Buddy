@@ -116,7 +116,68 @@ if ($num_rows > 0) {
 unset($database6);
 ?>
 <h3 class="sub-header">Test insert_id()</h3>
+<?php 
+//Create instance of MySQLDatabase class
+$database7 = new MySQLDatabase();
+
+$sql_drop_table = "DROP TABLE wb_test_table";
+$database7->query($sql_drop_table);
+
+$sql_create_table = "CREATE TABLE wb_test_table ( id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, col_1 int(10) )";
+$database7->query($sql_create_table);
+
+$sql_insert_row = "INSERT INTO wb_test_table (`col_1`) VALUES (123)";
+$database7->query($sql_insert_row);
+
+//Check result_array has more than zero elements
+if ($database7->insert_id() == 1) {
+	//
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+	echo "Test insert_id() PASSED";
+	echo "</div>";
+
+}else{
+	//
+	echo "<div class='well' style='background-color: #ffd6cc'>";
+	echo "Test insert_id() FAILED";
+	echo "</div>";
+}
+
+//Delete MySQLDatabase object
+unset($database7);
+?>
 <h3 class="sub-header">Test affected_rows()</h3>
+<?php 
+//Create instance of MySQLDatabase class
+$database8 = new MySQLDatabase();
+
+$sql_drop_table = "DROP TABLE wb_test_table";
+$database8->query($sql_drop_table);
+
+$sql_create_table = "CREATE TABLE wb_test_table ( id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, col_1 int(10) )";
+$database8->query($sql_create_table);
+
+$sql_insert_row = "INSERT INTO wb_test_table (`col_1`) VALUES (123)";
+$database8->query($sql_insert_row);
+
+//Check result_array has more than zero elements
+if ($database8->affected_rows() == 1) {
+	//
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+	echo "Test affected_rows() PASSED";
+	echo "</div>";
+
+}else{
+	//
+	echo "<div class='well' style='background-color: #ffd6cc'>";
+	echo "Test affected_rows() FAILED";
+	echo "</div>";
+}
+
+//Delete MySQLDatabase object
+unset($database8);
+?>
+
 <h3 class="sub-header">Test confirm_query($result)</h3>
 <?php
 include('footer.html');

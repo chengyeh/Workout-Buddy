@@ -135,7 +135,7 @@ class MySQLDatabase{
 	 */
     private function confirm_query($result){
         if(!$result){
-            $output = "Databse query failed. " . mysqli_error($this->connection) . "<br />";
+            $output = "Database query failed. " . mysqli_error($this->connection) . "<br />";
             $output .= "Last SQL query: " . $this->last_query;
             die($output);
         }
