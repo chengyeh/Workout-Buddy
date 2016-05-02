@@ -254,6 +254,68 @@ include('header.html');
 	?>
 	</div>
 
+	<h3 class="sub-header">Test for Deleting Exercises</h3>
+<p>This test will demonstrate how a user can delete the exercises they create.
+&nbsp;
+<p>Following code will test whether it can delete the exercises through querying.</p>
+<div class="well">
+<xmp>
+
+		$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $rout_ex->id . "'");
+		$rout_ex->delete();
+
+	</xmp>
+</div>
+<p>Result:</p>
+<div class="well" style="background-color: #e6f7ff;">
+	<?php
+			$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $rout_ex->id . "'");
+			$rout_ex->delete();
+			global $database;
+			$sql = "SELECT * FROM wb_exercise WHERE routine_id=".$rout_ex->id;
+			$ex_rout_test_array = $database->query($sql);
+			$a=0;
+			foreach ($ex_rout_test_array as $ex_object)
+			{
+
+				$a=$a+1;
+
+			}
+			if($a == 0)
+			{
+				echo "<strong>The exercise was deleted</strong>";
+			}
+			else
+			{
+				echo "<strong>The exercise was NOT deleted</strong>";
+			}
+	?>
+	</div>
+	<p>Status:</p>
+	<div class="well" style="background-color: #e6f7ff;">
+	<?php
+
+			global $database;
+			$sql = "SELECT * FROM wb_exercise WHERE routine_id=".$rout_ex->id;
+			$ex_rout_test_array = $database->query($sql);
+			$a=0;
+			foreach ($ex_rout_test_array as $ex_object)
+			{
+
+				$a=$a+1;
+
+			}
+			if($a == 0)
+			{
+				echo "<strong>Passed</strong>";
+			}
+			else
+			{
+				echo "<strong>Failed</strong>";
+			}
+
+	?>
+	</div>
 
 
 
