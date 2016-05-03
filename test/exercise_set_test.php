@@ -229,6 +229,106 @@ include('header.html');
 	?>
 
 
+	<h3 class="expand sub-header">Test for Editing Exercise Set</h3>
+
+<div class="well" style="display:none;">
+<xmp>
+
+
+
+			$new_reps=15;
+			$new_weight=40;
+			global $database;
+			$database->query("UPDATE `wb_exercise_set` SET `reps`=$new_reps, `weight`=$new_weight WHERE exercise_id=".$test_set->exercise_id." AND `order`=".$test_set->order." AND routine_id=".$test_set->routine_id);
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$rout_ex_set->id." AND exercise_id=".$ex_set->id;
+			$ex_set_test_array = $database->query($sql);
+
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$set_array=Set::find_by_id($test_set_array['id']);
+					if(($set_array->reps)!=($new_reps))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->weight)!=($new_weight))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->id)!=($test_set->id))
+					{
+						$pass_trigger=0;
+					}
+
+
+			}
+
+			if($pass_trigger==1)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+
+
+	</xmp>
+</div>
+
+	<?php
+
+		  	$new_reps=15;
+			$new_weight=40;
+
+			$database->query("UPDATE `wb_exercise_set` SET `reps`=$new_reps, `weight`=$new_weight WHERE exercise_id=".$test_set->exercise_id." AND `order`=".$test_set->order." AND routine_id=".$test_set->routine_id);
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$rout_ex_set->id." AND exercise_id=".$ex_set->id;
+			$ex_set_test_array = $database->query($sql);
+
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$set_array=Set::find_by_id($test_set_array['id']);
+					if(($set_array->reps)!=($new_reps))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->weight)!=($new_weight))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->id)!=($test_set->id))
+					{
+						$pass_trigger=0;
+					}
+
+
+			}
+
+			if($pass_trigger==1)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+
+	?>
+
+
 
 
 
