@@ -41,10 +41,6 @@ class Session {
         $this->logged_in = false;
     }
 
-    public function is_super_login(){
-        return ($this->logged_in && $_SESSION['user_id'] = 1)? true : false;
-    }
-
     public function message($msg=""){
         if(!empty($msg)){
             $_SESSION['message'] = $msg;
