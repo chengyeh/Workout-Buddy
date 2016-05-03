@@ -328,6 +328,234 @@ include('header.html');
 
 	?>
 
+
+
+
+	<h3 class="expand sub-header">Test for Invalid Input for Exercise Set</h3>
+
+<div class="well" style="display:none;">
+<xmp>
+
+
+
+			$new_reps=15;
+			$new_weight="Hello World";
+			global $database;
+
+			if((is_numeric($new_weight)) && (is_numeric($new_reps)))
+         	{
+         		$database->query("UPDATE `wb_exercise_set` SET `reps`=$new_reps, `weight`=$new_weight WHERE exercise_id=".$test_set->exercise_id." AND `order`=".$test_set->order." AND routine_id=".$test_set->routine_id);
+	    	}
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$rout_ex_set->id." AND exercise_id=".$ex_set->id;
+			$ex_set_test_array = $database->query($sql);
+
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$set_array=Set::find_by_id($test_set_array['id']);
+					echo $set_array->weight;
+					echo $set_array->reps;
+					if(($set_array->reps)!=($new_reps))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->weight)!=(40))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->id)!=($test_set->id))
+					{
+						$pass_trigger=0;
+					}
+			}
+
+			if($pass_trigger==1)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+
+
+	</xmp>
+</div>
+
+	<?php
+
+		  	$new_reps=15;
+			$new_weight="Hello World";
+			global $database;
+
+			if((is_numeric($new_weight)) && (is_numeric($new_reps)))
+         	{
+         		$database->query("UPDATE `wb_exercise_set` SET `reps`=$new_reps, `weight`=$new_weight WHERE exercise_id=".$test_set->exercise_id." AND `order`=".$test_set->order." AND routine_id=".$test_set->routine_id);
+	    	}
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$rout_ex_set->id." AND exercise_id=".$ex_set->id;
+			$ex_set_test_array = $database->query($sql);
+
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$set_array=Set::find_by_id($test_set_array['id']);
+
+					if(($set_array->reps)!=($new_reps))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->weight)!=(40))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->id)!=($test_set->id))
+					{
+						$pass_trigger=0;
+					}
+			}
+
+			if($pass_trigger==1)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+
+	?>
+
+
+
+	<h3 class="expand sub-header">Test for Blank Input for Exercise Set</h3>
+
+<div class="well" style="display:none;">
+<xmp>
+
+
+
+			$new_reps=15;
+			$new_weight="";
+			global $database;
+
+			if(empty($new_weight))
+         	{
+         		$new_weight=0;
+         	}
+
+         	$database->query("UPDATE `wb_exercise_set` SET `reps`=$new_reps, `weight`=$new_weight WHERE exercise_id=".$test_set->exercise_id." AND `order`=".$test_set->order." AND routine_id=".$test_set->routine_id);
+
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$rout_ex_set->id." AND exercise_id=".$ex_set->id;
+			$ex_set_test_array = $database->query($sql);
+
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$set_array=Set::find_by_id($test_set_array['id']);
+					echo $set_array->weight;
+					echo "<br>";
+					echo $set_array->reps;
+					if(($set_array->reps)!=($new_reps))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->weight)!=(0))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->id)!=($test_set->id))
+					{
+						$pass_trigger=0;
+					}
+			}
+
+			if($pass_trigger==1)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+
+
+	</xmp>
+</div>
+
+	<?php
+
+
+			$new_reps=15;
+			$new_weight="";
+			global $database;
+
+			if(empty($new_weight))
+         	{
+         		$new_weight=0;
+         	}
+
+         	$database->query("UPDATE `wb_exercise_set` SET `reps`=$new_reps, `weight`=$new_weight WHERE exercise_id=".$test_set->exercise_id." AND `order`=".$test_set->order." AND routine_id=".$test_set->routine_id);
+
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$rout_ex_set->id." AND exercise_id=".$ex_set->id;
+			$ex_set_test_array = $database->query($sql);
+
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$set_array=Set::find_by_id($test_set_array['id']);
+
+					if(($set_array->reps)!=($new_reps))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->weight)!=(0))
+					{
+						$pass_trigger=0;
+					}
+					if(($set_array->id)!=($test_set->id))
+					{
+						$pass_trigger=0;
+					}
+			}
+
+			if($pass_trigger==1)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+
+	?>
+
+
+
+
 		<h3 class="expand sub-header">Test for Deleting Exercise Set</h3>
 
 <div class="well" style="display:none;">
