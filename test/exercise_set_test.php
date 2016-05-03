@@ -328,7 +328,87 @@ include('header.html');
 
 	?>
 
+		<h3 class="expand sub-header">Test for Deleting Exercise Set</h3>
 
+<div class="well" style="display:none;">
+<xmp>
+
+			$temp_exercise_id=$rout_ex_set->id;
+			$temp_routine_id=$rout_ex_set->id;
+
+
+			global $database;
+			$database->query("DELETE FROM wb_exercise_set WHERE routine_id = '" . $rout_ex_set->id . "'");
+			$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $rout_ex_set->id . "'");
+			$rout_ex_set->delete();
+
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$temp_routine_id." AND exercise_id=".$temp_exercise_id;
+			$ex_set_test_array = $database->query($sql);
+			$del_track=0;
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$del_track++;
+
+
+			}
+
+			if($del_track==0)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+
+
+	</xmp>
+</div>
+
+	<?php
+
+		  	$temp_exercise_id=$rout_ex_set->id;
+			$temp_routine_id=$rout_ex_set->id;
+
+
+			global $database;
+			$database->query("DELETE FROM wb_exercise_set WHERE routine_id = '" . $rout_ex_set->id . "'");
+			$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $rout_ex_set->id . "'");
+			$rout_ex_set->delete();
+
+
+   			global $database;
+			$sql = "SELECT * FROM wb_exercise_set WHERE routine_id=".$temp_routine_id." AND exercise_id=".$temp_exercise_id;
+			$ex_set_test_array = $database->query($sql);
+			$del_track=0;
+			$pass_trigger=1;
+	    	while($test_set_array = $ex_set_test_array->fetch_assoc())
+			{
+					$del_track++;
+
+
+			}
+
+			if($del_track==0)
+			{
+				echo "<div class='well' style='background-color: #00ff00'>";
+				echo "<strong>Passed</strong>";
+				echo "</div>";
+			}
+			else
+			{
+				echo "<div class='well' style='background-color: #ff0000'>";
+				echo "<strong>Failed</strong>";
+				echo "</div>";
+			}
+	?>
 
 
 
