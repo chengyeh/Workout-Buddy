@@ -1,4 +1,8 @@
 <?php
+ /**
+ * This page serves as an introduction of what Workout Buddy is about.
+ * 
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -7,7 +11,8 @@ $number_messages=0;
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+
+// Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 ?>
 
@@ -34,7 +39,7 @@ $user = User::find_by_id($session->user_id);
     <link href="dist/css/navbar-fixed-top.css" rel="stylesheet">
     
     <!-- Custom styles for this template -->
-    <!-- <link href="dist/css/jumbotron-narrow.css" rel="stylesheet" -->>
+    <!-- <link href="dist/css/jumbotron-narrow.css" rel="stylesheet" -->
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -87,6 +92,7 @@ $user = User::find_by_id($session->user_id);
             <li>
             	<span>
 	            <?php
+	            	// Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -94,15 +100,14 @@ $user = User::find_by_id($session->user_id);
 	            <a href="inbox.php">Inbox</a>
 	            </span>&nbsp&nbsp
             </li>
-
             <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hi <?php echo $session->user_name; ?>&nbsp&nbsp</li>
             <li><span><a class="btn btn-primary btn-sm" href="logout.php" role="button">Logout</a></span>&nbsp&nbsp</li>
          </ul>
-
         </div><!--/.nav-collapse -->
       </div>
 
     </nav>
+    
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->

@@ -1,46 +1,52 @@
 <?php
+/**
+ * Creates a new group_member object associated with a pre-existing group.
+ * If successfully created, the group object is stored in the wb_group_member and the user is redirected the view_group.php page.
+ * The message object contains the following values: user, receiver, message.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object for current session user
+// Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 
-//If the ID field is empty return the user to profile page
+// If the id field is empty return the user to profile page.
 if (empty($_GET['id'])){
     $session->message("No group ID was provided.");
     redirect_to('profile.php');
 }
 
-//Create Group object from ID in the URL 
+// Create Group object from id in the URL
 $group = Group::find_by_id($_GET['id']);
 if(!$group){
     $session->message("Unable to be find group.");
     redirect_to('profile.php');
 }
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+?>
+<?php
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
     if(!empty($_POST['user_id_array']))
     {
         foreach($_POST['user_id_array'] as $member_id)
         {
-            // Add the group member to the database: 
+            // Add the group member to the database.
             $group_member = new GroupMember();
             $group_member->group_id = $group->id;   
             $group_member->member_id = $member_id;
          
             $group_member->create();
         }
-
-        //Redirect to view group page
+        // Redirect to view group page.
         redirect_to("view_group.php?id={$group->id}");
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -115,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li>
             	<span>
 	            <?php
+	            	// Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -138,28 +145,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h1>Add Members to Group</h1>
     
     <h2><?php echo $group->group_name; ?></h2>
-    <!-- <?php 
-       echo "<p>Group Name: ". $group->group_name . "<br/>";
-	   echo "<p>Group Activity: ". $group->group_activity . "<br/>";
-       echo "<p>Owner: ". $user->full_name() . "<br/>";
-    ?> -->
+
     <p><a class='btn btn-default' href="view_group.php?id=<?php echo $group->id ?>" role='button'>View Group</a></p>
     
     <h2>Add Members</h2>
     <?php
-    	//Get all existing users into array  
+    	// Get all existing users into array.
         $users = User::find_all();
-		//Get all group members id
+		
+		// Get all the current group members' id.
         $group_member_id_array = $group->get_member_id_array();
+		
+		/**
+		 * Check if there are any existing users, if there are then print their names if they are not currently in the group 
+		 * 
+		 */
         if(!empty($users)){
             echo "<form action='#' method='post'><table>";
 			echo "<table class='table'><tr><th>Name</th><th class='text-center'>Add</th></tr>";
             foreach ($users as $user){
-            		//Do not display current user
+            		// Don't display current user
                     if($user->id != $session->user_id)
                     {
                         $id_exist = false;
-						//If the user is already in the group, do not display his/her name
+						
+						// If the user is already in the group, do not display his or her name
                         for($i = 0; $i < count($group_member_id_array); $i++)
                         {
                             if($user->id == $group_member_id_array[$i]['member_id'])
@@ -167,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                                 $id_exist = true;
                             }
                         }
-						//Display the user who is not in the group
+						// Display the user who is not in the group
                         if($id_exist == false)
                         {
                         	echo "<tr><td><a href='view_profile.php?id={$user->id}'>".  $user->full_name() ."</a></td>";
@@ -181,16 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }else{
             echo  "No users<br/>";
         }   
-    ?>
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
+    ?> 	
   	
     </div> <!-- /container -->
 
