@@ -1,7 +1,9 @@
 <?php
 /**
  * When User clicks on Add Exercise, all exercise types are queried from he database and printed in a drop-down list.
- *
+ *@pre: routine object created, user session
+ *@post: exercise sets to be created
+ *@return: exercise id and type id
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -17,8 +19,9 @@ if (empty($_GET['id'])){
 
 }
 
-//Create Exercise object from id in the URL
+//Create Routine object from id in the URL in which to create the routine associted with the exercise
 $addexercise = Routine::find_by_id($_GET['id']);
+//Creates the abilty to obtain types
 $var_types = Types::find_by_id(1);
 if(!$addexercise)
 {
@@ -37,38 +40,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $trimmed = array_map('trim', $_POST);
 
 
-            // Add the group member to the database:
+            // Obtains the front-end fields
             if(isset($_POST['select_type']))
             {
             	$answer=$_POST['select_type'];
-
-            	echo $answer;
-				if($answer==1)
-				{
-					echo "hi";
-				}
-				else if($answer==2)
-				{
-					echo "bye";
-				}
-				else if($answer==3)
-				{
-					echo "yoyoyo";
-				}
-				else
-				{
-					echo "no";
-				}
             }
 
             $type_input = new Types();
             $type_input->routine_id = $addexercise->id;
             $type_input->type = $answer;
 
-         	//$database->query("INSERT INTO `wb_exercise`(`routine_id`, type) VALUES ($type_input->routine_id,'$type_input->type')");
 
+			//Logic used to obtain information and create the following exercises
 			 $total_exercises=$user->find_last_exercise($addexercise->id);
-
+			//$q is used to find the final next exercise
 			 $q=0;
 			 foreach ($total_exercises as $exercise_number)
 			 {
@@ -80,10 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 					}
 
 			}
-			echo $q;
-			echo $addexercise->id;
+
 			$a=$type_input->routine_id;
-			echo $a;
+
 			 redirect_to("add_exercise_set.php?rout_id=".$a."&type_id=".$answer);
 
 }
@@ -185,11 +169,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- Main component for a primary marketing message or call to action -->
     <h2>Add Exercise</h2>
    	<?php
-   			echo "<p>Name: ". $addexercise->name . "<br/>";
-			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
-			echo "<p>ID: ". $addexercise->id . "<br/>";
+   			//This queries from the routine associated with the exercise
+   			echo "<p><strong>Name: </strong>". $addexercise->name . "<br/>";
+			echo "<p><strong>Description: </strong>". $addexercise->description . "<br/>";
 
-
+			//This is user input for the exercise type choice
 		   	echo "<form action='#' method='POST'>";
 		   		echo "<select name='select_type'>";
 				$display_types=$var_types->show_types();
@@ -200,11 +184,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 					$a=$a+1;
 				}
 				echo "</select>";
-				echo "<br>";
-		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Exercise</button>";
-
+				echo "</br>";
+		   	echo "<button type='submit' name='submit' class='btn btn-success'>Create Exercise</button>";
+		   	echo "</br>";
 		   	echo "</form>";
-			echo "<p><a class='btn btn-default' href='view_routine.php?id=$addexercise->id' role='button'>Back to Routine</a></p>";
+		   	echo "<br>";
+			echo "<p><a class='btn btn-info'  href='view_routine.php?id=$addexercise->id' role='button'>Back to Routine</a></p>";
 
    	?>
 
