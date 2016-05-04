@@ -107,7 +107,7 @@ $user = User::find_by_id($session->user_id);
 
     <!-- Main component for a primary marketing message or call to action -->
     <h1>Challenge Leaderboard</h1>
-    <hr>
+	<br>
       <!---Display current leader board--->
       <center>
       <table class='table'>

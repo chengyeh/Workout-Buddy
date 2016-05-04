@@ -1,15 +1,20 @@
 <?php
+/**
+ * Creates a new group object with various parameter of the users choosing and the user is set as the owner of the group.
+ *  The group object contains the following values: group_owner, group_name, group_status, group_description, group_activity
+ * If successfully created, the group object is stored in the wb_group and the user is redirected the view_group.php page.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+// Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 
-//Get all the group activity to popluate the 
-//select box in form
+// Get all the group activity to populate the 
+// select box in form
 $group_activity = Group::get_activity();
 
 ?>
@@ -17,7 +22,7 @@ $group_activity = Group::get_activity();
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
-  // Trim all the incoming data:
+  	// Trim all the incoming data:
 	$trimmed = array_map('trim', $_POST);
 
 		// Add the group to the database:
@@ -34,10 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$group_member->member_id = $trimmed['user_id'];
 		$group_member->create();
 
-      	//Redirect to profile page
+      	// Redirect to profile page
       	redirect_to("view_group.php?id={$database->insert_id()}");
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -112,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li>
             	<span>
 	            <?php
+	            	// Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE 'read'!=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -157,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		   <label for="formGroupExampleInput">Group Activity</label>
 		   <select name="group_activity" class="form-control" required>
 		   <?php 
+		   		// Query group activities from wb_group_activity table
 		   		echo "<option value=''></option>";
 		   		foreach ($group_activity as $key => $value){
 					echo "<option value='{$value}'>{$value}</option>";

@@ -10,8 +10,7 @@ defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 
 defined('SITE_ROOT') ? null :
 
-define('SITE_ROOT', DS.'home'.DS.'dfernand'.DS.'public_html'.DS.'eecs448'.DS.'EECS448_Project3');
-
+define('SITE_ROOT', DS.'home'.DS.'clee28'.DS.'public_html'.DS.'EECS448'.DS.'EECS448_Project4');
 
 defined('LIB_PATH') ? null :
 define('LIB_PATH', SITE_ROOT .DS. 'includes');
@@ -42,7 +41,6 @@ require_once(LIB_PATH.DS."log_category.php");
 require_once(LIB_PATH.DS."set.php");
 require_once(LIB_PATH.DS."types.php");
 require_once(LIB_PATH.DS."exercises.php");
-require_once(LIB_PATH.DS."strenghGrowthAnalysis.php");
 require_once(LIB_PATH.DS."event_calendar.php");
 require_once(LIB_PATH.DS."log.php");
 

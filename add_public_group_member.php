@@ -1,16 +1,21 @@
 <?php 
+/**
+ * Creates a new group_member object in a group where the user is not the owner. Allows an user to join a pre-existing group.
+ * The add_public_group_member object contains the following values: user, group_id, member_id.
+ * If successfully created, the user is listed as a group_member of the group and redirected to the view_group.php page.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//If the ID field is empty return the user to profile page
+// If the ID field is empty return the user to profile page
 if (empty($_GET['user_id']) && empty($_GET['group_id'])){
     $session->message("No group ID was provided.");
     redirect_to('profile.php');
 }else{
-	
+	// Add user to the group (create a row in wb_group_members table)
 	$user_id = $_GET['user_id'];
 	$group_id = $_GET['group_id'];
 	

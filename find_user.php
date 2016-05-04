@@ -1,22 +1,28 @@
 <?php
+/**
+ * Finds a user matching a users search request. The user can search for another user by their first or last name.
+ * If neither value is defined by the user, an error message is shown. The search takes into consideration whether user provides either first or last name or neither.
+ * A successful query returns the user.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+// Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 
 ?>
 <?php
 $search_string;
-
+// If submit button is clicked, check if the search field is empty or has invalid value 
 if(isset($_GET['submit'])){
   $search = array();
   $fname = $database->escape_value($_GET['first_name']);
   $lname = $database->escape_value($_GET['last_name']);
   
+  // If it's ok put user input into search_string, else display error message
   if((isset($fname)&& (!empty($fname)|| $fname !=0)) && (isset($lname)&& (!empty($lname)|| $lname !=0))){
     $search_string = " first_name LIKE '%{$fname}%' AND last_name LIKE '%{$lname}%' ";
   }elseif(isset($fname)&& (!empty($fname)|| $fname !=0)){
@@ -28,8 +34,9 @@ if(isset($_GET['submit'])){
   }
 }
 
+// If serach_string is valid and no error message, query the result from wb_users table
 if(isset($search_string) && empty($message)){
-	//Asemble sql statement
+	//Assemble sql statement
 	$sql = "SELECT * FROM wb_users ";
 	$sql .= "WHERE {$search_string} ";
 	$sql .= "ORDER BY last_name ASC ";
@@ -111,6 +118,7 @@ if(isset($search_string) && empty($message)){
             <li>
             	<span>
 	            <?php
+	            	// Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -152,6 +160,7 @@ if(isset($search_string) && empty($message)){
   	<div class="col-md-9">
   	
   	<?php 
+  		// If there is a result, for each user display their fist name and last name
   		if(isset($users)){
 			echo "<h2>Search Results for {$fname} {$lname}</h2>";
 	  		if(!empty($users)){
@@ -168,9 +177,6 @@ if(isset($search_string) && empty($message)){
   	?>
   	</div>
   	
-
-
-
 
     </div> <!-- /container -->
 

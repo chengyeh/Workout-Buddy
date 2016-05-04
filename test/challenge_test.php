@@ -16,7 +16,7 @@ include('header.html');
 <p>The functions in the challenge class should display the ranking of the top 3 members in each section. </p>
 <p>If there's no one entered the record, then there should be 0 members being displayed on the leaderboard.  </p>
 <p>If there's one entered the record, then there should be 1 members being displayed on the leaderboard, and so on. </p>
-<p>At most 3 members should be displayed. An number not including in the range of [0, 3] is not valid.</p>
+<p>At most 3 members should be displayed. A number not including in the range of [0,inf) is not valid.</p>
 
 
 <p><b>This is the code in the class that query the database for the top 3 members.</b></p>
@@ -78,17 +78,17 @@ echo "The number of members shown on the tread mill leader board: ". $n3 . "<br>
   $n2 = challenge::show_num_putop3();
   $n3 = challenge::show_num_tmtop3();
 
-  if($n1 >= 0 && $n1 < 4)
+  if($n1 >= 0 )
     echo "Test for bench_press top 3 has passed.<br>";
   else
     echo "Test for bench_press top 3 has failed.<br>";
 
-  if($n1 >= 0 && $n1 < 4)
+  if($n1 >= 0)
     echo "Test for pull_ups top 3 has passed.<br>";
   else
     echo "Test for pull_ups top 3 has failed.<br>";
 
-  if($n1 >= 0 && $n1 < 4)
+  if($n1 >= 0)
     echo "Test for tread_mill top 3 has passed.<br>";
   else
     echo "Test for tread_mill top 3 has failed.<br>";
