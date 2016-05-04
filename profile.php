@@ -1,4 +1,9 @@
 <?php
+ /**
+ * This class serves as the central starting point for the user to access all other classes for various functionality.
+ * Based on the user choice, the page redirects the user to different classes.
+ * 
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -7,7 +12,7 @@ $number_messages=0;
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+// Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 ?>
 <?php
@@ -115,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li>
             	<span>
 	            <?php
+	            	// Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -149,6 +155,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$groups_owned = $user->find_groups();
 		$groups_joined = $user->groups_joined();
 		$exercises_added=$user->exercise_routines_added();
+		
+		// If user owns at least one group, display its name, status, and button to delete it
 		if(!empty($groups_owned)){
 			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
 				//List all the groups this user owns
@@ -167,12 +175,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<h2>Groups Joined</h2>
 	<p><a class="btn btn-default" href="find_group.php" role="button">Find Group</a></p>
 	<?php
+		// If user has joined at least one group, display its name, and status
 		if(!empty($groups_joined))
 		{
 			echo "<table class='table'><tr><th>Name</th><th></th><th class='text-center'>Status</th></tr>";
 			foreach ($groups_joined as $group_member_row){
 				$same_group = false;
-				//Check if the joined group is the one this user owns
+				// Check if the joined group is owned by this user
 				for($i = 0; $i < count($groups_owned); $i++)
 				{
 					if($group_member_row->group_id == $groups_owned[$i]->id)
@@ -180,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 						$same_group = true;
 					}
 				}
-				//List all the groups this user joined but doesn't own
+				// List all the groups this user joined but doesn't own
 				if($same_group == false)
 				{
 					$group_joined = Group::find_by_id($group_member_row->group_id);
@@ -200,7 +209,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<form action="#" method="post">
 	<?php
 		$user_routine_objects = $user->exercise_routines_added();
-
+		
+		// If user created at least one routine, display its name, and button to delete it
 		if(!empty($user_routine_objects))
 		{
 			echo "<table class='table'><tr><th>Name</th><th></th><th class='text-center'>Delete</th></tr>";
