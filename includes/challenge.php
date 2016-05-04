@@ -1,4 +1,8 @@
 <?php
+//store the user's input data
+//shows the users' data in the leaderboard
+
+
 require_once(LIB_PATH.DS."database.php");
 
 class challenge extends DatabaseObject {
