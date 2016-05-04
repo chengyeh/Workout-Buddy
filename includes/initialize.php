@@ -1,5 +1,11 @@
-
 <?php
+/*
+*	@file initialize.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments This file load all the classes.
+*/
+
 defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 
 defined('SITE_ROOT') ? null :
