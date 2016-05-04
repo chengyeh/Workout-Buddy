@@ -35,7 +35,6 @@ require_once(LIB_PATH.DS."log_category.php");
 require_once(LIB_PATH.DS."set.php");
 require_once(LIB_PATH.DS."types.php");
 require_once(LIB_PATH.DS."exercises.php");
-require_once(LIB_PATH.DS."strenghGrowthAnalysis.php");
 require_once(LIB_PATH.DS."event_calendar.php");
 require_once(LIB_PATH.DS."log.php");
 
