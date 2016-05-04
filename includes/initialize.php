@@ -6,7 +6,6 @@ defined('SITE_ROOT') ? null :
 
 define('SITE_ROOT', DS.'home'.DS.'clee28'.DS.'public_html'.DS.'EECS448'.DS.'EECS448_Project4');
 
-
 defined('LIB_PATH') ? null :
 define('LIB_PATH', SITE_ROOT .DS. 'includes');
 
@@ -18,6 +17,8 @@ require_once(LIB_PATH.DS."session.php");
 require_once(LIB_PATH.DS."database.php");
 require_once(LIB_PATH.DS."database_object.php");
 require_once(LIB_PATH.DS."pagination.php");
+
+//PHPMialer is not being used since System Admin security concerns
 // require_once(LIB_PATH.DS."PHPMailer".DS."class.phpmailer.php");
 // require_once(LIB_PATH.DS."PHPMailer".DS."class.smtp.php");
 // require_once(LIB_PATH.DS."PHPMailer".DS."language".DS."phpmailer.lang-es.php");
@@ -37,7 +38,7 @@ require_once(LIB_PATH.DS."exercises.php");
 require_once(LIB_PATH.DS."strenghGrowthAnalysis.php");
 require_once(LIB_PATH.DS."event_calendar.php");
 require_once(LIB_PATH.DS."log.php");
-//require_once(LIB_PATH.DS."photograph.php");
-//require_once(LIB_PATH.DS."comment.php");
-//require_once(LIB_PATH.DS."image_resize.php");
+
+//This class is used for testing purposes
+require_once(LIB_PATH.DS."test_data_employee.php");
 ?>
