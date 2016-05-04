@@ -1,25 +1,31 @@
 <?php
+/**
+ * Finds the group matching a users search request. The user can search in terms of what exercise the group focuses on.
+ * A successful query returns an array contain all the results of the query. The groups in the array are displayed in a table.
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object
+// Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 
-//Get all the group activity to popluate the
-//select box in form
+// Get all the group activity to populate the 
+// select box in form
 $group_activity = Group::get_activity();
 
 ?>
 
 <?php
 $search_string;
-
+// If submit button is clicked, check if the search field is empty or has invalid value 
 if(isset($_GET['submit'])){
   $search = array();
   $activity = $database->escape_value($_GET['group_activity']);
+  
+  // If it's ok put user input into search_string, else display error message
   if(isset($activity)&& (!empty($activity)|| $activity !=0)){
     $search_string = " group_activity LIKE '%{$activity}%' ";
   }elseif (!isset($activity) || (empty($activity) || $activity==0)){
@@ -27,15 +33,12 @@ if(isset($_GET['submit'])){
   }
 }
 
+// If serach_string is valid and no error message, query the result from wb_group table
 if(isset($search_string) && empty($message)){
-	//Asemble sql statement
+	//Assemble sql statement
 	$sql = "SELECT * FROM wb_group ";
 	$sql .= "WHERE {$search_string} AND  group_status='Public' ";
 	$sql .= "ORDER BY group_name ASC ";
-	
-	// $sql = "SELECT * FROM wb_group ";
-	// $sql .= "WHERE {$search_string} AND group_status = 'Public' AND wb_group.id ";
- 	// $sql .=	"NOT IN (SELECT wb_group_members.group_id FROM wb_group_members WHERE member_id={$_SESSION['user_id']})";
 	
     $groups = Group::find_by_sql($sql);
 }
@@ -115,6 +118,7 @@ if(isset($search_string) && empty($message)){
             <li>
             	<span>
 	            <?php
+	           		// Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -159,6 +163,7 @@ if(isset($search_string) && empty($message)){
   	<div class="col-md-9">
   	
   	<?php 
+  		// If there is a result, for each group display their name, description, and join button
   		if(isset($groups)){
 			echo "<h2>Search Results for {$activity}</h2>";
 	  		if(!empty($groups)){
@@ -175,6 +180,8 @@ if(isset($search_string) && empty($message)){
 						}
 					}
 					echo "<tr><td><a href='view_group.php?id={$group->id}'>{$group->group_name}</a></td>";
+					
+					// If user already joined the group it will show the "Joined" button, else the user can click "Join" button to join the group
 					if($ifJoin == false)
 					{
 						echo "<td>{$group->group_discription}</td><td class='text-center'><a class='btn btn-sm btn-success' href='add_public_group_member.php?user_id={$session->user_id}&group_id={$group->id}' role='button'>Join</a></td></tr>";
@@ -190,9 +197,6 @@ if(isset($search_string) && empty($message)){
 		}
   	?>
   	</div>
-  	
-  	
-  	
   	
   	
     </div> <!-- /container -->

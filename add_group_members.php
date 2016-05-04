@@ -13,7 +13,7 @@ if(!$session->is_logged_in()){ redirect_to("login.php"); }
 // Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 
-// If the id field is empty return the user to profile page.
+// If the ID field is empty return the user to profile page.
 if (empty($_GET['id'])){
     $session->message("No group ID was provided.");
     redirect_to('profile.php');
@@ -157,7 +157,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $group_member_id_array = $group->get_member_id_array();
 		
 		/**
-		 * Check if there are any existing users, if there are then print their names if they are not currently in the group 
+		 * Check if there are any existing users, and if they are not currently in the group, print their names 
 		 * 
 		 */
         if(!empty($users)){
