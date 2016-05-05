@@ -11,11 +11,11 @@ require_once(LIB_PATH.DS."database.php");
 class Group extends DatabaseObject {
    	protected static $table_name = "wb_group"; /*!<Name of table storing group data in database*/
     protected static $db_fields = array('id','group_name','group_owner','group_status','group_activity','group_discription'); /*!< An array keeping track of all member variables of group.php*/
-    public $id; /*!< A 11-bit INT variable keeping track of group ID*/
-    public $group_name; /*!< A 255-length VARCHAR variable keeping track of groups name*/
-    public $group_owner; /*!< A 11-bit INT variable keeping track of group owner (wb_users) ID*/
-    public $group_status; /*!< A 255-length VARCHAR variable keeping track of groups status*/
-    public $group_activity; /*!< A 150-length VARCHAR variable keeping track of groups activity*/
+    public $id; /*!< A 11 digits INT keeping track of group ID*/
+    public $group_name; /*!< A 255 characters VARCHAR keeping track of groups name*/
+    public $group_owner; /*!< A 11 digits INT keeping track of group owner (wb_users) ID*/
+    public $group_status; /*!< A 255 characters VARCHAR keeping track of groups status*/
+    public $group_activity; /*!< A 150 characters VARCHAR keeping track of groups activity*/
     public $group_discription; /*!< A text variable keeping track of groups description*/
     
     /**
