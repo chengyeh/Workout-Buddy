@@ -1,10 +1,21 @@
 <?php
+/*
+ *	@file list_exercise.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Display all the types of excersices in the database.
+*			  Note: This is a test page used to list all the exercises in the datbase
+*				    not used in web app functionality.
+*/
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 $number_messages=0;
 
+// Include initialization file
 require_once('includes/initialize.php');
+
+//If user is not logon redirect to login page
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object
@@ -16,20 +27,23 @@ $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 //recodrs per page
 $per_page = 10;
 
-//total record count 
-//$total_count =  Exercises::count_all();
-
+//Get the count of excerices from database
 $sql = "SELECT COUNT(*) FROM wb_exercise_type";
 $result_set = $database->query($sql);
 $row = $database->fetch_array($result_set);
+
+//Get the row count
 $total_count = array_shift($row);
 
+//Initialize pagination
 $pagination = new Pagination($page, $per_page, $total_count);
 
+//Build the sql query for pagination
 $sql = "SELECT * FROM wb_exercise_type ";
 $sql .= "LIMIT {$per_page} ";
 $sql .= "OFFSET {$pagination->offset()}";
-		
+
+//Query the exercises		
 $exercises = $database->query($sql);
 
 ?>
@@ -132,16 +146,18 @@ $exercises = $database->query($sql);
   	<h2>List Exercise</h2>
  <div>
   	<?php 
-	 while ($row = mysqli_fetch_array($exercises)) 
- {
-     echo $row['name']. "<br/>";
- }
- ?>
+  	//Display the results
+	while ($row = mysqli_fetch_array($exercises)) 
+	{
+	    echo $row['name']. "<br/>";
+	}
+	?>
  </div>
  
  <div>
  
  <?php
+ //Dispaly the pagination bar
  if($pagination->total_pages() > 1) {
  
  	if($pagination->has_previous_page()) {

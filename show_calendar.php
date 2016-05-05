@@ -1,10 +1,20 @@
 <?php
+/*
+ *	@file show_calendar.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Display calendar.
+*/
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 $number_messages=0;
 
+//Include initialization file
 require_once('includes/initialize.php');
+
+//If user is not logon redirect to login page
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object

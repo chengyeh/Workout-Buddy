@@ -1,20 +1,29 @@
 <?php
+/*
+ *	@file show_calendar_event.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Sign up user to site.
+*/
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+//Include initialization file
 require_once('includes/initialize.php');
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-   
-  $errors = array();
+  	//Keep track of errors 
+  	$errors = array();
 
-  // Trim all the incoming data:
+  	// Trim all the incoming data:
 	$trimmed = array_map('trim', $_POST);
 
 	// Assume invalid values:
 	$fn = $ln = $e = $p = FALSE;
-    	// Check for a first name:
+    
+    // Check for a first name:
 	if (preg_match ('/^[A-Z \'.-]{2,20}$/i', $trimmed['first_name'])) {
 		$fn = $database->escape_value($trimmed['first_name']);
 	} else {
@@ -59,19 +68,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$a = md5(uniqid(rand(), true));
 
 			// Add the user to the database:
+			//create user object and assign class variables
 			$user = new User();
-      $user->hashed_password = sha1($p);
-      $user->first_name = $fn;
-      $user->last_name = $ln;
-      $user->email = $e;
-      $user->active = 1;
-      $user->activation_code = $a;
-      $user->registration_date = date("Y-m-d H:i:s");
-      $user->create();
+		    $user->hashed_password = sha1($p);
+		    $user->first_name = $fn;
+		    $user->last_name = $ln;
+		    $user->email = $e;
+		    $user->active = 1;
+		    $user->activation_code = $a;
+		    $user->registration_date = date("Y-m-d H:i:s");
+
+		    //create user
+		    $user->create();
 
 			if ($database->affected_rows() == 1) { // If it ran OK.
 				
-// 				// Send the email:
+// 				// Send the email: Is not used due security concerns
 // 				// mostly the same variables as before
 // 				// ($to_name & $from_name are new, $headers was omitted)
 // 				$to_name = $fn;
