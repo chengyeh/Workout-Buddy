@@ -35,7 +35,6 @@ require_once(LIB_PATH.DS."group_members.php");
 require_once(LIB_PATH.DS."message.php");
 require_once(LIB_PATH.DS."challenge.php");
 require_once(LIB_PATH.DS."exercises.php");
-require_once(LIB_PATH.DS."goals.php");
 require_once(LIB_PATH.DS."routine.php");
 require_once(LIB_PATH.DS."log_category.php");
 require_once(LIB_PATH.DS."set.php");
