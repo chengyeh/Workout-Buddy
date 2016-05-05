@@ -42,7 +42,7 @@ if(!$rout_show){
 
     <title><?php echo $rout_show->name; ?></title>
 
-    <link href="css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="dist/css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
