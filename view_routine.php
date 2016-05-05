@@ -1,7 +1,9 @@
 <?php
 /**
- * When User clicks on a routine, all exercise of the routine and the sets are queried from he database and printed in a table.
- *
+ * View routine and all fields associated with it, including exercises in routine
+ *@pre: user session
+ *@post: Database access
+ *@return: exercise id, routine id to view exercise and set
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -37,10 +39,10 @@ if(!$rout_show){
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
-    
+
     <title><?php echo $rout_show->name; ?></title>
-    
-    <link href="dist/css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
+
+    <link href="css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
 
     <!-- Bootstrap core CSS -->
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
@@ -124,6 +126,7 @@ if(!$rout_show){
 
         <h2>Routine Info</h2>
         <?php
+        	//Display Routine information and fields
             echo "<p>Name: ". $rout_show->name . "<br/>";
             echo "<p>Description: ". $rout_show->description . "<br/>";
             echo "<p>This workout is done on: "."<br>";
@@ -155,14 +158,14 @@ if(!$rout_show){
             {
                 echo "Sunday"."<br>";
             }
-            
+
             $routine_exercises = $rout_show->get_exercises();
-            
+
         //Restrict only the routine owner can edit and start routine
         if($user->id == $rout_show->user_id)
         {
-        ?> 
-            <p><a class='btn btn-default' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
+        ?>
+            <p><a class='btn btn-info' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
             <div class="boxContainerDiv">
                 <div>
                     <br>
@@ -175,23 +178,23 @@ if(!$rout_show){
                                 $sets_length = count($sets);
                                 $set_number = 1;
                                 $exercise_type = Types::find_by_id($exercise->type);
-                
+
                                 echo "<tr><th class='tableName' colspan='10'><a href='view_exercises.php?id={$exercise_number->id}&rout_id={$rout_show->id}'>$exercise_type->name</a></th></tr>";
                                 echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />SETS</td><td class='tableReps'>";
                                 foreach($sets as $set)
                                 {
-                                    if($set_number != $sets_length) 
+                                    if($set_number != $sets_length)
                                     {
                                         if($set->reps <= 0)
                                         {
                                             echo "--,";
                                         }
-                                        else 
+                                        else
                                         {
                                             echo "{$set->reps},";
                                         }
                                     }
-                                    else 
+                                    else
                                     {
                                         if($set->reps <= 0)
                                         {
@@ -199,28 +202,28 @@ if(!$rout_show){
                                         }
                                         else
                                         {
-                                            echo "{$set->reps}<br />REPS</td>"; 
+                                            echo "{$set->reps}<br />REPS</td>";
                                         }
-                                    } 
+                                    }
                                     $set_number++;
                                 }
-                                
+
                                 echo "<td class='tableReps'>";
                                 $set_number = 1;
                                 foreach($sets as $set)
                                 {
-                                    if($set_number != $sets_length) 
+                                    if($set_number != $sets_length)
                                     {
                                         if($set->weight <= 0)
                                         {
                                             echo "--,";
                                         }
-                                        else 
+                                        else
                                         {
                                             echo "{$set->weight},";
-                                        }                                   
+                                        }
                                     }
-                                    else 
+                                    else
                                     {
                                         if($set->weight <= 0)
                                         {
@@ -229,30 +232,30 @@ if(!$rout_show){
                                         else
                                         {
                                             echo "{$set->weight}<br />LBS</td>";
-                                        }                                  
-                                    } 
-                                    $set_number++; 
+                                        }
+                                    }
+                                    $set_number++;
                                 }
-                                echo "</tr>";   
-                            }   
+                                echo "</tr>";
+                            }
                         ?>
                     </table>
                 </div>
             </div>
-            
+
             <table class='table'>
                 <tr>
-                    <td><a class='btn btn-default' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
+                    <td><a class='btn btn-success' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
 					<?php
 						if((count($routine_exercises)) > 0)
 						{
-							echo "<td class='text-right'><a class='btn btn-default' href='start_routine.php?id={$rout_show->id}' role='button'>Start Routine</a></td>";
+							echo "<td class='text-right'><a class='btn btn-danger' href='start_routine.php?id={$rout_show->id}' role='button'>Start Routine</a></td>";
 						}
-					?>                   
+					?>
                 </tr>
-            </table> 
-        <?php 
-        } 
+            </table>
+        <?php
+        }
         else
         {
         ?>
@@ -268,23 +271,23 @@ if(!$rout_show){
                                 $sets_length = count($sets);
                                 $set_number = 1;
                                 $exercise_type = Types::find_by_id($exercise->type);
-                
+
                                 echo "<tr><th class='tableName' colspan='10'>$exercise_type->name</th></tr>";
                                 echo "<tr class='exerciseRow'><td class='tableImage'><img src='images/{$exercise_type->image_filename}' width='100%' height='100%' /></td><td class='tableSets'>{$sets_length}<br />SETS</td><td class='tableReps'>";
                                 foreach($sets as $set)
                                 {
-                                    if($set_number != $sets_length) 
+                                    if($set_number != $sets_length)
                                     {
                                         if($set->reps <= 0)
                                         {
                                             echo "--,";
                                         }
-                                        else 
+                                        else
                                         {
                                             echo "{$set->reps},";
                                         }
                                     }
-                                    else 
+                                    else
                                     {
                                         if($set->reps <= 0)
                                         {
@@ -292,28 +295,28 @@ if(!$rout_show){
                                         }
                                         else
                                         {
-                                            echo "{$set->reps}<br />REPS</td>"; 
+                                            echo "{$set->reps}<br />REPS</td>";
                                         }
-                                    } 
+                                    }
                                     $set_number++;
                                 }
-                                
+
                                 echo "<td class='tableReps'>";
                                 $set_number = 1;
                                 foreach($sets as $set)
                                 {
-                                    if($set_number != $sets_length) 
+                                    if($set_number != $sets_length)
                                     {
                                         if($set->weight <= 0)
                                         {
                                             echo "--,";
                                         }
-                                        else 
+                                        else
                                         {
                                             echo "{$set->weight},";
-                                        }                                   
+                                        }
                                     }
-                                    else 
+                                    else
                                     {
                                         if($set->weight <= 0)
                                         {
@@ -322,17 +325,17 @@ if(!$rout_show){
                                         else
                                         {
                                             echo "{$set->weight}<br />LBS</td>";
-                                        }                                  
-                                    } 
-                                    $set_number++; 
+                                        }
+                                    }
+                                    $set_number++;
                                 }
-                                echo "</tr>";   
-                            }   
+                                echo "</tr>";
+                            }
                         ?>
                     </table>
                 </div>
-            </div>  <?php } ?>            
-        
+            </div>  <?php } ?>
+
 
    </div> <!-- /container -->
 
