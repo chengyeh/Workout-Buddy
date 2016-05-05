@@ -1,5 +1,11 @@
 
 <?php
+/**
+ * When User is in message menu to view messages received
+ *@pre: user session, message sent from another user
+ *@post: none
+ *@return: trigger to for message viewed icon, and delete marker
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 require_once('includes/initialize.php');
@@ -10,6 +16,7 @@ $database->query("UPDATE `wb_messages` SET `read_message`=1 WHERE `receiver`=".$
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   $errors = array();
+  	//Code used to delete messages
     if(!empty($_POST['delete_message']))
     {
         foreach($_POST['delete_message'] as $message_id)
@@ -118,9 +125,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <h2>Inbox</h2>
 
 	<?php
+
+		//Creates message array from receive messages
 		$message_array=$user->receive_messages();
 		$a=1;
 
+		//Form to view messages and send delete trigger and icon trigger
 		echo "<form action='#' method='POST'>";
 		if(($message_array->num_rows) > 0)
 		{
@@ -139,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 				echo "<td class='text-center'><input type='checkbox' name='delete_message[]' value='" . $message1["id"] . "'></td>";
 				echo "</tr>";
 			}
-			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-default' name ='submit' value='Submit'></td></tr>";
+			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-info' name ='submit' value='Delete'></td></tr>";
 			echo "</table>";
 		}
 		echo "</form>";

@@ -1,7 +1,9 @@
 <?php
 /**
- * When User clicks on a routine, all exercise of the routine and the sets are queried from he database and printed in a table.
- *
+ * When user clicks view log in navigation bar to view log history for individual logs
+ *@pre: user session, previous log object created
+ *@post: none
+ *@return: none
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -115,14 +117,19 @@ $log_obj = Category::find_by_id($_GET['id']);
 
     <div class="container">
 		<?php
+			//Creates exercise object for log to obtain name
 			$exercise_name=Exercises::find_by_id($log_obj->exercise_id);
+			//Creates exercise type object to obtain type name for exercise
 			$type_name=Types::find_by_id($exercise_name->type);
 		?>
 
         <h2>Log History for <?php echo $type_name->name ?> </h2>
        	<?php
+       		//Create log array for log object and exercises associated with it
        		$log_ex_array=$log_obj->log_exercises1();
+       		//$a is used to increment in table
        		$a=1;
+       		//Creates table that shows log statistics and target log statistics
        		echo "<table class='table'><tr><th>Set</th><th>Actual Reps</th><th>Target Reps</th><th>Actual Weight</th><th>Target Weight</th>";
 			while($log_ex_disp = $log_ex_array->fetch_assoc())
 			{
@@ -133,21 +140,13 @@ $log_obj = Category::find_by_id($_GET['id']);
 				while($log_array = $log_transfer->fetch_assoc())
 				{
 					$set_array=Set::find_by_id($log_array['id']);
-					//echo $set_array->id;
-					//echo "<br>";
-					//echo $set_array->reps;
+
 					$actual_reps=$set_array->reps;
-					//echo "<br>";
-					//echo $set_array->weight;
+
 					$actual_weight=$set_array->weight;
-					//echo "<br>";
+
 				}
 
-					/*
-					echo $actual_reps;
-					echo "<br>";
-					echo $actual_weight;
-					echo "<br>";*/
 				echo "<tr>";
 				echo "<td>" . "<b>".$a. "</td>";
 
@@ -158,35 +157,10 @@ $log_obj = Category::find_by_id($_GET['id']);
 
 
 				$a=$a+1;
-
-				//echo "<td>" . $type_log->name."</td>";
-
-
 				echo "</tr>";
 			}
 			echo "</table>";
 
-
-       	/*
-       		//echo $user->id;
-       		$a=1;
-       		//$log_array=$user->display_log();
-       		echo "<table class='table'><tr><th>Date</th><th>Time</th><th>Routine</th><th>Exercise</th><th>Date</th><th class='text-center'>Delete</th></tr>";
-
-				$routine_name=Routine::find_by_id($log_obj->routine_id);
-				$exercise_obj=Exercises::find_by_id($log_obj->exercise_id);
-				$type_log=Types::find_by_id($exercise_obj->type);
-				echo "<tr>";
-
-				$a=$a+1;
-
-				echo "<td>" . $routine_name->name."</td>";
-				echo "<td>" . $type_log->name."</td>";
-				echo "</tr>";
-
-			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-default' name ='submit' value='Go Back'></td></tr>";
-			echo "</table>";
-		*/
        	?>
 
 

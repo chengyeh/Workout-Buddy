@@ -3,8 +3,10 @@
 //=========== SET TIMEZONE =======================
 date_default_timezone_set('America/Denver');
 /**
- * When User clicks on a routine, all exercise of the routine and the sets are queried from he database and printed in a table.
- *
+ *User can view log and the different exercises they did in this interface, also includes rate analysis
+ *@pre: user session
+ *@post: none
+ *@return: log id, exercise id, and type id
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -120,8 +122,8 @@ $user = User::find_by_id($session->user_id);
 
         <h2>Log History</h2>
        	<?php
-       		//echo $user->id;
-       		$a=1;
+
+       		//Array used to display log exercises and display in a table
        		$log_array=$user->display_log();
        		echo "<table class='table'><tr><th>Exercise</th><th>Routine</th><th>Date</th><th>Time</th>";
 			while($log_disp = $log_array->fetch_assoc())
@@ -131,10 +133,6 @@ $user = User::find_by_id($session->user_id);
 				$exercise_log=Exercises::find_by_id($log_disp['exercise_id']);
 				$type_log=Types::find_by_id($exercise_log->type);
 				echo "<tr>";
-
-				$a=$a+1;
-
-				//echo "<td>" . $type_log->name."</td>";
 				echo "<td><a href='view_exercise_log.php?id={$log_disp['id']}'>".$type_log->name."</a></td>";
 				echo "<td>" . $routine_log->name."</td>";
 				echo "<td>" . $log_disp['Date'] . "</td>";
@@ -146,7 +144,7 @@ $user = User::find_by_id($session->user_id);
        	?>
 
 
-      <!---Hsien's mess----------------------------------------------------------------------------------------------------------------------------->
+
       <h2>Rate Analysis</h2>
       <?php
       global $database;
@@ -219,7 +217,7 @@ $user = User::find_by_id($session->user_id);
 
       }
        ?>
-      <!---End of Hsien's mess------------------------------------------------------------------------------------------------------------------------->
+
    </div> <!-- /container -->
 
 

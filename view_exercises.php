@@ -1,7 +1,9 @@
 <?php
 /**
- * When User clicks on an exercise, display number of sets, reps, and weight of it 
- *
+ * When user clicks sent in message menu to view messages sent to other users
+ *@pre: user session, message sent to another user
+ *@post: none
+ *@return: Delete marker for database
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -18,14 +20,15 @@ if (empty($_GET['id'])){
 	redirect_to('profile.php');
 }
 
-//Create Exercise object from id in the URL
+//Create Routine object from id in the URL
 $rout_obj = Routine::find_by_id($_GET['rout_id']);
+//Create Exercise object from id in URL
 $ex_obj = Exercises::find_by_id($_GET['id']);
 if(!$rout_obj){
 	$session->message("Unable to be find group.");
 	redirect_to('profile.php');
 }
-
+//Create Types object from id in URL
 $ex_type_obj = Types::find_by_id($ex_obj->type);
 
 ?>
@@ -124,27 +127,29 @@ $ex_type_obj = Types::find_by_id($ex_obj->type);
     <div class="container">
 
     	<h2>Exercise Info</h2>
+
     	<?php
+    		//Displays features of the exercise and set information
+    		echo "<strong>".$ex_type_obj->name."</strong>";
+    		echo "<br>";
+    		//Obtains an image of the exercise from the database
+    		echo "<img src='images/{$ex_type_obj->image_filename}' width='40%' height='30%'>";
+    		echo "<br>";
+    		//Array used to obtain all exercise sets and display them with foreach loop
     		$full_exercise_array=$user->find_all_exercises($ex_obj->id,$rout_obj->id);
-    		$a=1;
     		foreach ($full_exercise_array as $exercise_number)
 			 {
-			 		//echo $exercise_number->id;
+
 			 		$display_ex = Set::find_by_id($exercise_number->id);
-					echo "Set ".$a.": ";
-					//echo $display_ex->id."   ";
-					echo "Order: ".$display_ex->order."   ";
-					echo "Reps: ".$display_ex->reps."   ";
-					echo "Weight: ".$display_ex->weight."   ";
-					$a=$a+1;
+					echo "<strong>Set: </strong>".$display_ex->order."   ";
+					echo "<strong>Reps: </strong>".$display_ex->reps."   ";
+					echo "<strong>Weight: </strong>".$display_ex->weight."   ";
 					echo "<br>";
 
 			 }
-			 //edit_exercise.php?rout_id=".$a."&ex_id=".$q
-			 //echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$rout_show->id' role='button'>Edit Exercise</a></p>"
-
-			 echo "<p><a class='btn btn-default' href='edit_exercise.php?rout_id=$rout_obj->id&ex_id=$ex_obj->id' role='button'>Edit Exercise</a></p>";
-    		 echo "<p><a class='btn btn-default' href='view_routine.php?id=$rout_obj->id' role='button'>Back to Routine</a></p>";
+			 echo "<br>";
+			 echo "<p><a class='btn btn-info' href='edit_exercise.php?rout_id=$rout_obj->id&ex_id=$ex_obj->id' role='button'>Edit Exercise</a></p>";
+    		 echo "<p><a class='btn btn-danger' href='view_routine.php?id=$rout_obj->id' role='button'>Back to Routine</a></p>";
     	?>
 
 

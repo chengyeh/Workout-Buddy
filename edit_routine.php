@@ -1,4 +1,10 @@
 <?php
+/**
+ * When User clicks on Edit Routine in the View Profile page, and changes fields for routine specifications
+ *@pre: user session, pre-made routine object
+ *@post: Database access, same pre-made routine id
+ *@return: modified or edited routine object queried in database
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -28,16 +34,17 @@ if(!$rout){
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $errors = array();
-   
+
+   	//Delete wb_even_calendar fro editing
     $database->query("DELETE FROM wb_event_calendar WHERE user_id='{$user->id}' AND name='{$rout->name}'");
-    
+
     //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
-   
-    // Add routine to database:
+
+    // Edit routine to database:
     $rout->name = $database->escape_value($trimmed['routine_name']);
     $rout->description = $database->escape_value($trimmed['routine_description']);
-   
+
     $monday=isset($_POST['mon']);
     if(empty($monday))
     {
@@ -47,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $rout->mon = 1;
     }
-   
+
     $tuesday=isset($_POST['tues']);
     if(empty($tuesday))
     {
@@ -57,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $rout->tues = 1;
     }
-   
+
     $wednesday=isset($_POST['wed']);
     if(empty($wednesday))
     {
@@ -67,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $rout->wed = 1;
     }
-   
+
     $thursday=isset($_POST['thurs']);
     if(empty($thursday))
     {
@@ -77,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $rout->thurs = 1;
     }
-   
+
     $friday=isset($_POST['fri']);
     if(empty($friday))
     {
@@ -87,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $rout->fri = 1;
     }
-   
+
     $saturday=isset($_POST['sat']);
     if(empty($saturday))
     {
@@ -97,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $rout->sat = 1;
     }
-   
+
     $sunday=isset($_POST['sun']);
     if(empty($sunday))
     {
@@ -107,17 +114,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $rout->sun = 1;
     }
-   
+
     $rout->start_date = $database->escape_value($trimmed['start_date']);
     $rout->end_date = $database->escape_value($trimmed['end_date']);
-   
+
     $rout->update();
-               
+
     if ($database->affected_rows() == 1) {
         //Routine created
         //Add calendar events
 		for ($i = strtotime($rout->start_date); $i <= strtotime($rout->end_date); $i = strtotime('+1 day', $i)) {
-			
+
 			if ($rout->mon==1 && date('N', $i) == 1){
 				$event = new Event_Calendar();
 				$event->user_id = $rout->user_id;
@@ -126,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		      	$event->event_date= date('Y-m-d', $i);
 		      	$event->create();
 			}
-				
+
 			if ($rout->tues==1 && date('N', $i) == 2){
 				$event = new Event_Calendar();
 				$event->user_id = $rout->user_id;
@@ -135,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$event->event_date= date('Y-m-d', $i);
 				$event->create();
 			}
-			
+
 			if ($rout->wed==1 && date('N', $i) == 3){
 				$event = new Event_Calendar();
 				$event->user_id = $rout->user_id;
@@ -144,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$event->event_date= date('Y-m-d', $i);
 				$event->create();
 			}
-			
+
 			if ($rout->thurs==1 && date('N', $i) == 4){
 				$event = new Event_Calendar();
 				$event->user_id = $rout->user_id;
@@ -153,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$event->event_date= date('Y-m-d', $i);
 				$event->create();
 			}
-			
+
 			if ($rout->fri==1 && date('N', $i) == 5){
 				$event = new Event_Calendar();
 				$event->user_id = $rout->user_id;
@@ -162,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$event->event_date= date('Y-m-d', $i);
 				$event->create();
 			}
-			
+
 			if ($rout->sat==1 && date('N', $i) == 6){
 				$event = new Event_Calendar();
 				$event->user_id = $rout->user_id;
@@ -171,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$event->event_date= date('Y-m-d', $i);
 				$event->create();
 			}
-			
+
 			if ($rout->sun==1 && date('N', $i) == 7){
 				$event = new Event_Calendar();
 				$event->user_id = $rout->user_id;
@@ -220,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   </head>
 
@@ -311,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </label>
         </div>
         <div class="checkbox">
-            <label>   
+            <label>
                 <input type="checkbox" name="tues" value="0" <?php if($rout->tues == 1) echo "checked"; ?>>
                 Tuesday
             </label>
@@ -339,13 +346,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 Saturday
             </label>
         </div>
-       
+
         </div>
         </div>
-       
+
         <div class="panel panel-default">
       <div class="panel-body">
-     
+
         <div class="form-inline">
         <div class="form-group">
             <label for="exampleInputPassword1">Start Date</label>
@@ -365,10 +372,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         </div>
         </div>
         </div>
-       
-        <button type="submit" id="add_routine" class="btn btn-default">Update Routine</button>
+
+        <button type="submit" id="add_routine" class="btn btn-success">Update Routine</button>
     </form>
-    
+
     </div> <!-- /container -->
 
 
@@ -382,7 +389,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	 
+
 	 <script>
 	  $(function() {
 	    $( "#datepicker1" ).datepicker({
@@ -394,15 +401,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	              dateFormat: "yy-mm-dd"
 	        });
 	    });
-	 
+
 	  $('#add_routine').click(function() {
 	      checked = $("input[type=checkbox]:checked").length;
-	
+
 	      if(!checked) {
 	        alert("You must check at least one checkbox.");
 	        return false;
 	      }
-	
+
 	  });
 	 </script>
   </body>

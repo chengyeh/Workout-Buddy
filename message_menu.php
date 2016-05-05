@@ -1,4 +1,10 @@
 <?php
+/**
+ * Menu used to create access to inbox, sent, and send message (find user)
+ *@pre: user session
+ *@post: none
+ *@return: Redirect to inbox, sent, or find user
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -105,12 +111,12 @@ $user = User::find_by_id($session->user_id);
     <!-- Main component for a primary marketing message or call to action -->
   	<h1>Message Menu</h1>
   	<hr>
-  	
-  	<p><a class="btn btn-default" href="inbox.php" role="button">Inbox</a></p>
+
+  	<p><a class="btn btn-info" href="inbox.php" role="button">Inbox</a></p>
     <hr>
-	<p><a class="btn btn-default" href="sent.php" role="button">Sent</a></p>
+	<p><a class="btn btn-danger" href="sent.php" role="button">Sent</a></p>
     <hr>
-    <p><a class="btn btn-default" href="find_user.php" role="button">Find User</a></p>
+    <p><a class="btn btn-warning" href="find_user.php" role="button">Find User</a></p>
 
     </div> <!-- /container -->
 
@@ -125,5 +131,3 @@ $user = User::find_by_id($session->user_id);
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
-
-
