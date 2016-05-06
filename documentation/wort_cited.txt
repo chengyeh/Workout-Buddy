@@ -1,6 +1,6 @@
 Dilesh
 php code based on course take at lynda.com
-PHP with MySQL Essential Training with Kevin Skoglund 
+PHP with MySQL Essential Training with Kevin Skoglund
 http://www.lynda.com/
 
 free logo site for logo
@@ -10,7 +10,7 @@ styling with boothstrap and free themes from bootstrap
 http://getbootstrap.com/
 
 Calendar functionality
-Php Calendar 
+Php Calendar
 https://www.youtube.com/playlist?list=PLC3FA336653950084
 
 Display date picker widget
@@ -25,3 +25,8 @@ https://github.com/jonthornton/jquery-timepicker
 
 excersie images and names of exercises
 workoutlabs.com
+
+Paul
+Time and Date functions based on:
+https://www.youtube.com/watch?v=0W7dUSNrqZQ
+http://php.net/manual/en/timezones.php
