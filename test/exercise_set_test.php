@@ -53,14 +53,14 @@ include('header.html');
 
 		if($pass_trigger==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 
@@ -112,14 +112,14 @@ include('header.html');
 
 		if($pass_trigger==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 
@@ -169,11 +169,11 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<strong>Passed</strong>";
+				echo "<strong>PASSED</strong>";
 			}
 			else
 			{
-				echo "<strong>Failed</strong>";
+				echo "<strong>FAILED</strong>";
 			}
 
 	</xmp>
@@ -215,14 +215,14 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -267,14 +267,14 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -315,14 +315,14 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -373,14 +373,14 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -424,14 +424,14 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -485,14 +485,14 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -540,14 +540,14 @@ include('header.html');
 
 			if($pass_trigger==1)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -585,14 +585,14 @@ include('header.html');
 
 			if($del_track==0)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 
@@ -626,14 +626,14 @@ include('header.html');
 
 			if($del_track==0)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 			}
 			else
 			{
-				echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+				echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 			}
 	?>

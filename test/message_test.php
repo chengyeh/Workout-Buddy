@@ -78,14 +78,14 @@ include('header.html');
 		}
 		if($pass_trigger==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 
@@ -141,14 +141,14 @@ include('header.html');
 		}
 		if($pass_trigger==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 
@@ -198,14 +198,14 @@ include('header.html');
 		}
 		if($pass_trigger==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 
@@ -249,14 +249,14 @@ include('header.html');
 		}
 		if($pass_trigger==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 	?>
@@ -290,14 +290,14 @@ include('header.html');
 
 		if(($del_rec_trans)==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 
@@ -330,14 +330,14 @@ include('header.html');
 
 		if(($del_rec_trans)==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 	?>
@@ -369,14 +369,14 @@ include('header.html');
 		echo "<br>";
 		if(($del_sent_trans)==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 
@@ -412,14 +412,14 @@ include('header.html');
 
 		if(($del_sent_trans)==1)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-				echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+				echo "<strong>PASSED</strong>";
 				echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-				echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+				echo "<strong>FAILED</strong>";
 				echo "</div>";
 		}
 	?>
@@ -442,14 +442,14 @@ include('header.html');
 					$set_array=Message::find_by_id($log_array['id']);
 					if(($set_array->read_message)==1)
 					{
-						echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+						echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 					}
 					else
 					{
-						echo "<div class='well' style='background-color: #ff0000'>";
-						echo "<strong>Failed</strong>";
+						echo "<div class='well' style='background-color: #ffd6cc'>";
+						echo "<strong>FAILED</strong>";
 						echo "</div>";
 					}
 				}
@@ -471,14 +471,14 @@ include('header.html');
 					$set_array=Message::find_by_id($log_array['id']);
 					if(($set_array->read_message)==1)
 					{
-						echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+						echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 					}
 					else
 					{
-						echo "<div class='well' style='background-color: #ff0000'>";
-						echo "<strong>Failed</strong>";
+						echo "<div class='well' style='background-color: #ffd6cc'>";
+						echo "<strong>FAILED</strong>";
 						echo "</div>";
 					}
 				}

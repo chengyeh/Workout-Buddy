@@ -49,14 +49,14 @@ include('header.html');
 
 			if($a==285)
 		{
-			echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+			echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-						echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+						echo "<strong>FAILED</strong>";
 						echo "</div>";
 		}
 
@@ -88,14 +88,14 @@ include('header.html');
 			$test_name="Barbell Deadlifts";
 			if(strcasecmp($echo_display_name,$test_name)==0)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-						echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+						echo "<strong>FAILED</strong>";
 						echo "</div>";
 		}
 	</xmp>
@@ -127,14 +127,14 @@ include('header.html');
 			if(strcasecmp($echo_display_name,$test_name)==0)
 
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 		}
 		else
 		{
-			echo "<div class='well' style='background-color: #ff0000'>";
-						echo "<strong>Failed</strong>";
+			echo "<div class='well' style='background-color: #ffd6cc'>";
+						echo "<strong>FAILED</strong>";
 						echo "</div>";
 		}
 
@@ -182,14 +182,14 @@ include('header.html');
 
 					if($test_array->routine_id==$rout_ex->id)
 					{
-						echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+						echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 					}
 					else
 					{
-						echo "<div class='well' style='background-color: #ff0000'>";
-									echo "<strong>Failed</strong>";
+						echo "<div class='well' style='background-color: #ffd6cc'>";
+									echo "<strong>FAILED</strong>";
 									echo "</div>";
 					}
 
@@ -228,14 +228,14 @@ include('header.html');
 
 					if($test_array->routine_id==$rout_ex->id)
 					{
-						echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+						echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 					}
 					else
 					{
-						echo "<div class='well' style='background-color: #ff0000'>";
-									echo "<strong>Failed</strong>";
+						echo "<div class='well' style='background-color: #ffd6cc'>";
+									echo "<strong>FAILED</strong>";
 									echo "</div>";
 					}
 
@@ -266,14 +266,14 @@ include('header.html');
 			}
 			if($a == 0)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 					}
 					else
 					{
-						echo "<div class='well' style='background-color: #ff0000'>";
-									echo "<strong>Failed</strong>";
+						echo "<div class='well' style='background-color: #ffd6cc'>";
+									echo "<strong>FAILED</strong>";
 									echo "</div>";
 					}
 	</xmp>
@@ -296,14 +296,14 @@ include('header.html');
 			}
 			if($a == 0)
 			{
-				echo "<div class='well' style='background-color: #00ff00'>";
-						echo "<strong>Passed</strong>";
+				echo "<div class='well' style='background-color: #b3ffcc'>";
+						echo "<strong>PASSED</strong>";
 						echo "</div>";
 					}
 					else
 					{
-						echo "<div class='well' style='background-color: #ff0000'>";
-									echo "<strong>Failed</strong>";
+						echo "<div class='well' style='background-color: #ffd6cc'>";
+									echo "<strong>FAILED</strong>";
 									echo "</div>";
 					}
 
