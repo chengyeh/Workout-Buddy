@@ -9,17 +9,17 @@ require_once(LIB_PATH.DS."database.php");
 class Routine extends DatabaseObject {
    	protected static $table_name = "wb_routine";/*!<Name of table storing exercise routine data in database*/
     protected static $db_fields = array('id','user_id','name','description','mon', 'tues','wed','thurs','fri','sat','sun','start_date','end_date');/*!< An array keeping track of all member variables of routine.php*/
-    public $id;/*!< A 11-bit INT variable keeping track of Routine ID*/
-    public $user_id;/*!< A 11-bit INT variable keeping track of Routine user_id*/
-    public $name;/*!< A 11-bit INT variable keeping track of Routine name*/
-    public $description;/*!< A 11-bit INT variable keeping track of Routine description*/
-    public $mon;/*!< A 11-bit INT variable keeping track of Monday status for a Routine*/
-    public $tues;/*!< A 11-bit INT variable keeping track of Tuesday status for a Routine*/
-    public $wed;/*!< A 11-bit INT variable keeping track of Wednesday status for a Routine*/
-    public $thurs;/*!< A 11-bit INT variable keeping track of Thursday status for a Routine*/
-    public $fri;/*!< A 11-bit INT variable keeping track of Friday status for a Routine*/
-    public $sat;/*!< A 11-bit INT variable keeping track of Saturday status for a Routine*/
-    public $sun;/*!< A 11-bit INT variable keeping track of Sunday status for a Routine*/
+    public $id;/*!< A variable keeping track of Routine ID*/
+    public $user_id;/*!< A variable keeping track of Routine user_id*/
+    public $name;/*!< A variable keeping track of Routine name*/
+    public $description;/*!< A variable keeping track of Routine description*/
+    public $mon;/*!< A variable keeping track of Monday status for a Routine*/
+    public $tues;/*!< A variable keeping track of Tuesday status for a Routine*/
+    public $wed;/*!< A variable keeping track of Wednesday status for a Routine*/
+    public $thurs;/*!< A variable keeping track of Thursday status for a Routine*/
+    public $fri;/*!< A variable keeping track of Friday status for a Routine*/
+    public $sat;/*!< A variable keeping track of Saturday status for a Routine*/
+    public $sun;/*!< A variable keeping track of Sunday status for a Routine*/
 	public $start_date;/*!< A datetime field keeping track of the start date of a Routine*/
     public $end_date;/*!< A datetime field keeping track of the end date of a Routine*/
 

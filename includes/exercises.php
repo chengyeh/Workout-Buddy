@@ -9,9 +9,9 @@ require_once(LIB_PATH.DS."database.php");
 class Exercises extends DatabaseObject {
     protected static $table_name = "wb_exercise";/*!<Name of table storing exercise information data in database*/
     protected static $db_fields = array('id','routine_id','type');/*!< An array keeping track of all member variables of exercises.php*/
-    public $id;/*!< A 11-bit INT variable keeping track of an exercises id*/
-    public $routine_id;/*!< A 11-bit INT variable keeping track of a routine id associated with an exercise*/
-    public $type;/*!< A 11-bit INT variable keeping track of an exercise type*/
+    public $id;/*!< A variable keeping track of an exercises id*/
+    public $routine_id;/*!< A variable keeping track of a routine id associated with an exercise*/
+    public $type;/*!< A variable keeping track of an exercise type*/
 
 
      /**
