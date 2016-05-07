@@ -20,7 +20,9 @@ include('header.html');
 
 
 <p><b>This is the code in the class that query the database for the top 3 members.</b></p>
-<div class="well">
+
+<h3 class="expand sub-header">Test for challenge sets (press me to see):</h3>
+<div class="well" style="display:none;">
 <xmp>
 
 
@@ -58,8 +60,7 @@ include('header.html');
   </xmp>
 </div>
 
-<p>Result:</p>
-<div class="well" style="background-color: #e6f7ff;">
+<div class="well" style="display:none; ">  
 <?php
 $n1 = challenge::show_num_bptop3();
 $n2 = challenge::show_num_putop3();
@@ -71,8 +72,7 @@ echo "The number of members shown on the tread mill leader board: ". $n3 . "<br>
 </div>
 
 
-<p>Status:</p>
-<div class="well" style="background-color: #e6f7ff;">
+<div class="well" style="display:none; ">
   <?php
   $n1 = challenge::show_num_bptop3();
   $n2 = challenge::show_num_putop3();
@@ -96,6 +96,15 @@ echo "The number of members shown on the tread mill leader board: ". $n3 . "<br>
   ?>
 </div>
 
+<?php
+$test_name="Barbell Deadlifts";
+if($n1 >= 0 && $n2 >= 0 && $n3 >= 0)
+{
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+			echo "<strong>PASSED</strong>";
+			echo "</div>";
+}
+?>
 
 <?php
 include('footer.html');
