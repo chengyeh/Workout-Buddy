@@ -1,4 +1,13 @@
 <?php
+/*
+ *	@file contact.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Conatct form for the user to communicate with web site admin.
+*				Note: This is usually done by sending the form data to the admin via email.
+*					  Email feature is not avaiable. This data is saved to database.
+*/
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -169,15 +178,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	</form>
 	
 	</div>
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
   	
     </div> <!-- /container -->
 

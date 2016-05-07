@@ -11,42 +11,41 @@ $number_messages=0;
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object for current session user
+// Create User object for the current session user.
 $user = User::find_by_id($session->user_id);
 
-//If the id field is empty return the user to profile page
+// If the ID field is empty return the user to profile page
 if (empty($_GET['id'])){
 	$session->message("No routine ID was provided.");
 	redirect_to('profile.php');
 }
 
-//Create Routine object from id in the URL
+// Create Routine object from id in the URL
 $routine = Routine::find_by_id($_GET['id']);
 if(!$routine){
 	$session->message("Unable to be find routine.");
 	redirect_to('profile.php');
 }
 
-//Redirect to profile page if current user is not the owner of this routine
+// Redirect to profile page if current user is not the owner of this routine
 if($user->id != $routine->user_id){
     $session->message("Unable to be find routine.");
     redirect_to('profile.php');
 }
 
-//get the current page number
+// Get the current page number
 $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 
-//records per page
+// Records per page
 $per_page = 1;
 
-//total record count
-//$total_count =  Exercises::count_all();
-
+// Get the total count of exercise
 $sql = "SELECT COUNT(*) FROM wb_exercise WHERE routine_id=".$routine->id;
 $result_set = $database->query($sql);
 $row = $database->fetch_array($result_set);
 $total_count = array_shift($row);
 
+// If there is not exercise in this routine, redirect to view_routine.php
 if($total_count == 0){
     $session->message("No exercise in routine.");
     redirect_to("view_routine.php?id={$routine->id}");
@@ -68,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if ($_POST['action'] == 'END WITHOUT SAVE')
     {
-        //Redirect to view routine page
+        // Redirect to view routine page
         redirect_to("view_routine.php?id={$routine->id}");
     }
 
-    //Trim all the incoming data:
+    // Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
 
     date_default_timezone_set('America/Chicago');
@@ -80,20 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $tz = new DateTimeZone('America/Chicago');
 
     $category1 = new Category();
-		    $category1->user_id=$user->id;
-		    $category1->routine_id=$routine->id;;
-		    $category1->exercise_id = $trimmed['exercise_id'];
-		    $category1->Date = $dt->format('m-d-Y');
-		    $category1->Time = $dt->format('H:i:s');
-		    $category1->create();
+    $category1->user_id=$user->id;
+    $category1->routine_id=$routine->id;;
+    $category1->exercise_id = $trimmed['exercise_id'];
+    $category1->Date = $dt->format('m-d-Y');
+    $category1->Time = $dt->format('H:i:s');
+    $category1->create();
 
-
+	// Create data in wb_user_log table depends on the number of set
     for($i = 1; $i <= $trimmed['sets_length']; $i++)
     {
-
-
-
-
         $log = new Log();
         $log->user_id = $user->id;
         $log->routine_id = $routine->id;
@@ -110,17 +105,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if ($_POST['action'] == 'END')
     {
-        //Redirect to view routine page
+        // Redirect to view routine page
         redirect_to("view_routine.php?id={$routine->id}");
     }
     else if($_POST['action'] == 'NEXT')
     {
-        //Redirect to next exercise
+        // Redirect to next exercise
         redirect_to("start_routine.php?id={$routine->id}&page={$pagination->next_page()}");
     }
     else
     {
-        //Redirect to view routine page
+        // Redirect to view routine page
         redirect_to("view_routine.php?id={$routine->id}");
     }
 
@@ -140,18 +135,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <title><?php echo $routine->name; ?></title>
 
-    <!-- temp style -->
+    <!-- input and button style -->
     <style type="text/css">
-
-    input{
-        width: 15%;
-    }
-
-    #button{
-        width: 100%;
-        max-width: 100%;
-        height: 40px;
-    }
+	    input{
+	        width: 15%;
+	    }
+	
+	    #button{
+	        width: 100%;
+	        max-width: 100%;
+	        height: 40px;
+	    }
 	</style>
 
     <!-- Bootstrap core CSS -->
@@ -215,6 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <li>
             	<span>
 	            <?php
+	            	// Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -253,6 +248,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             echo "<table style='width: 100%; max-width: 100%;'><tr><td><img src='images/{$type->image_filename}' width='50%' height='50%'></td></tr></table><br>";
             echo "<table class='table table-bordered'><tr><th>SET #</th><th>REPS</th><th>LBS</th></tr>";
+			
+			// For each set, display its order, target reps, and target weight. The user can fill out the actual reps and weight as they work out  
             foreach($sets as $set)
             {
                 echo "<input type='hidden' name='set{$set_number}_id' value='{$set->id}'>";
@@ -269,14 +266,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             }
             echo "</table>";
 
+			// If there is at least one page 
             if($pagination->total_pages() > 0)
             {
+            	// If there is next page, display "END WITHOUT SAVE", "END", and "Next" buttons
                 if($pagination->has_next_page())
                 {
                     echo "<table class='table'><tr><td><input type='submit' id='button' class='btn btn-warning' name='action' value='END WITHOUT SAVE' /></td><td class='text-center'><input type='submit' id='button' class='btn btn-danger' name='action' value='END' /></td>";
                     echo "<td class='text-right'><input type='submit' id='button' class='btn btn-primary' name='action' value='NEXT' /></td></tr></table></form>";
                 }
-                else
+                else // If it's at the last page display "END WITHOUT SAVE" and "YOU'VE DONE IT!" buttons
                 {
                     echo "<table class='table'><tr><td><input type='submit' id='button' class='btn btn-warning' name='action' value='END WITHOUT SAVE' /></td>";
                     echo "<td class='text-right'><input type='submit' id='button' class='btn btn-success' name='action' value=\"YOU'VE DONE IT!\" /></td></tr></table></form>";
@@ -285,7 +284,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
 
   	?>
-
 
 
     </div> <!-- /container -->

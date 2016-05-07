@@ -1,106 +1,140 @@
 <?php 
-require_once('../includes/initialize.php');
+/*
+*	@file session_test.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments This file will run all the test for the session class.
+*/
 
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
+require_once('../includes/initialize.php');
 ?>
+
 <?php 
 include('header.html');
 ?>
+
 <!-- html goes here -->
 <h1 class="page-header">Session Testing</h1>
-<p>This seris of test will test the Session class and it's methods.</p>
+<p>This seris of test will test <b>public</b> functions in Session class.</p>
 
-<h3 class="expand sub-header">Test is_logged_in()</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
+<h3 class="expand sub-header">Test login($user)</h3>
+<div class="well" style="display:none;"><p>Please see session_test.php file for the test code.</p></div>
 <?php 
-$result;
+//To test login
+//1. create session object
+//2. create user object
+//3. login in the user by calling login
+//4. Verfiy by assessing $_SESSION[] global variable
 
-if($result){
+//unset and destroy any session variables that already created;
+session_unset();
+session_destroy();
+
+//craete session object
+$session_object = new Session();
+
+//create user object
+$user = new User();
+
+//define all user attributes
+$user->id = 18;
+$user->first_name = 'foo';
+
+//Call login($user) to log the user in
+$session_object->login($user);
+
+//get the user id from the session variable
+$result = $_SESSION['user_id'];
+
+//check id is 18
+if($result == 18){
 	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
+	echo "Test login(\$user) PASSED";
 	echo "</div>";
 }else {
 	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
+	echo "Test login(\$user) FAILED";
 	echo "</div>";
 }
 ?>
 
-<h3 class="expand sub-header">Test login($user)</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
-<?php 
-$result;
+<h3 class="expand sub-header">Test is_logged_in()</h3>
+<div class="well" style="display:none;">
+<xmp>
+//Use session and user object from the previous test.
+//Note: Unable call session_start() again in the same page, reuser
+//objects from previous test.
 
-if($result){
+//check id is 18
+if($session_object->is_logged_in()){
 	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
+	echo "Test is_logged_in() PASSED";
 	echo "</div>";
 }else {
 	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
+	echo "Test is_logged_in() FAILED";
+	echo "</div>";
+}
+</xmp>
+</div>
+<?php 
+//Use session and user object from the previous test.
+//Note: Unable call session_start() again in the same page, reuser
+//objects from previous test.
+
+//check id is 18
+if($session_object->is_logged_in()){
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+	echo "Test is_logged_in() PASSED";
+	echo "</div>";
+}else {
+	echo "<div class='well' style='background-color: #ffd6cc'>";
+	echo "Test is_logged_in() FAILED";
 	echo "</div>";
 }
 ?>
 
 <h3 class="expand sub-header">Test logout()</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
-<?php 
-$result;
+<div class="well" style="display:none;">
+<xmp>
+//Use session object from the previous test.
+//Note: Unable call session_start() again in the same page, reuser
+//objects from previous test.
 
-if($result){
+//call logout()
+$session_object->logout();
+
+//Check session variable is empty
+if(empty($_SESSION['user_id'])){
 	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
+	echo "Test logout() PASSED";
 	echo "</div>";
 }else {
 	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
+	echo "Test logout() FAILED";
 	echo "</div>";
 }
-?>
-
-<h3 class="expand sub-header">Test message($msg="")</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
+</xmp>
+</div>
 <?php 
-$result;
+//Use session object from the previous test.
+//Note: Unable call session_start() again in the same page, reuser
+//objects from previous test.
 
-if($result){
+//call logout()
+$session_object->logout();
+
+//Check session variable is empty
+if(empty($_SESSION['user_id'])){
 	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
+	echo "Test logout() PASSED";
 	echo "</div>";
 }else {
 	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
-	echo "</div>";
-}
-?>
-
-<h3 class="expand sub-header">Test check_login()</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
-<?php 
-$result;
-
-if($result){
-	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
-	echo "</div>";
-}else {
-	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
-	echo "</div>";
-}
-?>
-
-<h3 class="expand sub-header">Test check_message()</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
-<?php 
-$result;
-
-if($result){
-	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
-	echo "</div>";
-}else {
-	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
+	echo "Test logout() FAILED";
 	echo "</div>";
 }
 ?>

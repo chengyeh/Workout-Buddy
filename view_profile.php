@@ -3,23 +3,22 @@
  * Each User has a profile page based on their give information, the groups they have created, the groups they are a part of and other constants appearing on all parts of the websites. The $user variable is associated with the
  *
  */
-
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
-//Create User object for current session user
+// Create User object for the current session user
 $user = User::find_by_id($session->user_id);
 
-//If the ID field is empty return the user to profile page
+// If the ID field is empty return the user to profile page
 if (empty($_GET['id'])){
 	$session->message("No group ID was provided.");
 	redirect_to('profile.php');
 }
 
-//Create User object from ID in the URL
+// Create User object from id in the URL
 $view_user = User::find_by_id($_GET['id']);
 if(!$view_user){
 	$session->message("Unable to be find group.");
@@ -100,6 +99,7 @@ if(!$view_user){
             <li>
             	<span>
 	            <?php
+	        	    // Query unread messages from the wb_messages table and display the count.
 	            	$result_set = $database->query("SELECT * FROM wb_messages WHERE read_message=0 AND receiver=".$user->id);
 	            	$number_messages = $database->num_rows($result_set);
 	            	echo "<span class='badge'>{$number_messages}</span>";
@@ -125,6 +125,8 @@ if(!$view_user){
 	<h2>User Info</h2>
 	<?php
 		echo "<p>Name: ". $view_user->full_name() . "<br/>";
+		
+		// Show "Send Message" button if the user is not viewing his or her own page
 		if($view_user->id != $user->id)
 		{
 			echo "<p><a class='btn btn-default' href='personal_msg.php?id={$view_user->id}' role='button'>Send Message</a></p>";
@@ -133,12 +135,14 @@ if(!$view_user){
 
 	<h2>User Groups</h2>
 	<?php
-		//Find all the groups from this user and add into array
+		// Find all the groups from this user and add into array
 		$groups_joined = $view_user->groups_joined();
+		
 		if(!empty($groups_joined))
 		{
 			echo "<table class='table'><tr><th>Name</th><th>Status</th></tr>";
-			//List all the groups
+			
+			// For each group, list its name and status
 			foreach ($groups_joined as $group_member_row){
 				$group_joined = Group::find_by_id($group_member_row->group_id);
 				echo "<tr><td><a href='view_group.php?id={$group_joined->id}'>".$group_joined->group_name."</a></td>";
@@ -154,12 +158,14 @@ if(!$view_user){
 	<br>
     <h2>User Routines</h2>
     <?php   
+    	// Find all the routines from this user and add into array
         $user_routine_objects = $view_user->exercise_routines_added();
         
         if(!empty($user_routine_objects))
         {
             echo "<table class='table'><tr><th>Name</th></tr>";
             
+            // For each routine, list its name
             foreach ($user_routine_objects as $routine_object){
                 echo "<tr><td><a href='view_routine.php?id={$routine_object->id}'>".$routine_object->name."</a></td></tr>";
             }

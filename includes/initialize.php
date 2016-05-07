@@ -1,11 +1,16 @@
-
 <?php
+/*
+*	@file initialize.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments This file load all the classes.
+*/
+
 defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 
 defined('SITE_ROOT') ? null :
 
-define('SITE_ROOT', DS.'home'.DS.'kchu25'.DS.'public_html'.DS.'eecs448'.DS.'EECS448_Project3');
-
+define('SITE_ROOT', DS.'home'.DS.'dfernand'.DS.'public_html'.DS.'eecs448'.DS.'EECS448_Project3');
 
 defined('LIB_PATH') ? null :
 define('LIB_PATH', SITE_ROOT .DS. 'includes');
@@ -30,7 +35,6 @@ require_once(LIB_PATH.DS."group_members.php");
 require_once(LIB_PATH.DS."message.php");
 require_once(LIB_PATH.DS."challenge.php");
 require_once(LIB_PATH.DS."exercises.php");
-require_once(LIB_PATH.DS."goals.php");
 require_once(LIB_PATH.DS."routine.php");
 require_once(LIB_PATH.DS."log_category.php");
 require_once(LIB_PATH.DS."set.php");

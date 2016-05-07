@@ -1,7 +1,9 @@
 <?php
 /**
- * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
- *
+ * This page is used to add a series of three exercise sets by creating a Set object which is associated with a routine and exercise type
+ * @pre: routine object created, user session
+ * @post: Database access, routine id
+ * @return: create exercises object and set object
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -21,7 +23,7 @@ if (empty($_GET['rout_id'])){
 $routine = Routine::find_by_id($_GET['rout_id']);
 $addtype = $_GET['type_id'];
 
-/*$var_types = Types::find_by_id(1);*/
+//Used goes back to login if routine id is invalid
 if(!$routine)
 {
 	$session->message("Unable to be find routine.");
@@ -38,16 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
 
+			//Creates three new sets for a workout through one Set object
 			$new_set = new Set();
            	$new_set->routine_id = $routine->id;
            	$a=$new_set->routine_id;
-         	$monday=isset($_POST['mon']);
          	$set1_reps=$_POST['set1_reps'];
          	$set2_reps=$_POST['set2_reps'];
          	$set3_reps=$_POST['set3_reps'];
          	$set1_weight=$_POST['set1_weight'];
          	$set2_weight=$_POST['set2_weight'];
          	$set3_weight=$_POST['set3_weight'];
+
+         	//$trigger_querry determines if the workout gets queried or not based on valid input
          	$trigger_query=0;
 
          	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
@@ -98,13 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
          	if($trigger_query==1)
          	{
-						         	$a=1;
-						         	$b=2;
-						         	$c=3;
-						         	$database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
-
+						     $a=1;
+						     $b=2;
+						     $c=3;
+						     $database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
 							 $total_exercises=$user->find_last_exercise($routine->id);
-
 							 $q=0;
 							 foreach ($total_exercises as $exercise_number)
 							 {
@@ -118,19 +120,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 							}
 
 				         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,1,$set1_reps,$set1_weight)");
-							 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
-							 $database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
-							 redirect_to("add_routine_exercise.php?id={$routine->id}");
+							$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
+							$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
+							redirect_to("add_routine_exercise.php?id={$routine->id}");
 				}
 				else
 				{
 						echo "***Please give valid fields****";
 				}
-
-
-
-
-
 }
 ?>
 
@@ -230,18 +227,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- Main component for a primary marketing message or call to action -->
     <h2>Exercise Agenda</h2>
    	<?php
-   			echo "<p>Workout: ". $routine->name . "<br/>";
-   			//echo $addtype->type."<br>";
-
+   			//Shows user choice for routine and workout type
+   			echo "<p><strong>Workout: </strong>". $routine->name . "<br/>";
    			$actual_name=Types::find_by_id($addtype);
-
-   			echo $actual_name->name;
-
+   			echo "<strong>".$actual_name->name."</strong>";
+   			//Requires user input for set information
    			echo "<form action='#' method='POST'>";
-
-
-
-
 				echo "</select>";
 				echo "<br><label>Set 1:  </label>";
 				echo "<br>";
@@ -258,20 +249,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "Reps <input type='text' name='set3_reps'>";
 				echo "Weight <input type='text' name='set3_weight'>";
 				echo "<br>";
-
 				echo "<br>";
-		   	echo "<button type='submit' name='submit' class='btn btn-default'>Create Agenda</button>";
+		   	echo "<button type='submit' name='submit' class='btn btn-success'>Create Agenda</button>";
 		   	echo "</form>";
-   			echo "<p><a class='btn btn-default' href='add_routine_exercise.php?id=$routine->id' role='button'>Back to Exercise</a></p>";
-   			/*
-			echo "<p>Descripiton: ". $routine->description . "<br/>";
-			echo "<p>ID: ". $routine->id . "<br/>";
-			echo "<p>exercise Name: ". $addtype->id . "<br/>";
-			echo "<p>Descripiton: ". $addtype->routine_id . "<br/>";
-			echo "<p>ID: ". $addtype->type . "<br/>";
-			*/
-
-
+   			echo "<p><a class='btn btn-info' href='add_routine_exercise.php?id=$routine->id' role='button'>Back to Exercise</a></p>";
    	?>
 
 

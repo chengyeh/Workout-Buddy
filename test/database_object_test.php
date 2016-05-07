@@ -1,4 +1,11 @@
 <?php 
+/*
+ *	@file database_object_test.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments This file will run all the test for the database_object class.
+*/
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -10,7 +17,7 @@ include('header.html');
 ?>
 <!-- html goes here -->
 <h1 class="page-header">Database Object Testing</h1>
-<p>This seris of test will test the database_object class and it's methods.</p>
+<p>This seris of test will test <b>public</b> functions in Database_Object class.</p>
 <p>For this seris of tests following table wb_test_data_employee table is used. This table contains 8 rows of sample data
 and which will be queryed for testing database_object class.</p>
 <?php

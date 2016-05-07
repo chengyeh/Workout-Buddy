@@ -1,10 +1,21 @@
 <?php
+/*
+ *	@file add_calendar_event.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Add user calender event to the databse. 
+*/
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+//user unread messages
 $number_messages=0;
 
+// Include initialization file
 require_once('includes/initialize.php');
+
+//If user is not logon redirect to login page
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object
@@ -24,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$event->description = $database->escape_value($trimmed['event_name']);
       	$event->event_date= $database->escape_value($trimmed['event_date'])." ". $database->escape_value($trimmed['event_time']);
       	
+      	//Save the event to the database
       	$event->create();
 
       	//Redirect to profile page
@@ -182,11 +194,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="js/jquery.timepicker.js"></script>
     <script>
+    	  //JQuery to display datepicker UI
 		  $(function() {
 		    $( "#datepicker" ).datepicker({
 		    	  dateFormat: "yy-mm-dd"
 		    });
 		  });
+
+		//JQuery to display timepicker UI
 		  $(function() {
 			  $('#datetimepicker').timepicker();
 		  });

@@ -1,4 +1,11 @@
 <?php
+/*
+*	@file database_object.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments CRUD functionality with objects.
+*/
+
 require_once(LIB_PATH.DS."database.php");
 
 class DatabaseObject {

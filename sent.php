@@ -1,4 +1,10 @@
 <?php
+/**
+ * When user clicks sent in message menu to view messages sent to other users
+ *@pre: user session, message sent to another user
+ *@post: none
+ *@return: Delete marker for database
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -11,7 +17,7 @@ $user = User::find_by_id($session->user_id);
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   $errors = array();
-
+	//Delete messages received
     if(!empty($_POST['delete_message']))
     {
 
@@ -121,9 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <h2>Sent</h2>
 
 	<?php
+		//Creates message array of messages sent
 		$message_array=$user->get_messages();
 		$a=1;
 
+		//Form to view messages sent and send delete trigger to database
 		echo "<form action='#' method='POST'>";
 		if(($message_array->num_rows) > 0)
 		{
@@ -142,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 				echo "<td class='text-center'><input type='checkbox' name='delete_message[]' value='" . $message1["id"] . "'></td>";
 				echo "</tr>";
 			}
-			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-default' name ='submit' value='Submit'></td></tr>";
+			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-info' name ='submit' value='Delete'></td></tr>";
 			echo "</table>";
 		}
 		echo "</form>";

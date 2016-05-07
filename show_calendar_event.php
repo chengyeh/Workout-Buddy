@@ -1,12 +1,18 @@
 <?php
-/**
- * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
- * 
- */
+/*
+ *	@file show_calendar_event.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Display calendar event.
+*/
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+//Include initialization file
 require_once('includes/initialize.php');
+
+//If user is not logon redirect to login page
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object for current session user
@@ -25,24 +31,6 @@ if(!$event){
 	redirect_to('show_calendar.php');
 }
 	
-?>
-<?php
-/**
- * Query the database and obtain an array containin all members of the group. 
- * 
-
- */
-// if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-//   $errors = array();
-
-//     if(!empty($_POST['delete_group_member']))
-//     {
-//         foreach($_POST['delete_group_member'] as $member_id)
-//         {
-//             $database->query("DELETE FROM wb_group_members WHERE group_id = '" . $group->id . "' AND member_id='" . $member_id . "'");  
-//         } 
-//     }               
-// }
 ?>
 
 <!DOCTYPE html>
@@ -140,14 +128,10 @@ if(!$event){
     	
     	<h2>Group Info</h2>
     	<?php 
-    	/**
-        * Print out all the details of the event. 
-        * 
-        *
-        */
-    		echo "<p>Event Name : ". $event->name . "<br/>";
-			echo "<p>Event Description : ". $event->description . "<br/>";
-			echo "<p>Event Date/Time : ". $event->event_date . "<br/>";
+        //Print event details. 
+    	echo "<p>Event Name : ". $event->name . "<br/>";
+		echo "<p>Event Description : ". $event->description . "<br/>";
+		echo "<p>Event Date/Time : ". $event->event_date . "<br/>";
     	?>
 	<p><a class='btn btn-default' href='delete_cevent_calendar.php?id=<?php echo $event->id;?>' role='button'>Delete Event</a></p>
    </div> <!-- /container -->

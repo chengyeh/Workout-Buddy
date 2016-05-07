@@ -1,3 +1,9 @@
+<!-- @file template.php -->
+<!-- @author Dilesh Fernando -->
+<!-- @date 5/4/2016 -->
+<!-- @comments template page for creating pages on the main site root-->
+<!-- Note: Only for design. Not for production -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

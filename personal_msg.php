@@ -1,4 +1,10 @@
 <?php
+/**
+ * Page used to find user and send message
+ *@pre: user session, user to send message to
+ *@post: receiver id, Database Access
+ *@return: message object created and queried in datatbase
+ */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
@@ -27,17 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
   //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
-		
-	date_default_timezone_set('America/Chicago');
+
+		date_default_timezone_set('America/Chicago');
     $dt = new DateTime();
-	$tz = new DateTimeZone('America/Chicago');
-	
+		$tz = new DateTimeZone('America/Chicago');
+
     //Add the message to the database:
     $pm = new Message();
     $pm->user = $trimmed['user_id'];
     $pm->receiver = $view_user->id;
     $pm->message = $trimmed['message'];
-	$pm->Date = $dt->format('m-d-Y');
+		$pm->Date = $dt->format('m-d-Y');
     $pm->Time = $dt->format('H:i:s');
     $pm->create();
 }
@@ -135,12 +141,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </nav>
 
     <div class="container">
-    
+
 	<div class="col-xs-12 col-sm-6 col-md-8">
 	<h2>Send Message</h2>
 	<form action="#" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
-	
+
 		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Recipient</label>
 		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="<?php echo $view_user->full_name(); ?>" name="recipient" disabled autofocus>
@@ -149,11 +155,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		   <label for="formGroupExampleInput">Message</label>
 		   <textarea name="message" class="form-control" id="formGroupExampleInput" placeholder="Message"rows="4" cols="50" required></textarea>
 		</fieldset>
-		<button type="submit" name="submit" class="btn btn-default">Send</button>
+		<button type="submit" name="submit" class="btn btn-success">Send</button>
 	</form>
-	
+
 	</div>
-	
+
 	</div> <!-- /container -->
 
 

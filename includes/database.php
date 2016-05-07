@@ -1,4 +1,11 @@
 <?php
+/*
+ *	@file database.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Database connetivity and CRUD functionality .
+*/
+
 require_once(LIB_PATH.DS."config.php");
 
 class MySQLDatabase{

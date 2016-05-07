@@ -1,7 +1,9 @@
 <?php
 /**
- * When User clicks on a group, all members of the group and the groups activity are queried from he database and printed in a table. If the user id matches that of the owner of the group, adminstrative priveleges are granted and the owner can delete members.
- *
+ * This class is used to edit exercise by altering the fields of the object
+ * @pre: pre-made exercise object as well as exercise set objective
+ * @post: Database access
+ * @return: Same exercise object id
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -19,8 +21,8 @@ if (empty($_GET['rout_id'])){
 
 //Create Exercise object from ID in the URL
 $addexercise = Routine::find_by_id($_GET['rout_id']);
+//Create exercise object from previous exercise id to be edited
 $addtype = Exercises::find_by_id($_GET['ex_id']);
-/*$var_types = Types::find_by_id(1);*/
 if(!$addexercise)
 {
 	$session->message("Unable to be find group.");
@@ -34,9 +36,10 @@ if(!$addexercise)
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $errors = array();
 
-  //Trim all the incoming data:
+  	//Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
 
+			//Edits new incoming set data
 			$new_set = new Set();
             $new_set->exercise_id = $addtype->id;
            	$new_set->routine_id = $addexercise->id;
@@ -48,7 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          	$set1_weight=$_POST['set1_weight'];
          	$set2_weight=$_POST['set2_weight'];
          	$set3_weight=$_POST['set3_weight'];
-			$trigger_query=0;
+
+					//$trigger_querry determines if the workout gets queried or not based on valid input
+					$trigger_query=0;
 
          	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
          	{
@@ -100,18 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		         	$a=1;
 		         	$b=2;
 		         	$c=3;
-		         	/*
-					echo $set1_reps;
-         				echo "<br>";
-         			echo $set2_reps;
-         	echo "<br>";
-         	echo $set3_reps;
-         	echo "<br>";
-         	echo $set1_weight;
-         	echo "<br>";
-         	echo $set2_weight;
-         	echo "<br>";
-         	echo $set3_weight;*/
+
 		         	$database->query("UPDATE `wb_exercise_set` SET `reps`=$set1_reps, `weight`=$set1_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$a." AND routine_id=".$new_set->routine_id);
 					$database->query("UPDATE `wb_exercise_set` SET `reps`=$set2_reps, `weight`=$set2_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$b." AND routine_id=".$new_set->routine_id);
 					$database->query("UPDATE `wb_exercise_set` SET `reps`=$set3_reps, `weight`=$set3_weight WHERE exercise_id=".$new_set->exercise_id." AND `order`=".$c." AND routine_id=".$new_set->routine_id);
@@ -224,13 +218,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- Main component for a primary marketing message or call to action -->
     <h2>Exercise Agenda</h2>
    	<?php
-   			echo "<p>Workout: ". $addexercise->name . "<br/>";
-   			echo $addtype->type."<br>";
+   			//This queries from the routine associated with the exercise that is to be edited
+   			echo "<p><strong>Workout: </strong>". $addexercise->name . "<br/>";
+   			echo "<strong>".$addtype->type."</strong>";
+   			echo "<br>";
 
+			//This is the exercise type of the exercise that is to be edited
    			$actual_name=Types::find_by_id($addtype->type);
 
-   			echo $actual_name->name;
+   			echo "<strong>".$actual_name->name."</strong>";
 
+			//This is user input for the exercise form that is to be edited
    			echo "<form action='#' method='POST'>";
 
 				echo "</select>";
@@ -249,18 +247,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "Reps <input type='text' name='set3_reps'>";
 				echo "Weight <input type='text' name='set3_weight'>";
 				echo "<br>";
-
 				echo "<br>";
-		   	echo "<button type='submit' name='submit' class='btn btn-default'>Update Agenda</button>";
+		   	echo "<button type='submit' name='submit' class='btn btn-success'>Update Agenda</button>";
 		   	echo "</form>";
-   			echo "<p><a class='btn btn-default' href='view_exercises.php?id=$addtype->id&rout_id=$addexercise->id' role='button'>Back to Exercise</a></p>";
-   			/*
-			echo "<p>Descripiton: ". $addexercise->description . "<br/>";
-			echo "<p>ID: ". $addexercise->id . "<br/>";
-			echo "<p>exercise Name: ". $addtype->id . "<br/>";
-			echo "<p>Descripiton: ". $addtype->routine_id . "<br/>";
-			echo "<p>ID: ". $addtype->type . "<br/>";
-			*/
+   			echo "<p><a class='btn btn-info' href='view_exercises.php?id=$addtype->id&rout_id=$addexercise->id' role='button'>Back to Exercise</a></p>";
+
 
 
    	?>

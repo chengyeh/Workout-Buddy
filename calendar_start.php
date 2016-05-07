@@ -1,4 +1,12 @@
 <?php 
+/*
+ *	@file calendar_start.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments Create/Display calendar month on web page.
+*/
+
+// Include initialization file
 require_once('includes/initialize.php');
 
 //To keep tack if the current Month/Year is same

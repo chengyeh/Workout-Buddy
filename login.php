@@ -1,4 +1,12 @@
 <?php
+/*
+ *	@file login.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments log the user to the site.
+*/
+
+//Include initialization file
 require_once('includes/initialize.php');
 
 $error_message;
@@ -81,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="container">
     <?php 
+		//If error, display error.
 		if(isset($error_message)){
 			echo "<div class='alert alert-danger' role='alert'>".$error_message."</div>";
 		}

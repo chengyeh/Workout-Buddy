@@ -1,4 +1,11 @@
 <?php 
+/*
+*	@file database_test.php
+*	@author Dilesh Fernando
+*	@date 5/4/2016
+*	@comments This file will run all the test for the databse class.
+*/
+
 require_once('../includes/initialize.php');
 
 ?>
@@ -7,7 +14,7 @@ include('header.html');
 ?>
 <!-- html goes here -->
 <h1 class="page-header">Database Testing</h1>
-<p>This seris of test will test the database class and it's methods.</p>
+<p>This seris of test will test <b>public</b> functions in MySQLDatabase class.</p>
 
 <h3 class="expand sub-header">Test open_connection()</h3>
 <div class="well" style="display:none;"><xmp></xmp></div>
@@ -128,6 +135,9 @@ $result_set = $database5->query("SELECT * FROM wb_contact");
 
 $result_array = $database5->fetch_array($result_set);
 
+//wb_test_data_employee table is testing table that 
+//have 8 rows in the table.
+
 //Check result_array has more than zero elements
 if (count($result_array) > 0) {
 	//
@@ -151,9 +161,12 @@ unset($database5);
 $database5 = new MySQLDatabase();
 
 //Call query method
-$result_set = $database5->query("SELECT * FROM wb_contact");
+$result_set = $database5->query("SELECT * FROM  wb_test_data_employee");
 
 $result_array = $database5->fetch_array($result_set);
+
+//wb_test_data_employee table is testing table that 
+//have 8 rows in the table.
 
 //Check result_array has more than zero elements
 if (count($result_array) > 0) {
@@ -354,8 +367,6 @@ if ($database8->affected_rows() == 1) {
 unset($database8);
 ?>
 
-<h3 class="expand sub-header">Test confirm_query($result)</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
 <?php
 include('footer.html');
 ?>
