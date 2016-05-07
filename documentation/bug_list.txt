@@ -1,0 +1,57 @@
+Workout Buddy: Bug List
+
+Bugs are listed in there respective categories. Categories are list alphabetically.
+
+Calendar:
+---------
+
+
+Challenge:
+----------
+
+
+Exercise:
+---------
+
+1. In add_exercise_set.php and add_exercise.php are combined in add_exercise_set.php
+
+2. In edit_exercise.php the going back and update feature are fixed
+
+3. In edit_exercise.php forces the user to fill in every blank
+
+4. In add_exercise_set.php forces the user to fill in every blank
+
+Group:
+------
+
+1. In edit_exercise.php and add_exercise_set.php it forces the user to give numeric input
+
+2. In view_exercise.php the correct name for each exercise is now displayed when compared to previously
+
+3. In the wb_exercise_set table, the table was ordered by id ASC in order to deal with a bug in which the order was displayed flawed in view_exercise_set.php
+
+
+Messages:
+---------
+
+Routine:
+
+1. In view_routine.php, fixed the "else if" to "if" for days of the week worked out
+
+2. In view_routine.php, fixed the total_exercises to display the type of workout done correctly
+
+3. In add_routine.php forces user input for all blanks
+
+
+User:
+-----
+
+
+
+View Log:
+---------
+
+
+
+
+

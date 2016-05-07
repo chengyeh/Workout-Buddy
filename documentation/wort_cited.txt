@@ -1,12 +1,13 @@
-Dilesh
-php code based on course take at lynda.com
+Workout Buddy: Work cited.
+
+PHP code based on course take at lynda.com
 PHP with MySQL Essential Training with Kevin Skoglund 
 http://www.lynda.com/
 
-free logo site for logo
+Logo: Free logo site for logos
 http://logotypemaker.com/
 
-styling with boothstrap and free themes from bootstrap
+Bootstrap: Styling with boothstrap and free themes from bootstrap
 http://getbootstrap.com/
 
 Calendar functionality
@@ -19,9 +20,13 @@ https://jqueryui.com/datepicker/
 Inserting events to calendar
 http://stackoverflow.com/questions/7061802/php-function-for-get-all-mondays-within-date-range
 
-time picker
+Display Time picker widget
 jonthornton/jquery-timepicker
 https://github.com/jonthornton/jquery-timepicker
 
-excersie images and names of exercises
-workoutlabs.com
+Excersie images and names of exercises
+www.workoutlabs.com
+
+Display MySql table on web page code snippet
+Modified from 
+http://stackoverflow.com/questions/7978502/echo-table-from-phpmyadmin-into-html-table

@@ -15,6 +15,7 @@ class Session {
     private $logged_in=false;
     public $user_id; //Store the user id in session instance
     public $user_name; //Store the user first name in session instance
+    public $message;
 
     /**
      * Constructor for session class
@@ -84,6 +85,31 @@ class Session {
         unset($this->user_id);
         unset($this->user_name);
         $this->logged_in = false;
+    }
+    
+    /**
+     * Set a session message
+     * 
+     */
+    public function message($msg=""){
+    	if(!empty($msg)){
+    		$_SESSION['message'] = $msg;
+    	} else {
+    		return $this->message;
+    	}
+    }
+    
+    /**
+     * Check session message
+     *
+     */
+    private function check_message(){
+    	if(isset($_SESSION['message'])){
+    		$this->message = $_SESSION['message'];
+    		unset($_SESSION['message']);
+    	} else {
+    		$this->message = "";
+    	}
     }
 }
 
