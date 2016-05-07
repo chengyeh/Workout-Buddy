@@ -11,15 +11,15 @@ class Log extends DatabaseObject
 {
     protected static $table_name = "wb_user_log";/*!<Name of table storing exercise log data in database*/
     protected static $db_fields = array('id','user_id','routine_id','exercise_id','category_id','exercise_type_id','set_id','reps','weight','date','time');/*!< An array keeping track of all member variables of log.php*/
-    public $id;/*!< A 11-bit INT variable keeping track of Log ID*/
-    public $user_id;/*!< A 11-bit INT variable keeping track of a log object's user_id*/
-    public $routine_id;/*!< A 11-bit INT variable keeping track of a log object's routine ID*/
-    public $exercise_id;/*!< A 11-bit INT variable keeping track of a log object's exercise ID*/
-    public $category_id;/*!< A 11-bit INT variable keeping track of a log object's category ID*/
-    public $exercise_type_id;/*!< A 11-bit INT variable keeping track of a log object's exercise type ID*/
-    public $set_id;/*!< A 11-bit INT variable keeping track of a log object's exercise set ID*/
-    public $reps;/*!< A 11-bit INT variable keeping track of a log object's reps*/
-    public $weight;/*!< A 11-bit INT variable keeping track of a log object's weight*/
+    public $id;/*!< A variable keeping track of Log ID*/
+    public $user_id;/*!< A variable keeping track of a log object's user_id*/
+    public $routine_id;/*!< A variable keeping track of a log object's routine ID*/
+    public $exercise_id;/*!< A variable keeping track of a log object's exercise ID*/
+    public $category_id;/*!< A variable keeping track of a log object's category ID*/
+    public $exercise_type_id;/*!< A variable keeping track of a log object's exercise type ID*/
+    public $set_id;/*!< A variable keeping track of a log object's exercise set ID*/
+    public $reps;/*!< A variable keeping track of a log object's reps*/
+    public $weight;/*!< A variable keeping track of a log object's weight*/
     public $date;/*!< A non-limited text field keeping track of a log object's date*/
     public $time;/*!< A non-limited text field keeping track of a log object's time*/
 

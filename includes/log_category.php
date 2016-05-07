@@ -9,10 +9,10 @@ require_once(LIB_PATH.DS."database.php");
 class Category extends DatabaseObject {
     protected static $table_name = "wb_log_category";/*!<Name of table storing category data in database*/
     protected static $db_fields = array('id','user_id','routine_id', 'exercise_id', 'Date', 'Time');/*!< An array keeping track of all member variables of log_category.php*/
-    public $id;/*!< A 11-bit INT variable keeping track of log category ID*/
-    public $user_id;/*!< A 11-bit INT variable keeping track of user session ID*/
-    public $routine_id;/*!< A 11-bit INT variable keeping track of routine ID associated with the log*/
-    public $exercise_id;/*!< A 11-bit INT variable keeping track of the exercise ID associated with the log's routine*/
+    public $id;/*!< A variable keeping track of log category ID*/
+    public $user_id;/*!< A variable keeping track of user session ID*/
+    public $routine_id;/*!< A variable keeping track of routine ID associated with the log*/
+    public $exercise_id;/*!< A variable keeping track of the exercise ID associated with the log's routine*/
     public $Date;/*!< A unlimited text field that stores the date of the log*/
     public $Time;/*!< A unlimited text field that stores the time of the log*/
 

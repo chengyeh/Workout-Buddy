@@ -2,6 +2,9 @@ Workout Buddy: Work cited.
 
 PHP code based on course take at lynda.com
 PHP with MySQL Essential Training with Kevin Skoglund 
+
+php code based on course take at lynda.com
+PHP with MySQL Essential Training with Kevin Skoglund
 http://www.lynda.com/
 
 Logo: Free logo site for logos
@@ -11,7 +14,7 @@ Bootstrap: Styling with boothstrap and free themes from bootstrap
 http://getbootstrap.com/
 
 Calendar functionality
-Php Calendar 
+Php Calendar
 https://www.youtube.com/playlist?list=PLC3FA336653950084
 
 Display date picker widget
@@ -30,3 +33,9 @@ www.workoutlabs.com
 Display MySql table on web page code snippet
 Modified from 
 http://stackoverflow.com/questions/7978502/echo-table-from-phpmyadmin-into-html-table
+
+Paul
+Time and Date functions based on:
+https://www.youtube.com/watch?v=0W7dUSNrqZQ
+http://php.net/manual/en/timezones.php
+

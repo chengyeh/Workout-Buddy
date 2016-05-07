@@ -13,12 +13,12 @@ class Types extends DatabaseObject
 {
 	protected static $table_name = "wb_exercise_type";/*!<Name of table storing exercise type data in database*/
     protected static $db_fields = array('id','name','image_filename');/*!< An array keeping track of all member variables of types.php*/
-    public $id;/*!< A 11-bit INT variable keeping track of types ID*/
-    public $name;/*!< A 11-bit INT variable keeping track of types name*/
+    public $id;/*!< A variable keeping track of types ID*/
+    public $name;/*!< A variable keeping track of types name*/
 	public $image_filename;/*!< A renderable image associated with a types ID*/
 
 	/**
-	 * This method queries all the exercise types from the database. 
+	 * This method queries all the exercise types from the database.
 	 *
 	 * @return types objects in a array
 	 */
