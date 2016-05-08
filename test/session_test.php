@@ -97,6 +97,62 @@ if($session_object->is_logged_in()){
 }
 ?>
 
+<h3 class="expand sub-header">Test message($msg="")</h3>
+<div class="well" style="display:none;">
+<xmp>
+//Use session object from the previous test.
+//Note: Unable call session_start() again in the same page, reuser
+//objects from previous test.
+
+//message used for testing
+$msg = "This is the message!";
+
+//call message($msg="") with "This is the message!"
+$session_object->message($msg);
+
+//Test is perform to chech the message in passed on to the
+//message($msg="") is the same as the $_SESSION['message']
+//global variable
+
+//Check  $_SESSION['message'] global variable
+if($_SESSION['message'] == $msg){
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+	echo "Test message(\$msg=\"\") PASSED";
+	echo "</div>";
+}else {
+	echo "<div class='well' style='background-color: #ffd6cc'>";
+	echo "Test message(\$msg=\"\") FAILED";
+	echo "</div>";
+}
+</xmp>
+</div>
+<?php 
+//Use session object from the previous test.
+//Note: Unable call session_start() again in the same page, reuser
+//objects from previous test.
+
+//message used for testing
+$msg = "This is the message!";
+
+//call message($msg="") with "This is the message!"
+$session_object->message($msg);
+
+//Test is perform to chech the message in passed on to the
+//message($msg="") is the same as the $_SESSION['message']
+//global variable
+
+//Check  $_SESSION['message'] global variable
+if($_SESSION['message'] == $msg){
+	echo "<div class='well' style='background-color: #b3ffcc'>";
+	echo "Test message(\$msg=\"\") PASSED";
+	echo "</div>";
+}else {
+	echo "<div class='well' style='background-color: #ffd6cc'>";
+	echo "Test message(\$msg=\"\") FAILED";
+	echo "</div>";
+}
+?>
+
 <h3 class="expand sub-header">Test logout()</h3>
 <div class="well" style="display:none;">
 <xmp>
