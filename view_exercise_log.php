@@ -33,7 +33,7 @@ $log_obj = Category::find_by_id($_GET['id']);
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title><?php echo $rout_show->name; ?></title>
+    <title>Workout Buddy - Log History</title>
 
     <link href="css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
 

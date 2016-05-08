@@ -95,8 +95,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $log->exercise_id = $trimmed['exercise_id'];
         $log->exercise_type_id = $trimmed['exercise_type'];
         $log->set_id = $trimmed['set'.$i.'_id'];
-        $log->reps = $trimmed['set'.$i.'_rep'];
-        $log->weight = $trimmed['set'.$i.'_weight'];
+        
+        if($trimmed['set'.$i.'_rep'] < 0)
+        {
+            $log->reps = 0;
+        }
+        else
+        {
+            $log->reps = $trimmed['set'.$i.'_rep'];
+        }
+        
+        if($trimmed['set'.$i.'_weight'] < 0)
+        {
+            $log->weight = 0;
+        }
+        else 
+        {
+            $log->weight = $trimmed['set'.$i.'_weight'];
+        }
+
         $log->date = $dt->format('m-d-Y');
         $log->time = $dt->format('H:i:s');
         $log->category_id = $category1->id;

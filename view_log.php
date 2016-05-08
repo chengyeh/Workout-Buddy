@@ -36,7 +36,7 @@ $user = User::find_by_id($session->user_id);
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Log History</title>
+    <title>Workout Buddy - Log</title>
 
     <link href="css/routine_table.css" rel="stylesheet" type="text/css" media="screen" />
 

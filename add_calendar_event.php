@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		</fieldset>
   		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Event Discription</label>
-		   <textarea name="event_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Discription"rows="4" cols="50" required></textarea>
+		   <textarea name="event_discription" class="form-control" id="formGroupExampleInput" placeholder="Event Description"rows="4" cols="50" required></textarea>
 		</fieldset>
 		<div class="panel panel-default">
   		<div class="panel-body">

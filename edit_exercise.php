@@ -243,8 +243,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
    	<?php
    			//This queries from the routine associated with the exercise that is to be edited
    			echo "<p><strong>Workout: </strong>". $addexercise->name . "<br/>";
-   			echo "<strong>".$addtype->type."</strong>";
-   			echo "<br>";
 
 			//This is the exercise type of the exercise that is to be edited
    			$actual_name=Types::find_by_id($addtype->type);
