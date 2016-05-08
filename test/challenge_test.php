@@ -21,11 +21,15 @@ include('header.html');
 
 <p><b>This is the code in the class that query the database for the top 3 members.</b></p>
 
-<h3 class="expand sub-header">Test for challenge sets (press me to see):</h3>
+<h3 class="expand sub-header">Test for challenge sets:</h3>
 <div class="well" style="display:none;">
 <xmp>
 
-
+//The challenge::___top3() functions ( __ means don't care) should display the members who have entered their record into the database.
+//The functions in the challenge class should display the ranking of the top 3 members in each section.
+//If there's no one entered the record, then there should be 0 members being displayed on the leaderboard.
+//If there's one entered the record, then there should be 1 members being displayed on the leaderboard, and so on.
+//At most 3 members should be displayed. A number not including in the range of [0,inf) is not valid.
   public static function show_num_bptop3(){
       $sql_1 = "SELECT COUNT(*) FROM challenge ORDER BY bench_press DESC LIMIT 3;";
       $result_1 = $database->query($sql_1);
@@ -60,7 +64,7 @@ include('header.html');
   </xmp>
 </div>
 
-<div class="well" style="display:none; ">  
+<div class="well" style="display:none; ">
 <?php
 $n1 = challenge::show_num_bptop3();
 $n2 = challenge::show_num_putop3();
