@@ -34,7 +34,6 @@ Display MySql table on web page code snippet
 Modified from 
 http://stackoverflow.com/questions/7978502/echo-table-from-phpmyadmin-into-html-table
 
-Paul
 Time and Date functions based on:
 https://www.youtube.com/watch?v=0W7dUSNrqZQ
 http://php.net/manual/en/timezones.php
