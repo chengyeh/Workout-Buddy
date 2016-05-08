@@ -90,16 +90,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
          	if(((!empty($set2_reps)) && (!is_numeric($set2_reps))) || ((!empty($set1_reps)) && (!is_numeric($set1_reps))) || ((!empty($set3_reps)) && (!is_numeric($set3_reps))))
          	{
-         		$trigger_query=0;
+         		$trigger_query=3;
 
          	}
 
          	if(((!empty($set2_weight)) && (!is_numeric($set2_weight))) || ((!empty($set1_weight)) && (!is_numeric($set1_weight))) || ((!empty($set3_weight)) && (!is_numeric($set3_weight))))
          	{
-         		$trigger_query=0;
+         		$trigger_query=3;
 
          	}
 
+         	if(($set1_reps < 0) || ($set2_reps < 0) || ($set3_reps < 0) || ($set1_weight < 0) || ($set2_weight < 0) || ($set3_weight < 0))
+			{
+				$trigger_query=2;
+			}
          	if($trigger_query==1)
          	{
 						     $a=1;
@@ -126,7 +130,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				}
 				else
 				{
-						echo "***Please give valid fields****";
+						if($trigger_query==2)
+						{
+							echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
+	 						echo "<strong>Warning:</strong> Please give values above 0.";
+							echo "</div>";
+						}
+						else if($trigger_query==3)
+						{
+							echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
+	 						echo "<strong>Warning:</strong> Please give numeric values.";
+							echo "</div>";
+						}
+						else
+						{
+							echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
+	 						echo "<strong>Warning:</strong> Please give valid values.";
+							echo "</div>";
+						}
+
 				}
 }
 ?>
