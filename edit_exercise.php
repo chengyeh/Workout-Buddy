@@ -273,10 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-success'>Update Agenda</button>";
 		   	echo "</form>";
-   			echo "<p><a class='btn btn-info' href='view_exercises.php?id=$addtype->id&rout_id=$addexercise->id' role='button'>Back to Exercise</a></p>";
-
-
-
+   			echo "<p><a class='btn btn-primary' href='view_exercises.php?id=$addtype->id&rout_id=$addexercise->id' role='button'>Back to Exercise</a></p>";
    	?>
 
 

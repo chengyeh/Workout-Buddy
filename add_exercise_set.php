@@ -274,7 +274,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 				echo "<br>";
 		   	echo "<button type='submit' name='submit' class='btn btn-success'>Create Agenda</button>";
 		   	echo "</form>";
-   			echo "<p><a class='btn btn-info' href='add_routine_exercise.php?id=$routine->id' role='button'>Back to Exercise</a></p>";
+   			echo "<p><a class='btn btn-primary' href='add_routine_exercise.php?id=$routine->id' role='button'>Back to Exercise</a></p>";
    	?>
 
 

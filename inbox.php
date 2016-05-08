@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 				echo "<td class='text-center'><input type='checkbox' name='delete_message[]' value='" . $message1["id"] . "'></td>";
 				echo "</tr>";
 			}
-			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-info' name ='submit' value='Delete'></td></tr>";
+			echo "<tr><td></td><td></td><td></td><td></td><td></td><td class='text-center'><input type='submit' class='btn btn-danger' name ='submit' value='Delete'></td></tr>";
 			echo "</table>";
 		}
 		echo "</form>";

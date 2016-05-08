@@ -165,7 +165,7 @@ if(!$rout_show){
         if($user->id == $rout_show->user_id)
         {
         ?>
-            <p><a class='btn btn-info' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
+            <p><a class='btn btn-primary' href='edit_routine.php?rout_id=<?php echo $rout_show->id ?>' role='button'>Edit Routine</a></p>
             <div class="boxContainerDiv">
                 <div>
                     <br>
@@ -245,11 +245,11 @@ if(!$rout_show){
 
             <table class='table'>
                 <tr>
-                    <td><a class='btn btn-success' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
+                    <td><a class='btn btn-primary' href='add_routine_exercise.php?id=<?php echo $rout_show->id ?>' role='button'>Add Exercise</a></td>
 					<?php
 						if((count($routine_exercises)) > 0)
 						{
-							echo "<td class='text-right'><a class='btn btn-danger' href='start_routine.php?id={$rout_show->id}' role='button'>Start Routine</a></td>";
+							echo "<td class='text-right'><a class='btn btn-success' href='start_routine.php?id={$rout_show->id}' role='button'>Start Routine</a></td>";
 						}
 					?>
                 </tr>

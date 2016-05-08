@@ -148,8 +148,8 @@ $ex_type_obj = Types::find_by_id($ex_obj->type);
 
 			 }
 			 echo "<br>";
-			 echo "<p><a class='btn btn-info' href='edit_exercise.php?rout_id=$rout_obj->id&ex_id=$ex_obj->id' role='button'>Edit Exercise</a></p>";
-    		 echo "<p><a class='btn btn-danger' href='view_routine.php?id=$rout_obj->id' role='button'>Back to Routine</a></p>";
+			 echo "<p><a class='btn btn-warning' href='edit_exercise.php?rout_id=$rout_obj->id&ex_id=$ex_obj->id' role='button'>Edit Exercise</a></p>";
+    		 echo "<p><a class='btn btn-primary' href='view_routine.php?id=$rout_obj->id' role='button'>Back to Routine</a></p>";
     	?>
 
 

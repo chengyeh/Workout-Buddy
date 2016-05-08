@@ -189,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		   	echo "</br>";
 		   	echo "</form>";
 		   	echo "<br>";
-			echo "<p><a class='btn btn-info'  href='view_routine.php?id=$addexercise->id' role='button'>Back to Routine</a></p>";
+			echo "<p><a class='btn btn-primary'  href='view_routine.php?id=$addexercise->id' role='button'>Back to Routine</a></p>";
 
    	?>
 

@@ -112,11 +112,11 @@ $user = User::find_by_id($session->user_id);
   	<h1>Message Menu</h1>
   	<hr>
 
-  	<p><a class="btn btn-info" href="inbox.php" role="button">Inbox</a></p>
+  	<p><a class="btn btn-primary" href="inbox.php" role="button">Inbox</a></p>
     <hr>
-	<p><a class="btn btn-danger" href="sent.php" role="button">Sent</a></p>
+	<p><a class="btn btn-primary" href="sent.php" role="button">Sent</a></p>
     <hr>
-    <p><a class="btn btn-warning" href="find_user.php" role="button">Find User</a></p>
+    <p><a class="btn btn-success" href="find_user.php" role="button">Find User</a></p>
 
     </div> <!-- /container -->
 
