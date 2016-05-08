@@ -2,7 +2,7 @@
  /**
  * This class serves as the central starting point for the user to access all other classes for various functionality.
  * Based on the user choice, the page redirects the user to different classes.
- * 
+ *
  */
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$database->query("DELETE FROM wb_exercise WHERE routine_id = '" . $routine_id . "'");
 			$database->query("DELETE FROM wb_exercise_set WHERE routine_id = '" . $routine_id . "'");
             $database->query("DELETE FROM wb_event_calendar WHERE user_id = '" . $user->id . "' AND name = '". $routine->name . "'");
-
+            $database->query("DELETE FROM wb_log_category WHERE routine_id = '" . $routine_id . "'");
+                        $database->query("DELETE FROM wb_user_log WHERE routine_id = '" . $routine_id . "'");
             $routine->delete();
 		}
 	}
@@ -155,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$groups_owned = $user->find_groups();
 		$groups_joined = $user->groups_joined();
 		$exercises_added=$user->exercise_routines_added();
-		
+
 		// If user owns at least one group, display its name, status, and button to delete it
 		if(!empty($groups_owned)){
 			echo "<table class='table'><tr><th>Name</th><th>Status</th><th class='text-center'>Delete</th></tr>";
@@ -209,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	<form action="#" method="post">
 	<?php
 		$user_routine_objects = $user->exercise_routines_added();
-		
+
 		// If user created at least one routine, display its name, and button to delete it
 		if(!empty($user_routine_objects))
 		{

@@ -125,22 +125,41 @@ $user = User::find_by_id($session->user_id);
 
        		//Array used to display log exercises and display in a table
        		$log_array=$user->display_log();
-       		echo "<table class='table'><tr><th>Exercise</th><th>Routine</th><th>Date</th><th>Time</th>";
-			while($log_disp = $log_array->fetch_assoc())
-			{
-				$log_name=Log::find_by_id($log_disp['id']);
-				$routine_log=Routine::find_by_id($log_disp['routine_id']);
-				$exercise_log=Exercises::find_by_id($log_disp['exercise_id']);
-				$type_log=Types::find_by_id($exercise_log->type);
-				echo "<tr>";
-				echo "<td><a href='view_exercise_log.php?id={$log_disp['id']}'>".$type_log->name."</a></td>";
-				echo "<td>" . $routine_log->name."</td>";
-				echo "<td>" . $log_disp['Date'] . "</td>";
-				echo "<td>" . $log_disp['Time'] . "</td>";
 
-				echo "</tr>";
+			$a=0;
+			foreach($log_array as $value)
+			{
+
+				$a=$a+1;
 			}
-			echo "</table>";
+			if($a==0)
+			{
+
+				echo "<td>No Log History</td>";
+
+			}
+			else
+			{
+
+				$log_array=$user->display_log();
+				echo "<table class='table'><tr><th>Exercise</th><th>Routine</th><th>Date</th><th>Time</th>";
+				while($log_disp = $log_array->fetch_assoc())
+				{
+					$log_name=Log::find_by_id($log_disp['id']);
+					$routine_log=Routine::find_by_id($log_disp['routine_id']);
+					$exercise_log=Exercises::find_by_id($log_disp['exercise_id']);
+					$type_log=Types::find_by_id($exercise_log->type);
+					echo "<tr>";
+					echo "<td><a href='view_exercise_log.php?id={$log_disp['id']}'>".$type_log->name."</a></td>";
+					echo "<td>" . $routine_log->name."</td>";
+					echo "<td>" . $log_disp['Date'] . "</td>";
+					echo "<td>" . $log_disp['Time'] . "</td>";
+
+					echo "</tr>";
+				}
+				echo "</table>";
+			}
+
        	?>
 
 
