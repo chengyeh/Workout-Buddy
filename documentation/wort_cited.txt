@@ -38,3 +38,5 @@ Time and Date functions based on:
 https://www.youtube.com/watch?v=0W7dUSNrqZQ
 http://php.net/manual/en/timezones.php
 
+Hand Icon in testing overpage graphics
+https://www.iconfinder.com/icons/195098/alert_finger_hand_icon

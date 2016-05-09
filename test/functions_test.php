@@ -14,39 +14,42 @@ include('header.html');
 ?>
 <!-- html goes here -->
 <h1 class="page-header">Functions Testing</h1>
-<p>This seris of test will test functions in helper functions file functions.php.</p>
+<p>Due to nature of the code, these functions in file functions.php are not tested.</p>
 
-<h3 class="expand sub-header">Test __autoload($class_name)</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
-<?php 
-$result;
-
-if($result){
-	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
-	echo "</div>";
-}else {
-	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
-	echo "</div>";
+<h3 class="sub-header">Test __autoload($class_name)</h3>
+<div class="well">
+<xmp>
+function __autoload($class_name){
+    $class_name = strtolower($class_name);
+    $path = LIB_PATH.DS."{$class_name}.php";
+    if(file_exists($path)){
+        require_once($path);
+    } else {
+        echo("The file {$class_name}.php could not be found.");
+    }   
 }
-?>
+</xmp>
+</div>
 
-<h3 class="expand sub-header">Test redirect_to($location = NULL)</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
-<?php 
-$result;
+<div class='well' style='background-color:  #b3e0ff'>
+	<p>This function is not tested.</p>
+</div>
 
-if($result){
-	echo "<div class='well' style='background-color: #b3ffcc'>";
-	echo "Test  PASSED";
-	echo "</div>";
-}else {
-	echo "<div class='well' style='background-color: #ffd6cc'>";
-	echo "Test  FAILED";
-	echo "</div>";
+<h3 class="sub-header">Test redirect_to($location = NULL)</h3>
+<div class="well">
+<xmp>
+function redirect_to($location = NULL){
+    if($location != NULL){
+        header("Location:{$location}");
+        exit;
+    }
 }
-?>
+</xmp>
+</div>
+<div class='well' style='background-color:  #b3e0ff'>
+	<p>This function is not tested.</p>
+</div>
+
 
 <?php
 include('footer.html');

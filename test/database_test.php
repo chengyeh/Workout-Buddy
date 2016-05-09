@@ -17,10 +17,41 @@ include('header.html');
 <p>This seris of test will test <b>public</b> functions in MySQLDatabase class.</p>
 
 <h3 class="expand sub-header">Test open_connection()</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
+<div class="well" style="display:none;">
+<xmp>
+    public function open_connection(){
+        $this->connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS);
+        if (!$this->connection){
+            die("Database connection failed. " . mysqli_error($this->connection));
+        } else {
+            $db_select = mysqli_select_db($this->connection, DB_NAME);
+            if (!$db_select){
+                die("Database selection failed. " . mysqli_error());
+            }
+        }
+    }
+</xmp>
+</div>
+
+<div class='well' style='background-color:  #b3e0ff'>
+	<p>This function is not tested.</p>
+</div>
 
 <h3 class="expand sub-header">Test close_connection()</h3>
-<div class="well" style="display:none;"><xmp></xmp></div>
+<div class="well" style="display:none;">
+<xmp>
+    public function close_connection(){
+        if (isset($this->connection)){
+            mysqli_close($this->connection);
+            unset($this->connection);
+        }
+    }
+</xmp>
+</div>
+
+<div class='well' style='background-color:  #b3e0ff'>
+	<p>This function is not tested.</p>
+</div>
 
 <h3 class="expand sub-header">Test query($sql)</h3>
 <div class="well" style="display:none;">
