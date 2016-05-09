@@ -243,6 +243,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
    	<?php
    			//This queries from the routine associated with the exercise that is to be edited
    			echo "<p><strong>Workout: </strong>". $addexercise->name . "<br/>";
+   			echo "<strong>".$addtype->type."</strong>";
+   			echo "<br>";
 
 			//This is the exercise type of the exercise that is to be edited
    			$actual_name=Types::find_by_id($addtype->type);
@@ -251,27 +253,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 			//This is user input for the exercise form that is to be edited
    			echo "<form action='#' method='POST'>";
+			$exercise_array=$addtype->get_sets();
+			$a=1;
+			echo "</select>";
+			foreach($exercise_array as $value)
+			{
 
-				echo "</select>";
-				echo "<br><label>Set 1:  </label>";
+				echo "<br><label>Set ".$a.":  </label>";
 				echo "<br>";
-				echo "Reps <input type='text' name='set1_reps'>";
-				echo "Weight <input type='text' name='set1_weight'>";
+				if($a==1)
+				{
+					echo "Reps <input type='text' name='set1_reps' value=$value->reps>";
+					echo "Weight <input type='text' name='set1_weight' value=$value->weight>";
+				}
+				if($a==2)
+				{
+					echo "Reps <input type='text' name='set2_reps' value=$value->reps>";
+					echo "Weight <input type='text' name='set2_weight' value=$value->weight>";
+				}
+				if($a==3)
+				{
+					echo "Reps <input type='text' name='set3_reps' value=$value->reps>";
+					echo "Weight <input type='text' name='set3_weight' value=$value->weight>";
+				}
+
 				echo "<br>";
-				echo "<label>Set 2:  </label>";
-				echo "<br>";
-				echo "Reps <input type='text' name='set2_reps'>";
-				echo "Weight <input type='text' name='set2_weight'>";
-				echo "<br>";
-				echo "<label>Set 3:  </label>";
-				echo "<br>";
-				echo "Reps <input type='text' name='set3_reps'>";
-				echo "Weight <input type='text' name='set3_weight'>";
-				echo "<br>";
-				echo "<br>";
-		   	echo "<button type='submit' name='submit' class='btn btn-success'>Update Agenda</button>";
+				$a=$a+1;
+			}
+			echo "<button type='submit' name='submit' class='btn btn-success'>Update Agenda</button>";
 		   	echo "</form>";
    			echo "<p><a class='btn btn-primary' href='view_exercises.php?id=$addtype->id&rout_id=$addexercise->id' role='button'>Back to Exercise</a></p>";
+
+
    	?>
 
 
