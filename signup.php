@@ -113,8 +113,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 // 				$result = $mail->Send();
 				
 				// Finish the page:
-				echo '<h3>Thank you for registering! A confirmation email has been sent to your address. Please click on the link in that email in order to activate your account.</h3>';
-				sleep(10);
 				redirect_to("login.php");
 				
 			} else { // If it did not run OK.
