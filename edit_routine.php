@@ -35,9 +35,6 @@ if(!$rout){
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $errors = array();
 
-   	//Delete wb_even_calendar fro editing
-    $database->query("DELETE FROM wb_event_calendar WHERE user_id='{$user->id}' AND name='{$rout->name}'");
-
     //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
 
@@ -122,6 +119,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if ($database->affected_rows() == 1) {
         //Routine created
+        
+        //Delete wb_even_calendar fro editing
+    	$database->query("DELETE FROM wb_event_calendar WHERE user_id='{$user->id}' AND name='{$rout->name}'");
+        
         //Add calendar events
 		for ($i = strtotime($rout->start_date); $i <= strtotime($rout->end_date); $i = strtotime('+1 day', $i)) {
 
@@ -191,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         redirect_to("view_routine.php?id=".$rout->id);
     }
     else { // If it did not run OK.
-        echo 'Routine not created';
+        $error_message = 'Routine not created';
     }
 }
 ?>
@@ -292,6 +293,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="container">
 
     <!-- Main component for a primary marketing message or call to action -->
+    <?php 
+		//If error, display error.
+		if(isset($error_message)){
+			echo "<div class='alert alert-danger' role='alert'>".$error_message."</div>";
+		}
+	 ?>
     <h2>Edit Routine</h2>
        <form form action="edit_routine.php?rout_id=<?php echo $_GET['rout_id']; ?>" method="POST">
       <div class="form-group">
