@@ -104,6 +104,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			{
 				$trigger_query=2;
 			}
+
+
+			         	if(($set1_reps > 1000000000) || ($set2_reps> 1000000000) || ($set3_reps > 1000000000) || ($set1_weight > 1000000000) || ($set2_weight > 1000000000) || ($set3_weight > 1000000000))
+						{
+							$trigger_query=2;
+						}
+
          	if($trigger_query==1)
          	{
 						     $a=1;
@@ -133,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 						if($trigger_query==2)
 						{
 							echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
-	 						echo "<strong>Warning:</strong> Please give values above 0.";
+	 						echo "<strong>Warning:</strong> Please give values above 0 and within a reasonable range.";
 							echo "</div>";
 						}
 						else if($trigger_query==3)

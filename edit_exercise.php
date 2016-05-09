@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once('includes/initialize.php');
+
 if(!$session->is_logged_in()){ redirect_to("login.php"); }
 
 //Create User object for current session user
@@ -100,6 +101,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
          	}
 
+         	if(($set1_reps > 1000000000) || ($set2_reps> 1000000000) || ($set3_reps > 1000000000) || ($set1_weight > 1000000000) || ($set2_weight > 1000000000) || ($set3_weight > 1000000000))
+			{
+				$trigger_query=2;
+			}
+
+
 			if(($set1_reps < 0) || ($set2_reps < 0) || ($set3_reps < 0) || ($set1_weight < 0) || ($set2_weight < 0) || ($set3_weight < 0))
 			{
 				$trigger_query=2;
@@ -122,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
          		if($trigger_query==2)
 				{
 					echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
-					echo "<strong>Warning:</strong> Please give values above 0.";
+					echo "<strong>Warning:</strong> Please give values above 0 and within a reasonable range.";
 					echo "</div>";
 				}
 				else if($trigger_query==3)
