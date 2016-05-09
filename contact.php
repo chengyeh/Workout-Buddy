@@ -27,31 +27,63 @@ date_default_timezone_set("America/Chicago");
 $today = date("Y-m-d H:i:s");
 
 //Store messages
-$message;
+$message = "";
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+	
+	//Keep track of errors
+	$errors = array();
+	
 	// Trim all the incoming data:
 	$trimmed = array_map('trim', $_POST);
 	
-	//Escape the values and ready for database insert
-	$user_id 			= $database->escape_value($trimmed['user_id']);
-	$contact_datetime 	= $database->escape_value($trimmed['contact_datetime']);
-	$contact_name 		= $database->escape_value($trimmed['contact_name']);
-	$contact_subject 	= $database->escape_value($trimmed['contact_subject']);
-	$contact_message 	= $database->escape_value($trimmed['contact_message']);
+	// Assume invalid values:
+	$cs = $cm = FALSE;
 	
-	//Construct the sql statement
-	$sql  = "INSERT INTO wb_contact ";
-	$sql .=	"(user_id,message_datetime,subject,message) ";
-	$sql .=	"VALUES ";
-	$sql .=	"({$user_id},'{$contact_datetime}','{$contact_subject}','{$contact_message}')";
-
-	//Insert to database and print message to user
-	if ($database->query($sql) === TRUE) {
-		$message = "Your message was successfully sent to Administrator.";
+	// Check for contact subject
+	if (isset($trimmed['contact_subject']) && !empty($trimmed['contact_subject'])) {
+		$cs = $database->escape_value($trimmed['contact_subject']);
 	} else {
-		$message = "Your message was not sent.";
+		$errors[] = '<p class="error">Please enter a subject!</p>';
+	}
+	
+	// Check for contact message:
+	if (isset($trimmed['contact_message']) && !empty($trimmed['contact_message'])) {
+		$cm = $database->escape_value($trimmed['contact_message']);
+	} else {
+		$errors[] =  '<p class="error">Please enter your message!</p>';
+	}
+	
+	if ($cs && $cm) { // If everything's OK...
+		//Escape the values and ready for database insert
+		$user_id 			= $database->escape_value($trimmed['user_id']);
+		$contact_datetime 	= $database->escape_value($trimmed['contact_datetime']);
+		$contact_name 		= $database->escape_value($trimmed['contact_name']);
+		$contact_subject 	= $cs;
+		$contact_message 	= $cm;
+		
+		//Construct the sql statement
+		$sql  = "INSERT INTO wb_contact ";
+		$sql .=	"(user_id,message_datetime,subject,message) ";
+		$sql .=	"VALUES ";
+		$sql .=	"({$user_id},'{$contact_datetime}','{$contact_subject}','{$contact_message}')";
+	
+		//Insert to database and print message to user
+		if ($database->query($sql) === TRUE) {
+			$message = "Your message was successfully sent to Administrator.";
+		} else {
+			$message = "Your message was not sent.";
+		}
+		
+		//Unset variables
+		unset($cs);
+		unset($cm);
+		
+	} else { // If one of the data tests failed.
+		foreach ($errors as $item) {
+			$message .= $item . "\n";
+		}
 	}
 }
 ?>
@@ -167,11 +199,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		</fieldset>
 		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Subject</label>
-		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Subject" name="contact_subject" required>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Subject" name="contact_subject" value="<?php if(isset($cs) && !empty($cs)){ echo $cs; }?>" required>
 		</fieldset>
   		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Message</label>
-		   <textarea name="contact_message" class="form-control" id="formGroupExampleInput" placeholder="Message"rows="4" cols="50" required></textarea>
+		   <textarea name="contact_message" class="form-control" id="formGroupExampleInput" placeholder="Message"rows="4" cols="50" required><?php if(isset($cm) && !empty($cm)){ echo $cm; }?></textarea>
 		</fieldset>
 		
 		<button type="submit" name="submit" class="btn btn-default">Send</button>
