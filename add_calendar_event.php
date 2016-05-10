@@ -197,7 +197,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     	  //JQuery to display datepicker UI
 		  $(function() {
 		    $( "#datepicker" ).datepicker({
-		    	  dateFormat: "yy-mm-dd"
+		    	dateFormat: "yy-mm-dd",
+		    	minDate: 0,
+		        onSelect: function () {
+		    		//Set min date to today	
+		              var minDate = $(this).datepicker('getDate');
+	
+		             //same for datepicker
+		             $(this).datepicker('option', 'minDate', minDate);
+		        }
 		    });
 		  });
 

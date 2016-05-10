@@ -379,7 +379,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   <script>
   $(function() {
     $( "#datepicker1" ).datepicker({
-          dateFormat: "yy-mm-dd"
+        dateFormat: "yy-mm-dd",
+        minDate: 0,
+        onSelect: function () {
+            //select datepicker2 from the DOM
+        	var datepicker2 = $('#datepicker2');
+
+ 			//Set min date to today	
+            var minDate = $(this).datepicker('getDate');
+                  
+            //minDate of datepicker2 datepicker = dt1 selected day
+            datepicker2.datepicker('setDate', minDate);
+                  
+           //first day which can be selected in datepicker2 is selected date in datepicker1
+           datepicker2.datepicker('option', 'minDate', minDate);
+
+           //same for datepicker1
+           $(this).datepicker('option', 'minDate', minDate);
+		}
     });
   });
   $(function() {

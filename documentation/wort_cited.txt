@@ -20,6 +20,10 @@ https://www.youtube.com/playlist?list=PLC3FA336653950084
 Display date picker widget
 https://jqueryui.com/datepicker/
 
+JQuery datepicker date range and start date
+This javascript code was referenced from
+http://stackoverflow.com/questions/17016598/jquery-ui-picking-a-start-and-end-date-within-range-based-on-start-date
+
 Inserting events to calendar
 http://stackoverflow.com/questions/7061802/php-function-for-get-all-mondays-within-date-range
 
