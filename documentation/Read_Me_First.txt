@@ -15,5 +15,5 @@ Password: password123
 Testing Page URL:
 http://people.eecs.ku.edu/~dfernand/eecs448/EECS448_Project3/test/
 
-Note: For testing, users must be log off fron the site. Otherwise it create a conflict
-with Session global variable.
+Note: For testing, users must be log off from the site. Otherwise it will create a conflict
+with Session global variable and Session Class testing.
