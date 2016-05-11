@@ -30,133 +30,131 @@ if(!$routine)
 	redirect_to('login.php');
 }
 
-
 ?>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
+    //Keep track of errors
+    $errors = array();
 
-  //Trim all the incoming data:
+    //Trim all the incoming data:
     $trimmed = array_map('trim', $_POST);
 
-			//Creates three new sets for a workout through one Set object
-			$new_set = new Set();
-           	$new_set->routine_id = $routine->id;
-           	$a=$new_set->routine_id;
-         	$set1_reps=$_POST['set1_reps'];
-         	$set2_reps=$_POST['set2_reps'];
-         	$set3_reps=$_POST['set3_reps'];
-         	$set1_weight=$_POST['set1_weight'];
-         	$set2_weight=$_POST['set2_weight'];
-         	$set3_weight=$_POST['set3_weight'];
+	//Creates three new sets for a workout through one Set object
+	$new_set = new Set();
+   	$new_set->routine_id = $routine->id;
+   	$a=$new_set->routine_id;
+ 	$set1_reps=$_POST['set1_reps'];
+ 	$set2_reps=$_POST['set2_reps'];
+ 	$set3_reps=$_POST['set3_reps'];
+ 	$set1_weight=$_POST['set1_weight'];
+ 	$set2_weight=$_POST['set2_weight'];
+ 	$set3_weight=$_POST['set3_weight'];
 
-         	//$trigger_querry determines if the workout gets queried or not based on valid input
-         	$trigger_query=0;
+ 	//$trigger_querry determines if the workout gets queried or not based on valid input
+ 	$trigger_query=0;
 
-         	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
-         	{
-         		if(empty($set1_reps))
-         		{
-         			$set1_reps=0;
-         		}
-         		if(empty($set2_reps))
-         		{
-         			$set2_reps=0;
-         		}
-         		if(empty($set3_reps))
-         		{
-         			$set3_reps=0;
-         		}
-         		if(empty($set1_weight))
-         		{
-         			$set1_weight=0;
-         		}
-         		if(empty($set2_weight))
-         		{
-         			$set2_weight=0;
-         		}
-         		if(empty($set3_weight))
-         		{
-         			$set3_weight=0;
-         		}
-         		$trigger_query=1;
+ 	if(empty($set1_reps) || empty($set2_reps) || empty($set3_reps) || empty($set1_weight) || empty($set2_weight) || empty($set3_weight))
+ 	{
+ 		if(empty($set1_reps))
+ 		{
+ 			$set1_reps=0;
+ 		}
+ 		if(empty($set2_reps))
+ 		{
+ 			$set2_reps=0;
+ 		}
+ 		if(empty($set3_reps))
+ 		{
+ 			$set3_reps=0;
+ 		}
+ 		if(empty($set1_weight))
+ 		{
+ 			$set1_weight=0;
+ 		}
+ 		if(empty($set2_weight))
+ 		{
+ 			$set2_weight=0;
+ 		}
+ 		if(empty($set3_weight))
+ 		{
+ 			$set3_weight=0;
+ 		}
+ 		$trigger_query=1;
 
-         	}
-         	else
-         	{
-         		$trigger_query=1;
-         	}
+ 	}
+ 	else
+ 	{
+ 		$trigger_query=1;
+ 	}
 
-         	if(((!empty($set2_reps)) && (!is_numeric($set2_reps))) || ((!empty($set1_reps)) && (!is_numeric($set1_reps))) || ((!empty($set3_reps)) && (!is_numeric($set3_reps))))
-         	{
-         		$trigger_query=3;
+ 	if(((!empty($set2_reps)) && (!is_numeric($set2_reps))) || ((!empty($set1_reps)) && (!is_numeric($set1_reps))) || ((!empty($set3_reps)) && (!is_numeric($set3_reps))))
+ 	{
+ 		$trigger_query=3;
 
-         	}
+ 	}
 
-         	if(((!empty($set2_weight)) && (!is_numeric($set2_weight))) || ((!empty($set1_weight)) && (!is_numeric($set1_weight))) || ((!empty($set3_weight)) && (!is_numeric($set3_weight))))
-         	{
-         		$trigger_query=3;
+ 	if(((!empty($set2_weight)) && (!is_numeric($set2_weight))) || ((!empty($set1_weight)) && (!is_numeric($set1_weight))) || ((!empty($set3_weight)) && (!is_numeric($set3_weight))))
+ 	{
+ 		$trigger_query=3;
 
-         	}
+ 	}
 
-         	if(($set1_reps < 0) || ($set2_reps < 0) || ($set3_reps < 0) || ($set1_weight < 0) || ($set2_weight < 0) || ($set3_weight < 0))
-			{
-				$trigger_query=2;
-			}
+ 	if(($set1_reps < 0) || ($set2_reps < 0) || ($set3_reps < 0) || ($set1_weight < 0) || ($set2_weight < 0) || ($set3_weight < 0))
+	{
+		$trigger_query=2;
+	}
 
+ 	if(($set1_reps > 1000000000) || ($set2_reps> 1000000000) || ($set3_reps > 1000000000) || ($set1_weight > 1000000000) || ($set2_weight > 1000000000) || ($set3_weight > 1000000000))
+	{
+		$trigger_query=2;
+	}
 
-			         	if(($set1_reps > 1000000000) || ($set2_reps> 1000000000) || ($set3_reps > 1000000000) || ($set1_weight > 1000000000) || ($set2_weight > 1000000000) || ($set3_weight > 1000000000))
-						{
-							$trigger_query=2;
-						}
-
-         	if($trigger_query==1)
-         	{
-						     $a=1;
-						     $b=2;
-						     $c=3;
-						     $database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
-							 $total_exercises=$user->find_last_exercise($routine->id);
-							 $q=0;
-							 foreach ($total_exercises as $exercise_number)
-							 {
-
-									$b=$exercise_number->id;
-									if($b > $q)
-									{
-										$q=$b;
-									}
-
-							}
-
-				         	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,1,$set1_reps,$set1_weight)");
-							$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
-							$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
-							redirect_to("add_routine_exercise.php?id={$routine->id}");
-				}
-				else
-				{
-						if($trigger_query==2)
-						{
-							echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
-	 						echo "<strong>Warning:</strong> Please give values above 0 and within a reasonable range.";
-							echo "</div>";
-						}
-						else if($trigger_query==3)
-						{
-							echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
-	 						echo "<strong>Warning:</strong> Please give numeric values.";
-							echo "</div>";
-						}
-						else
-						{
-							echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
-	 						echo "<strong>Warning:</strong> Please give valid values.";
-							echo "</div>";
-						}
-
-				}
+ 	if($trigger_query==1)
+ 	{
+         $a=1;
+         $b=2;
+         $c=3;
+         $database->query("INSERT INTO `wb_exercise`(`routine_id`, `type`) VALUES ($new_set->routine_id,$addtype)");
+    	 $total_exercises=$user->find_last_exercise($routine->id);
+    	 $q=0;
+    	 foreach ($total_exercises as $exercise_number)
+    	 {
+    
+    			$b=$exercise_number->id;
+    			if($b > $q)
+    			{
+    				$q=$b;
+    			}
+    
+    	}
+    
+     	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,1,$set1_reps,$set1_weight)");
+    	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,2,$set2_reps,$set2_weight)");
+    	$database->query("INSERT INTO `wb_exercise_set`(`exercise_id`, `routine_id`, `order`, `reps`, `weight`) VALUES ($q,$new_set->routine_id,3,$set3_reps,$set3_weight)");
+    	redirect_to("add_routine_exercise.php?id={$routine->id}");
+	}
+	else
+	{
+    	if($trigger_query==2)
+    	{
+    		echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
+    		echo "<strong>Warning:</strong> Please give values above 0 and within a reasonable range.";
+    		echo "</div>";
+    	}
+    	else if($trigger_query==3)
+    	{
+    		echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
+    		echo "<strong>Warning:</strong> Please give numeric values.";
+    		echo "</div>";
+    	}
+    	else
+    	{
+    		echo "<div class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>&times;</button>";
+    		echo "<strong>Warning:</strong> Please give valid values.";
+    		echo "</div>";
+    	}
+	}
 }
 ?>
 

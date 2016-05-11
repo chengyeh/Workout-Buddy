@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 				echo "<tr>";
 				echo "<td>" . $a ."</td>";
 				$a=$a+1;
-				echo "<td>" . $t->full_name()."</td>";
+				echo "<td><a href='view_profile.php?id={$t->id}'>" . $t->full_name()."</a></td>";
 				echo "<td>" . $message1['message'] . "</td>";
 				echo "<td>" . $message1['Time'] . "</td>";
 				echo "<td>" . $message1['Date'] . "</td>";
