@@ -10,7 +10,7 @@ defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 
 defined('SITE_ROOT') ? null :
 
-define('SITE_ROOT', DS.'home'.DS.'clee28'.DS.'public_html'.DS.'EECS448'.DS.'EECS448_Project4');
+define('SITE_ROOT', DS.'home'.DS.'dfernand'.DS.'public_html'.DS.'eecs448'.DS.'EECS448_Project3');
 
 defined('LIB_PATH') ? null :
 define('LIB_PATH', SITE_ROOT .DS. 'includes');
