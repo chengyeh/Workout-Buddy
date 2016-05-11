@@ -1,3 +1,15 @@
+<?php
+// Workout Buddy Manual
+// 
+//    
+// Copyright (C) <2016>  <Paul Charles, Kuei-Hsien Chu, Purna Doddapaneni, Dilesh Fernando, Cheng-Yeh Lee>
+// 
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+?>
 <?php 
 /**
  * Creates a new group_member object in a group where the user is not the owner. Allows an user to join a pre-existing group.
@@ -27,6 +39,5 @@ if (empty($_GET['user_id']) && empty($_GET['group_id'])){
     $group_member->create();
     redirect_to('view_group.php?id='.$group_id);
 }
-
 
 ?>
