@@ -8,7 +8,7 @@ Calendar:
 
 Challenge:
 ----------
-
+1. Not Fixed: In addChallenges.php, since Safari does not support input attribute "required" the form can be submitted without put in any input
 
 Exercise:
 ---------
@@ -49,6 +49,10 @@ Routine:
 
 3. Fixed: In add_routine.php forces user input for all blanks
 
+4. Not Fixed: In add_routine.php and edit_routine.php, since Safari does not support input attribute "required" the form can be submitted without put in any input
+
+5. Not Fixed: In edit_routine.php, user can change to a date that has already passed or select a end date before start date
+
 
 User:
 -----
@@ -57,3 +61,8 @@ User:
 
 View Log:
 ---------
+
+1. Not Fixed: In view_exercise_log.php, the actual reps and weight sometimes display in reverse order
+
+
+
