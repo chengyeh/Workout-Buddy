@@ -138,7 +138,7 @@ if(!$event){
 
     <div class="container">
     	
-    	<h2>Group Info</h2>
+    	<h2>Event Info</h2>
     	<?php 
         //Print event details. 
     	echo "<p>Event Name : ". $event->name . "<br/>";
