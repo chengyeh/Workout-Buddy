@@ -17,30 +17,77 @@ $user = User::find_by_id($session->user_id);
 // select box in form
 $group_activity = Group::get_activity();
 
+//Store messages
+$message = "";
 ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  $errors = array();
+    //Keep track of errors
+    $errors = array();
 
   	// Trim all the incoming data:
 	$trimmed = array_map('trim', $_POST);
 
-		// Add the group to the database:
-		$group = new Group();
-		$group->group_owner= $trimmed['user_id'];
-      	$group->group_name= $trimmed['group_name'];
-      	$group->group_status= $trimmed['group_status'];
-      	$group->group_discription = $trimmed['group_discription'];
-      	$group->group_activity = $trimmed['group_activity'];
-      	$group->create();
-		
-		$group_member = new GroupMember();
-		$group_member->group_id = $database->insert_id();
-		$group_member->member_id = $trimmed['user_id'];
-		$group_member->create();
-
-      	// Redirect to profile page
-      	redirect_to("view_group.php?id={$database->insert_id()}");
+    // Assume invalid values:
+    $gn = $gs = $gd = $ga = FALSE;
+    
+    // Check for group name
+    if (isset($trimmed['group_name']) && !empty($trimmed['group_name'])) {
+        $gn = $database->escape_value($trimmed['group_name']);
+    } else {
+        $errors[] = '<p class="error">Please enter a name!</p>';
+    }
+    
+    // Check for group status
+    if (isset($trimmed['group_status']) && !empty($trimmed['group_status'])) {
+        $gs = $database->escape_value($trimmed['group_status']);
+    } else {
+        $errors[] = '<p class="error">Please select private or public!</p>';
+    }
+    
+    // Check for group description
+    if (isset($trimmed['group_discription']) && !empty($trimmed['group_discription'])) {
+        $gd = $database->escape_value($trimmed['group_discription']);
+    } else {
+        $errors[] = '<p class="error">Please enter a description!</p>';
+    }
+    
+    // Check for group activity
+    if (isset($trimmed['group_activity']) && !empty($trimmed['group_activity'])) {
+        $ga = $database->escape_value($trimmed['group_activity']);
+    } else {
+        $errors[] = '<p class="error">Please select an activity!</p>';
+    }
+    
+    if ($gn && $gs && $gd && $ga) { // If everything's OK...
+        // Add the group to the database:
+        $group = new Group();
+        $group->group_owner= $trimmed['user_id'];
+        $group->group_name= $gn;
+        $group->group_status= $gs;
+        $group->group_discription = $gd;
+        $group->group_activity = $ga;
+        $group->create(); 
+        
+        $group_member = new GroupMember();
+        $group_member->group_id = $database->insert_id();
+        $group_member->member_id = $trimmed['user_id'];
+        $group_member->create();     
+        
+        // Unset variables
+        unset($gn);
+        unset($gs);
+        unset($gd);
+        unset($ga);
+        
+        // Redirect to profile page
+        redirect_to("view_group.php?id={$database->insert_id()}"); 
+         
+    } else { // If one of the data tests failed.
+        foreach ($errors as $item) {
+            $message .= $item . "\n";
+        }
+    }
 }
 ?>
 
@@ -140,12 +187,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     
 	<div class="col-xs-12 col-sm-6 col-md-8">
 	<h2>Add Group</h2>
+	<?php 
+        if(isset($message) && !empty($message)){
+            echo "<div class='alert alert-danger' role='alert'>".$message."</div>";
+        }
+     ?>
 	<form action="#" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="user_id" value='<?php echo $session->user_id; ?>'>
 	
 		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Group Name</label>
-		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Group Name" name="group_name" required autofocus>
+		   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Group Name" name="group_name" value="<?php if(isset($gn) && !empty($gn)){ echo $gn; }?>" required autofocus>
 		</fieldset>
   		<fieldset class="form-group">
     		<label for="formGroupExampleInput2">
@@ -157,8 +209,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			</label>
   		</fieldset>
   		<fieldset class="form-group">
-		   <label for="formGroupExampleInput">Group Discription</label>
-		   <textarea name="group_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Description"rows="4" cols="50" required></textarea>
+		   <label for="formGroupExampleInput">Group Description</label>
+		   <textarea name="group_discription" class="form-control" id="formGroupExampleInput" placeholder="Group Description"rows="4" cols="50" required><?php if(isset($gd) && !empty($gd)){ echo $gd; }?></textarea>
 		</fieldset>
 		<fieldset class="form-group">
 		   <label for="formGroupExampleInput">Group Activity</label>
