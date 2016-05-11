@@ -25,7 +25,7 @@ Exercise:
               This bug was fixed by changing the table wb_exercise_set by ordering it from "order by ASC". However, sometimes this problem occurs and sometimes
               it doesn't.
 
-6. Not fixed: In add_exercise_set.php and edit_exercise.php the user can input integer values larger than 11 bit, which is the maximum amount for the fields in
+6. Fixed: In add_exercise_set.php and edit_exercise.php the user can input integer values larger than 11 bit, which is the maximum amount for the fields in
               the table wb_exercise_set. This gives wrong values for what get's queried.
 
 Group:
@@ -63,6 +63,3 @@ View Log:
 ---------
 
 1. Not Fixed: In view_exercise_log.php, the actual reps and weight sometimes display in reverse order
-
-
-
